@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./config.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -112,8 +113,9 @@
         </sc-for>
       </div>
       <button onClick="{{ goAdd }}" style="border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:8px 16px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;letter-spacing:.08em;background-image:var(--w1),var(--w2),var(--w3),var(--w4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%" style-hover="background-color:#416180">{{ t_addBtn }}</button>
-      <button onClick="{{ goLogin }}" style="border:1px solid rgba(29,31,32,0.16);background:transparent;padding:8px 12px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;color:#5d5d60" style-hover="background:#eef6ff">{{ t_out }}</button>
+      <button onClick="{{ logout }}" style="border:1px solid rgba(29,31,32,0.16);background:transparent;padding:8px 12px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;color:#5d5d60" style-hover="background:#eef6ff">{{ t_out }}</button>
     </div>
+    <div style="display:{{ bannerDisp }};padding:9px 27.2px;border-top:1px solid {{ bannerBd }};background:{{ bannerBg }};color:{{ bannerFg }};font-size:13px">{{ bannerText }}</div>
   </div>
 
   <sc-if value="{{ isMonth }}" hint-placeholder-val="{{ true }}">
@@ -124,9 +126,9 @@
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_monthTitle }}</div>
       </div>
       <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
-        <button style="border:0;border-right:1px solid rgba(29,31,32,0.16);background:transparent;padding:8px 14px;color:#5d5d60" style-hover="background:#eef6ff">{{ t_prevM }}</button>
-        <button style="border:0;border-right:1px solid rgba(29,31,32,0.16);background:#eef6ff;padding:8px 18px;font-weight:500">{{ t_thisM }}</button>
-        <button style="border:0;background:transparent;padding:8px 14px;color:#98989b">{{ t_nextM }}</button>
+        <button onClick="{{ prevMonth }}" style="border:0;border-right:1px solid rgba(29,31,32,0.16);background:transparent;padding:8px 14px;color:#5d5d60" style-hover="background:#eef6ff">{{ t_prevM }}</button>
+        <button onClick="{{ thisMonth }}" style="border:0;border-right:1px solid rgba(29,31,32,0.16);background:#eef6ff;padding:8px 18px;font-weight:500">{{ t_thisM }}</button>
+        <button onClick="{{ nextMonth }}" style="border:0;background:transparent;padding:8px 14px;color:#5d5d60" style-hover="background:#eef6ff">{{ t_nextM }}</button>
       </div>
     </div>
 
@@ -428,10 +430,10 @@
 
     <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:0">
       <div style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
-        <span></span><span>{{ t_hDate }}</span><span>{{ t_hItem }}</span><span>{{ t_hCat }}</span><span>{{ t_hMethod }}</span><span>{{ t_hAcct }}</span><span style="text-align:right">{{ t_hAmount }}</span>
+        <span></span><span>{{ t_hDate }}</span><span>{{ t_hItem }}</span><span>{{ t_hCat }}</span><span>{{ t_hMethod }}</span><span>{{ t_hAcct }}</span><span style="text-align:right">{{ t_hAmount }}</span><span></span>
       </div>
       <sc-for list="{{ listRows }}" as="r" hint-placeholder-count="6">
-        <div style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content;gap:var(--space-3,10.2px);padding:11px 0;border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08));align-items:center" style-hover="background:var(--color-accent-100,#eef6ff)">
+        <div style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content max-content;gap:var(--space-3,10.2px);padding:11px 0;border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08));align-items:center" style-hover="background:var(--color-accent-100,#eef6ff)">
           <span style="width:4px;height:20px;background:{{ r.mark }}"></span>
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.date }}</span>
           <span style="display:flex;align-items:center;gap:8px;min-width:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span><span style="font-size:11px;letter-spacing:.1em;color:var(--color-accent-700,#416180);flex:none">{{ r.flag }}</span></span>
@@ -439,8 +441,13 @@
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.method }}</span>
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.who }}</span>
           <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ r.color }};white-space:nowrap">{{ r.amount }}</span>
+          <span style="display:{{ r.actDisp }};gap:6px;padding-left:10px">
+            <button onClick="{{ r.edit }}" style="border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:4px 11px;font-size:12px" style-hover="background:#eef6ff">{{ r.editLabel }}</button>
+            <button onClick="{{ r.del }}" style="border:1px solid {{ r.delBd }};background:{{ r.delBg }};color:{{ r.delFg }};padding:4px 11px;font-size:12px">{{ r.delLabel }}</button>
+          </span>
         </div>
       </sc-for>
+      <div style="display:{{ emptyDisp }};padding:34px 0;text-align:center;color:#98989b;font-size:14px">{{ emptyText }}</div>
     </div>
   </div>
   </sc-if>
@@ -478,7 +485,7 @@
           </div>
           <div style="display:flex;flex-direction:column;gap:6.8px">
             <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_date }}</label>
-            <input type="date" value="2026-09-28" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:12px 13.6px;font-size:15px;color:#1d1f20;outline:none;height:100%">
+            <input type="date" value="{{ date }}" onChange="{{ onDate }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:12px 13.6px;font-size:15px;color:#1d1f20;outline:none;height:100%">
           </div>
         </div>
 
@@ -501,7 +508,7 @@
             </div>
           </div>
           <div style="display:flex;flex-direction:column;gap:10.2px">
-            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_acctLabel }}</label>
+            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60;display:flex;justify-content:space-between;gap:10px"><span>{{ t_acctLabel }}</span><span style="text-transform:none;letter-spacing:0;color:#416180">{{ acctNote }}</span></label>
             <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
               <sc-for list="{{ members }}" as="p" hint-placeholder-count="3">
                 <button onClick="{{ p.pick }}" style="flex:1;border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 0;font-size:14px;background:{{ p.bg }};color:{{ p.fg }}">{{ p.name }}</button>
@@ -534,8 +541,13 @@
           </sc-if>
         </div>
 
+        <div style="display:{{ editingDisp }};align-items:center;gap:13.6px;border:1px solid #94bce3;background:#eef6ff;padding:11px 13.6px;color:#416180;font-size:13px">
+          <span style="flex:1">{{ editingNote }}</span>
+          <button onClick="{{ cancelEdit }}" style="border:1px solid #94bce3;background:transparent;padding:6px 14px;font-size:13px;color:#416180">{{ t_cancel }}</button>
+        </div>
+
         <div style="display:flex;gap:13.6px;border-top:1px solid rgba(29,31,32,0.16);padding-top:20.4px">
-          <button onClick="{{ save }}" style="border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:12px 34px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;letter-spacing:.08em;background-image:var(--w1),var(--w2),var(--w3),var(--w4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%" style-hover="background-color:#416180">{{ t_save }}</button>
+          <button onClick="{{ save }}" style="border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:12px 34px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;letter-spacing:.08em;background-image:var(--w1),var(--w2),var(--w3),var(--w4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%" style-hover="background-color:#416180">{{ saveLabel }}</button>
           <button onClick="{{ reset }}" style="border:1px solid rgba(29,31,32,0.16);background:transparent;padding:12px 24px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;letter-spacing:.08em;color:#5d5d60" style-hover="background:#eef6ff">{{ t_reset }}</button>
           <div style="flex:1"></div>
           <div style="align-self:center;font-size:13px;color:#416180">{{ saveMsg }}</div>
@@ -734,7 +746,7 @@ const T = {
     chips: ["อาหาร", "ที่อยู่อาศัย", "เดินทาง", "ลูก", "ของใช้ในบ้าน", "สุขภาพ", "บันเทิง", "อื่น ๆ"],
     budgets: ["อาหาร", "เดินทาง", "บันเทิง", "เป้าหมายออม"],
     mAbbr: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."],
-    mFull: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน"],
+    mFull: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
     t_recurFlag: "ประจำ", t_incomeCat: "รายรับ",
     t_saveRate: "อัตราเก็บออม", t_daysNote: "28 วันจาก 30 มีรายการ",
     t_fromPrev: "จากเดือนก่อน", t_peak: "สูงสุด", t_range: "1–30 ก.ย. 2569",
@@ -747,6 +759,10 @@ const T = {
     t_legendInc: "รายรับ", t_legendExp: "รายจ่าย", t_legendEst: "ประมาณการ",
     t_yInc: "รายรับสะสม", t_yExp: "รายจ่ายสะสม", t_yNet: "คงเหลือสะสม", t_yPeakM: "เดือนที่จ่ายมากสุด",
     t_yRange: "ม.ค.–ก.ย. 2569", t_yPeakName: "เมษายน", t_colBal: "คงเหลือ",
+    t_yearWord: "ปี", t_noData: "ยังไม่มีรายการ", t_loading: "กำลังโหลด…",
+    t_edit: "แก้", t_del: "ลบ", t_confirmDel: "ยืนยัน?", t_cancel: "ยกเลิก",
+    t_editing: "กำลังแก้ไขรายการ", t_saveEdit: "บันทึกการแก้ไข",
+    t_lockedAcct: "บันทึกในชื่อบัญชีของคุณเท่านั้น", t_adminOnly: "เฉพาะบัญชีหลัก",
     t_drop: "ลากไฟล์มาวาง หรือ", t_pick: "เลือกจากเครื่อง", t_fileNote: "JPG / PNG / PDF · ไม่เกิน 5 MB",
     t_repeatM: "ทำซ้ำทุกเดือน", t_todayDate: "28 ก.ย. 2569",
     t_mKicker: "มือถือ / Mobile", t_mTitle: "สามหน้าหลักบนมือถือ",
@@ -802,7 +818,7 @@ const T = {
     chips: ["ອາຫານ", "ທີ່ຢູ່ອາໄສ", "ການເດີນທາງ", "ລູກ", "ເຄື່ອງໃຊ້ໃນເຮືອນ", "ສຸຂະພາບ", "ບັນເທິງ", "ອື່ນໆ"],
     budgets: ["ອາຫານ", "ການເດີນທາງ", "ບັນເທິງ", "ເປົ້າໝາຍເກັບອອມ"],
     mAbbr: ["ມ.ກ.", "ກ.ພ.", "ມີ.ນ.", "ເມ.ສ.", "ພ.ພ.", "ມິ.ຖ.", "ກ.ລ.", "ສ.ຫ.", "ກ.ຍ.", "ຕ.ລ.", "ພ.ຈ.", "ທ.ວ."],
-    mFull: ["ມັງກອນ", "ກຸມພາ", "ມີນາ", "ເມສາ", "ພຶດສະພາ", "ມິຖຸນາ", "ກໍລະກົດ", "ສິງຫາ", "ກັນຍາ"],
+    mFull: ["ມັງກອນ", "ກຸມພາ", "ມີນາ", "ເມສາ", "ພຶດສະພາ", "ມິຖຸນາ", "ກໍລະກົດ", "ສິງຫາ", "ກັນຍາ", "ຕຸລາ", "ພະຈິກ", "ທັນວາ"],
     t_recurFlag: "ປະຈຳ", t_incomeCat: "ລາຍຮັບ",
     t_saveRate: "ອັດຕາເກັບອອມ", t_daysNote: "28 ວັນ ຈາກ 30 ມີລາຍການ",
     t_fromPrev: "ຈາກເດືອນກ່ອນ", t_peak: "ສູງສຸດ", t_range: "1–30 ກັນຍາ 2569",
@@ -815,6 +831,10 @@ const T = {
     t_legendInc: "ລາຍຮັບ", t_legendExp: "ລາຍຈ່າຍ", t_legendEst: "ຄາດຄະເນ",
     t_yInc: "ລາຍຮັບສະສົມ", t_yExp: "ລາຍຈ່າຍສະສົມ", t_yNet: "ຍອດເຫຼືອສະສົມ", t_yPeakM: "ເດືອນທີ່ຈ່າຍຫຼາຍສຸດ",
     t_yRange: "ມ.ກ.–ກ.ຍ. 2569", t_yPeakName: "ເມສາ", t_colBal: "ຍອດເຫຼືອ",
+    t_yearWord: "ປີ", t_noData: "ຍັງບໍ່ມີລາຍການ", t_loading: "ກຳລັງໂຫຼດ…",
+    t_edit: "ແກ້", t_del: "ລຶບ", t_confirmDel: "ຢືນຢັນ?", t_cancel: "ຍົກເລີກ",
+    t_editing: "ກຳລັງແກ້ໄຂລາຍການ", t_saveEdit: "ບັນທຶກການແກ້ໄຂ",
+    t_lockedAcct: "ບັນທຶກໃນຊື່ບັນຊີຂອງທ່ານເທົ່ານັ້ນ", t_adminOnly: "ສະເພາະບັນຊີຫຼັກ",
     t_drop: "ລາກໄຟລ໌ມາວາງ ຫຼື", t_pick: "ເລືອກຈາກເຄື່ອງ", t_fileNote: "JPG / PNG / PDF · ບໍ່ເກີນ 5 MB",
     t_repeatM: "ເຮັດຄືນທຸກເດືອນ", t_todayDate: "28 ກັນຍາ 2569",
     t_mKicker: "ມືຖື / Mobile", t_mTitle: "ສາມໜ້າຫຼັກເທິງມືຖື",
@@ -849,82 +869,102 @@ const T = {
 
 const ACC = "#5980a6", DARK = "#1d2d3d", INK = "#1d1f20", MUTED = "#5d5d60";
 
-const CATS = [
-  ["อาหาร / Food", 14820, 28],
-  ["ที่อยู่อาศัย / Housing", 12000, 23],
-  ["เดินทาง / Transport", 6450, 12],
-  ["ลูก / Kids", 5900, 11],
-  ["ของใช้ในบ้าน / Household", 4760, 9],
-  ["สุขภาพ / Health", 3250, 6],
-  ["บันเทิง / Leisure", 2600, 5],
-  ["อื่น ๆ / Other", 2400, 5],
-];
-
-const DAYS = [18,42,26,9,64,31,12,55,22,15,38,49,20,11,47,29,71,16,34,9,58,25,13,40,120,19,44,62,33,10];
-
-const MONTHS = [
-  ["ม.ค.", 82.0, 58.4], ["ก.พ.", 82.0, 49.2], ["มี.ค.", 84.5, 61.0],
-  ["เม.ย.", 91.0, 72.3], ["พ.ค.", 82.0, 55.8], ["มิ.ย.", 84.5, 50.4],
-  ["ก.ค.", 86.0, 63.1], ["ส.ค.", 84.5, 57.9], ["ก.ย.", 84.5, 52.2],
-  ["ต.ค.", 84.5, 55.0], ["พ.ย.", 84.5, 55.0], ["ธ.ค.", 90.0, 68.0],
-];
-
 const CHIPS = ["อาหาร", "ที่อยู่อาศัย", "เดินทาง", "ลูก", "ของใช้ในบ้าน", "สุขภาพ", "บันเทิง", "อื่น ๆ"];
 const METHODS = ["เงินสด", "โอน", "บัตร"];
 const ACCOUNTS = [
-  { id: "pin", name: "ปิ่น", role: "บัญชีส่วนตัว", code: "KIP", pin: "111111", prev: 20100,
-    wallets: [{ code: "KIP", income: 30000, expense: 14000 }, { code: "THB", income: 14000, expense: 3340 }, { code: "USD", income: 2500, expense: 1000 }] },
-  { id: "ton", name: "ต้น", role: "บัญชีส่วนตัว", code: "KIP", pin: "222222", prev: 23840,
-    wallets: [{ code: "KIP", income: 20000, expense: 12000 }, { code: "THB", income: 15000, expense: 8340 }, { code: "USD", income: 3000, expense: 1500 }] },
-  { id: "home", name: "บ้านเรา", role: "บัญชีกลางของบ้าน", code: "KIP", pin: "123456", prev: 14000,
-    wallets: [{ code: "KIP", income: 0, expense: 9000 }, { code: "THB", income: 0, expense: 2000 }, { code: "USD", income: 0, expense: 1000 }] },
+  { id: "pin", name: "ปิ่น", role: "บัญชีส่วนตัว", code: "KIP", pin: "111111" },
+  { id: "ton", name: "ต้น", role: "บัญชีส่วนตัว", code: "KIP", pin: "222222" },
+  { id: "home", name: "บ้านเรา", role: "บัญชีกลางของบ้าน", code: "KIP", pin: "123456" },
 ];
-ACCOUNTS.forEach((a) => {
-  a.income = a.wallets.reduce((n, w) => n + w.income, 0);
-  a.expense = a.wallets.reduce((n, w) => n + w.expense, 0);
-});
 const MEMBERS = ACCOUNTS.map((a) => a.name);
 
 const CAT_SEED = [
-  { th: "อาหาร", lo: "ອາຫານ", amount: 14820, pct: 28 },
-  { th: "ที่อยู่อาศัย", lo: "ທີ່ຢູ່ອາໄສ", amount: 12000, pct: 23 },
-  { th: "เดินทาง", lo: "ການເດີນທາງ", amount: 6450, pct: 12 },
-  { th: "ลูก", lo: "ລູກ", amount: 5900, pct: 11 },
-  { th: "ของใช้ในบ้าน", lo: "ເຄື່ອງໃຊ້ໃນເຮືອນ", amount: 4760, pct: 9 },
-  { th: "สุขภาพ", lo: "ສຸຂະພາບ", amount: 3250, pct: 6 },
-  { th: "บันเทิง", lo: "ບັນເທິງ", amount: 2600, pct: 5 },
-  { th: "อื่น ๆ", lo: "ອື່ນໆ", amount: 2400, pct: 5 },
+  { th: "อาหาร", lo: "ອາຫານ" },
+  { th: "ที่อยู่อาศัย", lo: "ທີ່ຢູ່ອາໄສ" },
+  { th: "เดินทาง", lo: "ການເດີນທາງ" },
+  { th: "ลูก", lo: "ລູກ" },
+  { th: "ของใช้ในบ้าน", lo: "ເຄື່ອງໃຊ້ໃນເຮືອນ" },
+  { th: "สุขภาพ", lo: "ສຸຂະພາບ" },
+  { th: "บันเทิง", lo: "ບັນເທິງ" },
+  { th: "อื่น ๆ", lo: "ອື່ນໆ" },
 ];
 const ACCT_SEED = ACCOUNTS.map((a) => ({
-  id: a.id, name: a.name, code: a.code, pin: a.pin, prev: a.prev,
+  id: a.id, name: a.name, code: a.code, pin: a.pin,
   roleTh: a.role, roleLo: { pin: "ບັນຊີສ່ວນຕົວ", ton: "ບັນຊີສ່ວນຕົວ", home: "ບັນຊີກາງຂອງບ້ານ" }[a.id] || a.role,
-  wallets: a.wallets, income: a.income, expense: a.expense,
 }));
 
-const BASE_TXNS = [
-  { date: "20 ธ.ค. 68", month: 12, year: 2568, name: "โบนัสปลายปี 2568", cat: "รายรับ", method: "โอน", who: "ปิ่น", amount: "+55,000", code: "KIP", flag: "" },
-  { date: "18 ธ.ค. 68", month: 12, year: 2568, name: "ของขวัญปีใหม่", cat: "อื่น ๆ", method: "บัตร", who: "บ้านเรา", amount: "−7,600", code: "THB", flag: "" },
-  { date: "12 มี.ค.", month: 3, name: "โบนัสกลางปี", cat: "รายรับ", method: "โอน", who: "ต้น", amount: "+62,000", code: "KIP", flag: "" },
-  { date: "08 มี.ค.", month: 3, name: "ค่าเทอมเทอม 1", cat: "ลูก", method: "โอน", who: "บ้านเรา", amount: "−18,500", code: "KIP", flag: "" },
-  { date: "15 เม.ย.", month: 4, name: "ตั๋วเครื่องบินสงกรานต์", cat: "เดินทาง", method: "บัตร", who: "ปิ่น", amount: "−9,800", code: "THB", flag: "" },
-  { date: "28 ก.ย.", month: 9, name: "ซื้อของเข้าบ้าน โลตัส", cat: "อาหาร", method: "บัตร", who: "ปิ่น", amount: "−1,280", code: "THB", flag: "" },
-  { date: "27 ก.ย.", month: 9, name: "เงินเดือน", cat: "รายรับ", method: "โอน", who: "ต้น", amount: "+48,000", code: "KIP", flag: "ประจำ" },
-  { date: "27 ก.ย.", month: 9, name: "ค่าน้ำมัน ปตท.", cat: "เดินทาง", method: "บัตร", who: "ต้น", amount: "−1,050", code: "THB", flag: "" },
-  { date: "26 ก.ย.", month: 9, name: "ค่าเทอมเทอม 2 (งวดที่ 2)", cat: "ลูก", method: "โอน", who: "ปิ่น", amount: "−4,500", code: "KIP", flag: "" },
-  { date: "25 ก.ย.", month: 9, name: "ค่าเช่าบ้าน", cat: "ที่อยู่อาศัย", method: "โอน", who: "บ้านเรา", amount: "−12,000", code: "KIP", flag: "ประจำ" },
-  { date: "24 ก.ย.", month: 9, name: "ขายของออนไลน์", cat: "รายรับ", method: "เงินสด", who: "ปิ่น", amount: "+2,350", code: "THB", flag: "" },
+// เป้างบประมาณต่อเดือน (หน่วยเป็นบาท) — ยอดที่ใช้จริงคำนวณจากรายการใน DB
+const BUDGET_TARGETS = [
+  ["อาหาร", 16000], ["เดินทาง", 6000],
+  ["บันเทิง", 4000], ["เป้าหมายออม", 30000],
 ];
+const YEAR_GOAL = 300000; // เป้าเงินเก็บทั้งปี (บาท)
 
-const BUDGETS = [
-  ["อาหาร", 14820, 16000], ["เดินทาง", 6450, 6000],
-  ["บันเทิง", 2600, 4000], ["เป้าหมายออม", 32320, 30000],
-];
+// ───────────────── Supabase (REST) ─────────────────
+const CFG = window.LEDGER_CONFIG || {};
+const ADMIN_ID = CFG.ADMIN_ID || "pin";
+const DB_ON = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY
+  && CFG.SUPABASE_URL.indexOf("PASTE_") < 0 && CFG.SUPABASE_ANON_KEY.indexOf("PASTE_") < 0);
 
-const ROWS = [
-  ["มกราคม", 82.0, 58.4], ["กุมภาพันธ์", 82.0, 49.2], ["มีนาคม", 84.5, 61.0],
-  ["เมษายน", 91.0, 72.3], ["พฤษภาคม", 82.0, 55.8], ["มิถุนายน", 84.5, 50.4],
-  ["กรกฎาคม", 86.0, 63.1], ["สิงหาคม", 84.5, 57.9], ["กันยายน", 84.5, 52.2],
-];
+const REST = () => String(CFG.SUPABASE_URL).replace(/\/+$/, "") + "/rest/v1/txns";
+const HEAD = () => ({
+  apikey: CFG.SUPABASE_ANON_KEY,
+  Authorization: "Bearer " + CFG.SUPABASE_ANON_KEY,
+  "Content-Type": "application/json",
+});
+
+const dbFail = async (r, what) => {
+  let detail = "";
+  try { detail = ((await r.json()) || {}).message || ""; } catch (e) {}
+  throw new Error(what + " (HTTP " + r.status + (detail ? " · " + detail : "") + ")");
+};
+
+const DB = {
+  async list() {
+    const r = await fetch(REST() + "?select=*&order=ts.desc,id.desc", { headers: HEAD() });
+    if (!r.ok) await dbFail(r, "โหลดข้อมูลไม่สำเร็จ");
+    return r.json();
+  },
+  async insert(row) {
+    const r = await fetch(REST(), { method: "POST", headers: HEAD(), body: JSON.stringify(row) });
+    if (!r.ok) await dbFail(r, "บันทึกไม่สำเร็จ");
+  },
+  async update(id, patch) {
+    const r = await fetch(REST() + "?id=eq." + encodeURIComponent(id), {
+      method: "PATCH", headers: HEAD(), body: JSON.stringify(patch),
+    });
+    if (!r.ok) await dbFail(r, "แก้ไขไม่สำเร็จ");
+  },
+  async remove(id) {
+    const r = await fetch(REST() + "?id=eq." + encodeURIComponent(id), { method: "DELETE", headers: HEAD() });
+    if (!r.ok) await dbFail(r, "ลบไม่สำเร็จ");
+  },
+};
+
+// ───────────────── วันที่ / ปฏิทินไทย ─────────────────
+const M_ABBR = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+const pad2 = (n) => String(n).padStart(2, "0");
+const iso = (d) => d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+const TODAY = new Date();
+const TODAY_ISO = iso(TODAY);
+const NOW_M = TODAY.getMonth() + 1;
+const NOW_Y = TODAY.getFullYear() + 543;
+const daysInMonth = (m, yBE) => new Date(yBE - 543, m, 0).getDate();
+
+// แปลงแถวจาก DB → รูปแบบที่หน้าเว็บใช้
+const fromDb = (r) => {
+  const p = String(r.ts).slice(0, 10).split("-");
+  const yAD = Number(p[0]), mo = Number(p[1]), day = Number(p[2]);
+  const val = Number(r.amt) || 0;
+  return {
+    id: r.id, ts: String(r.ts).slice(0, 10),
+    month: mo, year: yAD + 543, day,
+    date: pad2(day) + " " + M_ABBR[mo - 1] + " " + String(yAD + 543).slice(-2),
+    name: r.name || "", cat: r.cat || "", method: r.method || "", who: r.who || "",
+    kind: r.kind, val, code: r.code || "THB", flag: r.flag || "",
+    amount: (r.kind === "income" ? "+" : "−") + val.toLocaleString("en-US"),
+  };
+};
 
 const CURRENCIES = [
   { code: "THB", sym: "฿", rate: 1, dp: 0, name: "บาท" },
@@ -957,6 +997,7 @@ class Component extends DCLogic {
     screen: null,
     pin: "",
     loginId: "pin",
+    meId: null,
     acct: "ปิ่น",
     pinErr: "",
     filter: "ทุกบัญชี",
@@ -971,11 +1012,36 @@ class Component extends DCLogic {
     who: "ปิ่น",
     amount: "",
     note: "",
+    date: TODAY_ISO,
     repeat: false,
     saved: "",
-    txns: BASE_TXNS,
+    editId: null,
+    pendingDel: null,
+    busy: false,
+    loading: true,
+    dbErr: "",
+    vMonth: NOW_M,
+    vYear: NOW_Y,
+    txns: [],
     cats: CAT_SEED,
     accts: ACCT_SEED,
+  };
+
+  componentDidMount() { this.reload(); }
+
+  get isAdmin() { return this.state.meId === ADMIN_ID; }
+
+  reload = async () => {
+    if (!DB_ON) {
+      return this.setState({ loading: false, dbErr: "ยังไม่ได้ตั้งค่า Supabase — เปิดไฟล์ config.js แล้วใส่ URL กับ anon key" });
+    }
+    this.setState({ loading: true, dbErr: "" });
+    try {
+      const rows = await DB.list();
+      this.setState({ txns: rows.map(fromDb), loading: false, dbErr: "" });
+    } catch (e) {
+      this.setState({ loading: false, dbErr: e.message || String(e) });
+    }
   };
 
   get screen() {
@@ -994,11 +1060,18 @@ class Component extends DCLogic {
     if (next.length === 6) {
       const acc = this.state.accts.find((a) => a.id === this.state.loginId) || this.state.accts[0];
       setTimeout(() => {
-        if (next === acc.pin) this.setState({ screen: "month", pin: "", pinErr: "", acct: acc.name, who: acc.name, filter: "ทุกบัญชี" });
-        else this.setState({ pin: "", pinErr: (T[this.state.lang || (this.props.language === "ລາວ" ? "lo" : "th")] || T.th).pinWrong });
+        if (next === acc.pin) {
+          this.setState({ screen: "month", pin: "", pinErr: "", meId: acc.id, acct: acc.name, who: acc.name, filter: "ทุกบัญชี" });
+          this.reload();
+        } else this.setState({ pin: "", pinErr: (T[this.state.lang || (this.props.language === "ລາວ" ? "lo" : "th")] || T.th).pinWrong });
       }, 240);
     }
   };
+
+  logout = () => this.setState({
+    screen: "login", meId: null, pin: "", pinErr: "", editId: null,
+    pendingDel: null, saved: "", amount: "", note: "",
+  });
 
   setCat = (i, k) => (e) => {
     const cats = this.state.cats.map((c, j) => (j === i ? { ...c, [k]: e.target.value } : c));
@@ -1029,26 +1102,76 @@ class Component extends DCLogic {
 
   get L() { return T[this.state.lang || (this.props.language === "ລາວ" ? "lo" : "th")] || T.th; }
 
-  save = () => {
-    const amt = (this.state.amount || "0").replace(/[^0-9.]/g, "");
-    const n = Number(amt) || 0;
-    const entry = this.state.entryCode || (this.state.accts.find((a) => a.name === this.state.who) || {}).code || "THB";
-    const val = n;
+  // ใครล็อกอิน ก็บันทึกได้ในชื่อบัญชีตัวเองเท่านั้น — ยกเว้นบัญชีหลัก
+  get targetWho() { return this.isAdmin ? this.state.who : this.state.acct; }
+
+  save = async () => {
+    const s = this.state;
+    if (s.busy) return;
+    if (!DB_ON) return this.setState({ saved: "ยังไม่ได้ตั้งค่า Supabase (config.js)" });
+    const n = Number((s.amount || "").replace(/[^0-9.]/g, "")) || 0;
     if (!n) return this.setState({ saved: this.L.t_needAmount });
-    if (!this.state.who) return this.setState({ saved: this.L.t_needAcct });
-    const t = {
-      date: "28 ก.ย.",
-      month: 9,
-      name: this.state.note || (this.state.kind === "income" ? "รายรับ" : this.state.cat),
-      cat: this.state.kind === "income" ? "รายรับ" : this.state.cat,
-      method: this.state.method,
-      who: this.state.who,
-      amount: (this.state.kind === "income" ? "+" : "−") + n.toLocaleString("en-US"),
-      val,
-      code: entry,
-      flag: this.state.repeat ? "ประจำ" : "",
+
+    const who = this.targetWho;
+    if (!who) return this.setState({ saved: this.L.t_needAcct });
+    const code = s.entryCode || (s.accts.find((a) => a.name === who) || {}).code || "THB";
+    const row = {
+      ts: s.date || TODAY_ISO,
+      name: s.note || (s.kind === "income" ? "รายรับ" : s.cat),
+      cat: s.kind === "income" ? "รายรับ" : s.cat,
+      method: s.method,
+      who,
+      kind: s.kind,
+      amt: n,
+      code,
+      flag: s.repeat ? "ประจำ" : "",
     };
-    this.setState({ entryCode: null, txns: [t, ...this.state.txns].slice(0, 8), amount: "", note: "", saved: this.L.t_savedOk + " · " + entry + " → " + this.L.t_toAcct + " " + this.state.who });
+
+    this.setState({ busy: true, saved: "" });
+    try {
+      if (s.editId != null) {
+        if (!this.isAdmin) throw new Error("เฉพาะบัญชีหลักเท่านั้นที่แก้ไขได้");
+        await DB.update(s.editId, row);
+      } else {
+        await DB.insert(row);
+      }
+      const done = s.editId != null ? "แก้ไขแล้ว" : this.L.t_savedOk;
+      this.setState({
+        busy: false, editId: null, entryCode: null, amount: "", note: "", repeat: false,
+        saved: done + " · " + code + " → " + this.L.t_toAcct + " " + who,
+      });
+      this.reload();
+    } catch (e) {
+      this.setState({ busy: false, saved: e.message || String(e) });
+    }
+  };
+
+  beginEdit = (t) => () => {
+    if (!this.isAdmin) return;
+    this.setState({
+      screen: "add", editId: t.id, pendingDel: null, saved: "",
+      kind: t.kind, cat: t.kind === "income" ? this.state.cat : t.cat,
+      method: t.method, who: t.who, amount: String(t.val),
+      note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
+    });
+  };
+
+  cancelEdit = () => this.setState({
+    editId: null, amount: "", note: "", repeat: false, entryCode: null, saved: "",
+  });
+
+  askDel = (id) => () => this.setState({ pendingDel: id });
+
+  confirmDel = (id) => async () => {
+    if (!this.isAdmin || this.state.busy) return;
+    this.setState({ busy: true });
+    try {
+      await DB.remove(id);
+      this.setState({ busy: false, pendingDel: null, editId: this.state.editId === id ? null : this.state.editId });
+      this.reload();
+    } catch (e) {
+      this.setState({ busy: false, pendingDel: null, dbErr: e.message || String(e) });
+    }
   };
 
   renderVals() {
@@ -1065,32 +1188,61 @@ class Component extends DCLogic {
       return raw === "รายรับ" ? L.t_incomeCat : hit ? catName(hit) : raw;
     };
     const codeOf = (name) => (s.accts.find((a) => a.name === name) || {}).code || "THB";
-    const walletSum = (a, field) => {
-      const parts = (a.wallets || []).filter((w) => (field === "net" ? w.income - w.expense : w[field]) !== 0);
-      if (!parts.length) return raw(0, a.code);
-      return parts.map((w) => raw(field === "net" ? w.income - w.expense : w[field], w.code)).join("  ·  ");
-    };
-    const acctTotals = (list, field) => {
-      const by = {};
-      list.forEach((a) => (a.wallets || []).forEach((w) => {
-        const v = field === "net" ? w.income - w.expense : w[field];
-        if (v) by[w.code] = (by[w.code] || 0) + v;
-      }));
-      const order = CURRENCIES.map((c) => c.code).filter((c) => by[c]);
-      return order.length ? order.map((c) => raw(by[c], c)).join("  ·  ") : raw(0, "KIP");
-    };
-    const isToday = (t) => (t.month || 9) === 9 && (t.year || 2569) === 2569 && t.date.indexOf("28") === 0;
-    const valOf = (t) => (t.val != null ? t.val : t.base != null ? t.base : Number(t.amount.replace(/[^0-9.]/g, "")) || 0);
+    const valOf = (t) => t.val || 0;
     const codeOfTx = (t) => t.code || codeOf(t.who);
+    const thb = (t) => valOf(t) / cur(codeOfTx(t)).rate;      // แปลงเป็นฐานบาทเพื่อเทียบข้ามสกุล
+    const isInc = (t) => t.kind === "income";
+    const signed = (list) => list.map((t) => ({ ...t, val: (isInc(t) ? 1 : -1) * valOf(t) }));
+    const sumTHB = (list) => list.reduce((n, t) => n + thb(t), 0);
     const sumByCode = (list) => {
       const by = {};
       list.forEach((t) => { const c = codeOfTx(t); by[c] = (by[c] || 0) + valOf(t); });
       const order = CURRENCIES.map((c) => c.code).filter((c) => by[c]);
-      return order.length ? order.map((c) => raw(by[c], c)).join("  ·  ") : raw(0, "KIP");
+      return order.length ? order.map((c) => raw(by[c], c)).join("  ·  ") : raw(0, "THB");
     };
+
+    const isToday = (t) => t.ts === TODAY_ISO;
     const inScope = (t) => s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ" || t.who === s.filter;
-    const inPeriod = (t) => s.period === "all" || (s.period === "month" ? (t.month || 9) === 9 && (t.year || 2569) === 2569 : (t.year || 2569) === 2569);
-    const shown = s.txns.filter((t) => inScope(t) && inPeriod(t) && (s.kindFilter === "all" || (s.kindFilter === "income") === t.amount.startsWith("+")));
+    const inMonthOf = (t, mm, yy) => t.month === mm && t.year === yy;
+    const inPeriod = (t) => s.period === "all" ? true
+      : s.period === "year" ? t.year === s.vYear
+      : inMonthOf(t, s.vMonth, s.vYear);
+    const shown = s.txns.filter((t) => inScope(t) && inPeriod(t) && (s.kindFilter === "all" || (s.kindFilter === "income") === isInc(t)));
+
+    // ───── ยอดของเดือนที่กำลังดู ─────
+    const monthTx = s.txns.filter((t) => inScope(t) && inMonthOf(t, s.vMonth, s.vYear));
+    const monthInc = monthTx.filter(isInc);
+    const monthExp = monthTx.filter((t) => !isInc(t));
+    const incTHB = sumTHB(monthInc), expTHB = sumTHB(monthExp);
+
+    const dim = daysInMonth(s.vMonth, s.vYear);
+    const isCurMonth = s.vMonth === NOW_M && s.vYear === NOW_Y;
+    const elapsed = isCurMonth ? Math.max(1, TODAY.getDate()) : dim;
+
+    const pm = s.vMonth === 1 ? 12 : s.vMonth - 1;
+    const py = s.vMonth === 1 ? s.vYear - 1 : s.vYear;
+    const prevExpTHB = sumTHB(s.txns.filter((t) => inScope(t) && inMonthOf(t, pm, py) && !isInc(t)));
+
+    // ───── รายจ่ายรายวันของเดือนนี้ ─────
+    const dayTot = [];
+    for (let i = 0; i < dim; i++) dayTot.push(0);
+    monthExp.forEach((t) => { if (t.day >= 1 && t.day <= dim) dayTot[t.day - 1] += thb(t); });
+    const dayPeak = dayTot.reduce((a, v) => (v > a ? v : a), 0);
+    const activeDays = dayTot.filter((v) => v > 0).length;
+
+    // ───── ยอดรายปีของปีที่กำลังดู ─────
+    const yInc = [], yExp = [];
+    for (let i = 0; i < 12; i++) { yInc.push(0); yExp.push(0); }
+    s.txns.filter((t) => inScope(t) && t.year === s.vYear).forEach((t) => {
+      const i = t.month - 1;
+      if (i >= 0 && i < 12) { if (isInc(t)) yInc[i] += thb(t); else yExp[i] += thb(t); }
+    });
+    const yPeakV = Math.max(yInc.reduce((a, v) => (v > a ? v : a), 0), yExp.reduce((a, v) => (v > a ? v : a), 0));
+    const yIncTot = yInc.reduce((a, v) => a + v, 0), yExpTot = yExp.reduce((a, v) => a + v, 0);
+    const monthsUsed = yExp.filter((v) => v > 0).length || yInc.filter((v) => v > 0).length;
+    let peakI = -1;
+    yExp.forEach((v, i) => { if (v > 0 && (peakI < 0 || v > yExp[peakI])) peakI = i; });
+    const isFuture = (i) => s.vYear === NOW_Y && i + 1 > NOW_M;
     const breakdown = (income) => {
       const rows = shown.filter((t) => t.amount.startsWith("+") === income);
       const byCat = {};
@@ -1105,15 +1257,13 @@ class Component extends DCLogic {
         };
       });
     };
-    const E = cur(s.entryCode || acctCode(s.who));
-    const m = (n) => raw(n, code), q = (n) => raw(n, code), b = (n) => raw(n, code);
-    const scope = s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ" ? s.accts : s.accts.filter((a) => a.name === s.filter);
-    const norm = (list, field) => list.reduce((n, a) => n + (a.wallets || []).reduce((m, w) => m + w[field] / cur(w.code).rate, 0), 0);
-    const kpiInc = norm(scope, "income");
-    const kpiExp = norm(scope, "expense");
-    const kpiPrev = scope.reduce((n, a) => n + a.prev, 0);
+    const admin = this.isAdmin;
+    const E = cur(s.entryCode || acctCode(this.targetWho));
+    const b = (n) => raw(n, "THB");
 
-    const tabDefs = [[L.t_month, "month"], [L.t_year, "year"], [L.t_list, "list"], [L.t_add, "add"], [L.t_settings, "settings"], [L.t_mobile, "mobile"]];
+    const tabDefs = [[L.t_month, "month"], [L.t_year, "year"], [L.t_list, "list"], [L.t_add, "add"]]
+      .concat(admin ? [[L.t_settings, "settings"]] : [])
+      .concat([[L.t_mobile, "mobile"]]);
 
     return {
       ...L,
@@ -1159,48 +1309,76 @@ class Component extends DCLogic {
       pinHintColor: s.pinErr ? DARK : MUTED,
       pinDemo: L.t_demo,
 
-      cats: s.cats.map((c) => ({
-        name: catName(c), pct: c.pct, amount: b(c.amount),
-        w: c.pct * 3.5 + "%", bg: c.pct > 20 ? DARK : ACC,
-      })),
-      days: DAYS.map((v) => ({ h: v + "px", mh: Math.round(v * 0.7) + "px", bg: v > 100 ? DARK : ACC })),
+      cats: (() => {
+        const by = {};
+        monthExp.forEach((t) => { (by[t.cat] = by[t.cat] || []).push(t); });
+        const tot = expTHB || 1;
+        return Object.keys(by)
+          .map((k) => ({ k, list: by[k], v: sumTHB(by[k]) }))
+          .sort((a, c) => c.v - a.v)
+          .map(({ k, list, v }) => {
+            const pct = Math.round((v / tot) * 100);
+            return {
+              name: catLabel(k), pct, amount: sumByCode(list),
+              w: Math.max(2, Math.min(100, (v / (expTHB || 1)) * 100)) + "%",
+              bg: pct > 20 ? DARK : ACC,
+            };
+          });
+      })(),
 
-      months: MONTHS.map(([label, inc, exp], i) => ({
+      days: dayTot.map((v) => ({
+        h: (dayPeak ? Math.max(2, Math.round((v / dayPeak) * 170)) : 2) + "px",
+        mh: (dayPeak ? Math.max(2, Math.round((v / dayPeak) * 119)) : 2) + "px",
+        bg: dayPeak && v >= dayPeak * 0.85 ? DARK : ACC,
+      })),
+
+      months: yInc.map((inc, i) => ({
         label: L.mAbbr[i],
-        ih: Math.round(inc * 1.868) + "px",
-        eh: Math.round(exp * 1.868) + "px",
-        ibg: i > 8 ? "#d4d4d7" : DARK,
-        ebg: i > 8 ? "#e7e7ea" : ACC,
-        fg: i > 8 ? "#98989b" : MUTED,
+        ih: (yPeakV ? Math.max(2, Math.round((inc / yPeakV) * 170)) : 2) + "px",
+        eh: (yPeakV ? Math.max(2, Math.round((yExp[i] / yPeakV) * 170)) : 2) + "px",
+        ibg: isFuture(i) ? "#d4d4d7" : DARK,
+        ebg: isFuture(i) ? "#e7e7ea" : ACC,
+        fg: isFuture(i) ? "#98989b" : MUTED,
       })),
 
-      rows: ROWS.map(([month, inc, exp], i) => {
-        const rate = Math.round(((inc - exp) / inc) * 100);
+      rows: yInc.map((inc, i) => {
+        const exp = yExp[i], net = inc - exp;
+        const rate = inc ? Math.round((net / inc) * 100) : 0;
         return {
-          month: L.mFull[i], income: b(inc * 1000), expense: b(exp * 1000),
-          net: b((inc - exp) * 1000), rate: rate + "%", w: rate + "%",
+          month: L.mFull[i], income: b(inc), expense: b(exp),
+          net: b(net), rate: inc ? rate + "%" : "—",
+          w: Math.max(0, Math.min(100, rate)) + "%",
         };
       }),
 
-      budgets: BUDGETS.map(([name, used, total], i) => {
-        const over = used > total;
+      budgets: BUDGET_TARGETS.map(([name, total], i) => {
+        const used = name === "เป้าหมายออม"
+          ? Math.max(0, incTHB - expTHB)
+          : sumTHB(monthExp.filter((t) => t.cat === name));
+        const goal = name === "เป้าหมายออม";
+        const over = goal ? used < total : used > total;
+        const diff = Math.abs(total - used);
         return {
           name: L.budgets[i], used: b(used), total: b(total),
-          w: Math.min(100, (used / total) * 100) + "%",
+          w: Math.min(100, total ? (used / total) * 100 : 0) + "%",
           bg: over ? DARK : ACC,
           color: over ? DARK : MUTED,
-          note: (over ? L.t_over + " " : L.t_left + " ") + b(over ? used - total : total - used),
+          note: (goal
+            ? (used >= total ? L.t_over + " " : L.t_left + " ")
+            : (over ? L.t_over + " " : L.t_left + " ")) + b(diff),
         };
       }),
 
-      txns: s.txns.filter((t) => s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ" || t.who === s.filter).map((t) => {
-        const sign = t.amount.startsWith("+") ? "+" : "−";
-        const base = t.base != null ? t.base : Number(t.amount.replace(/[^0-9.]/g, "")) || 0;
-        const cat = catLabel(t.cat);
+      txns: monthTx.slice(0, 6).map((t) => {
+        const inc = isInc(t);
         const mi = METHODS.indexOf(t.method);
-        const method = mi >= 0 ? L.methods[mi] : t.method;
-        const flag = t.flag ? L.t_recurFlag : "";
-        return { ...t, cat, method, flag, amount: sign + raw(valOf(t), codeOfTx(t)), color: sign === "+" ? DARK : INK };
+        return {
+          ...t, cat: catLabel(t.cat),
+          method: mi >= 0 ? L.methods[mi] : t.method,
+          flag: t.flag ? L.t_recurFlag : "",
+          amount: (inc ? "+" : "−") + raw(valOf(t), codeOfTx(t)),
+          color: inc ? DARK : INK,
+        };
       }),
 
       cur: C.sym,
@@ -1219,26 +1397,33 @@ class Component extends DCLogic {
       entryNote: L.t_keepNative + " " + E.code,
       rateNote: L.t_mainCur + " " + C.code,
       amountHint: "",
-      yIncome: b(761000), yExpense: b(520300), yNet: b(240700), yAvg: b(57811),
-      yGoalNote: L.t_goalYear + " " + b(300000) + " · 80%",
-      yPeakNote: b(72300) + " · " + L.t_peakWhy,
-      dayMax: L.t_range + " · " + L.t_peak + " " + b(12400),
-      mBal: b(32320), mInc: b(84500), mExp: b(52180),
+      yIncome: b(yIncTot), yExpense: b(yExpTot), yNet: b(yIncTot - yExpTot),
+      yAvg: b(monthsUsed ? yExpTot / monthsUsed : 0),
+      yGoalNote: L.t_goalYear + " " + b(YEAR_GOAL) + " · "
+        + Math.max(0, Math.round(((yIncTot - yExpTot) / YEAR_GOAL) * 100)) + "%",
+      t_yPeakName: peakI >= 0 ? L.mFull[peakI] : "—",
+      yPeakNote: peakI >= 0 ? b(yExp[peakI]) : L.t_noData,
+      t_yRange: L.mAbbr[0] + "–" + L.mAbbr[Math.max(0, (s.vYear === NOW_Y ? NOW_M : 12) - 1)] + " " + s.vYear,
+      t_yearTitle: L.t_yearWord + " " + s.vYear,
+      dayMax: "1–" + dim + " " + L.mAbbr[s.vMonth - 1] + " " + s.vYear + " · " + L.t_peak + " " + b(dayPeak),
+      mBal: b(incTHB - expTHB), mInc: b(incTHB), mExp: b(expTHB),
       todayRows: s.txns.filter(isToday).map((t) => ({
         name: t.name, cat: catLabel(t.cat),
         method: (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method),
         who: t.who,
-        amount: (t.amount.startsWith("+") ? "+" : "−") + raw(valOf(t), codeOfTx(t)),
-        color: t.amount.startsWith("+") ? DARK : INK,
+        amount: (isInc(t) ? "+" : "−") + raw(valOf(t), codeOfTx(t)),
+        color: isInc(t) ? DARK : INK,
       })),
-      todayTotal: sumByCode(s.txns.filter(isToday).map((t) => ({ ...t, val: (t.amount.startsWith("+") ? 1 : -1) * valOf(t) }))),
-      loginInc: b(761000), loginExp: b(520300), loginNet: b(240700),
+      todayTotal: sumByCode(signed(s.txns.filter(isToday))),
+      t_todayDate: TODAY.getDate() + " " + L.mAbbr[TODAY.getMonth()] + " " + NOW_Y,
+      loginInc: b(yIncTot), loginExp: b(yExpTot), loginNet: b(yIncTot - yExpTot),
       kindOpts: [["all", L.t_typeAll], ["income", L.t_kindInc], ["expense", L.t_kindExp]].map(([id, label]) => ({
         label, pick: () => this.setState({ kindFilter: id }), ...sel(s.kindFilter === id),
       })),
       listRows: shown.map((t) => {
-          const inc = t.amount.startsWith("+");
+          const inc = isInc(t);
           const mi = METHODS.indexOf(t.method);
+          const asking = s.pendingDel === t.id;
           return {
             date: t.date, name: t.name, who: t.who,
             cat: catLabel(t.cat),
@@ -1247,6 +1432,14 @@ class Component extends DCLogic {
             amount: (inc ? "+" : "−") + raw(valOf(t), codeOfTx(t)),
             color: inc ? DARK : INK,
             mark: inc ? DARK : ACC,
+            actDisp: admin ? "flex" : "none",
+            editLabel: L.t_edit,
+            edit: admin ? this.beginEdit(t) : () => {},
+            delLabel: asking ? L.t_confirmDel : L.t_del,
+            delBd: asking ? DARK : "rgba(29,31,32,0.16)",
+            delFg: asking ? "#f2f2f3" : MUTED,
+            delBg: asking ? DARK : "transparent",
+            del: admin ? (asking ? this.confirmDel(t.id) : this.askDel(t.id)) : () => {},
           };
         }),
       filters: [L.t_all, ...s.accts.map((a) => a.name)].map((name) => ({
@@ -1278,34 +1471,45 @@ class Component extends DCLogic {
       listCount: L.t_found + " " + shown.length + " " + L.t_items,
       listInc: L.t_sumInc + " " + sumByCode(shown.filter((t) => t.amount.startsWith("+"))),
       listExp: L.t_sumExp + " " + sumByCode(shown.filter((t) => !t.amount.startsWith("+"))),
-      kpiIncome: acctTotals(scope, "income"),
-      kpiIncomeAlt: alt(kpiInc),
-      kpiExpenseAlt: alt(kpiExp),
-      kpiBalanceAlt: alt(kpiInc - kpiExp),
-      kpiExpense: acctTotals(scope, "expense"),
-      kpiBalance: acctTotals(scope, "net"),
-      kpiAvg: acctTotals(scope.map((a) => ({
-        ...a, wallets: (a.wallets || []).map((w) => ({ ...w, income: 0, expense: Math.round(w.expense / 30) })),
-      })), "expense"),
-      kpiAvgAlt: "",
+      kpiIncome: sumByCode(monthInc),
+      kpiExpense: sumByCode(monthExp),
+      kpiBalance: sumByCode(signed(monthTx)),
+      kpiAvg: sumByCode(monthExp.map((t) => ({ ...t, val: valOf(t) / elapsed }))),
+      kpiIncomeAlt: "", kpiExpenseAlt: "", kpiBalanceAlt: "", kpiAvgAlt: "",
       kpiScope: s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ" ? L.t_scopeAll : L.t_scopeOne + " " + s.filter,
-      kpiRate: kpiInc ? Math.round(((kpiInc - kpiExp) / kpiInc) * 100) + "%" : "—",
-      kpiExpNote: (kpiExp <= kpiPrev ? "↓ " : "↑ ") + Math.abs(Math.round(((kpiExp - kpiPrev) / kpiPrev) * 1000) / 10) + "% " + L.t_fromPrev,
-      acctRows: s.accts.map((a) => ({
-        name: a.name, role: lang === "lo" ? a.roleLo : a.roleTh,
-        income: walletSum(a, "income"), expense: walletSum(a, "expense"), net: walletSum(a, "net"),
-        code: a.code, curNote: L.t_mainCur + " " + a.code,
-        wallets: a.wallets.map((w) => ({
-          code: w.code,
-          bal: raw(w.income - w.expense, w.code),
-          flow: raw(w.income, w.code) + " / " + raw(w.expense, w.code),
-          weight: w.code === a.code ? "600" : "400",
-          fg: w.code === a.code ? INK : MUTED,
-        })),
-        w: Math.round((a.expense / 24000) * 100) + "%",
-        bg: a.id === "home" ? DARK : ACC,
-        badge: a.name === s.acct ? L.t_inUse : "",
-      })),
+      kpiRate: incTHB ? Math.round(((incTHB - expTHB) / incTHB) * 100) + "%" : "—",
+      kpiExpNote: prevExpTHB
+        ? (expTHB <= prevExpTHB ? "↓ " : "↑ ") + Math.abs(Math.round(((expTHB - prevExpTHB) / prevExpTHB) * 1000) / 10) + "% " + L.t_fromPrev
+        : "—",
+      t_daysNote: activeDays + " / " + dim + " " + (lang === "lo" ? "ວັນມີລາຍການ" : "วันมีรายการ"),
+      acctRows: (() => {
+        const per = s.accts.map((a) => {
+          const mine = s.txns.filter((t) => t.who === a.name && inMonthOf(t, s.vMonth, s.vYear));
+          return { a, mine, exp: sumTHB(mine.filter((t) => !isInc(t))) };
+        });
+        const maxExp = per.reduce((n, p) => (p.exp > n ? p.exp : n), 0);
+        return per.map(({ a, mine, exp }) => {
+          const inc = mine.filter(isInc), out = mine.filter((t) => !isInc(t));
+          const codes = CURRENCIES.map((c) => c.code).filter((c) => mine.some((t) => codeOfTx(t) === c));
+          return {
+            name: a.name, role: lang === "lo" ? a.roleLo : a.roleTh,
+            income: sumByCode(inc), expense: sumByCode(out), net: sumByCode(signed(mine)),
+            code: a.code, curNote: L.t_mainCur + " " + a.code,
+            wallets: codes.map((c) => {
+              const ci = inc.filter((t) => codeOfTx(t) === c).reduce((n, t) => n + valOf(t), 0);
+              const ce = out.filter((t) => codeOfTx(t) === c).reduce((n, t) => n + valOf(t), 0);
+              return {
+                code: c, bal: raw(ci - ce, c), flow: raw(ci, c) + " / " + raw(ce, c),
+                weight: c === a.code ? "600" : "400",
+                fg: c === a.code ? INK : MUTED,
+              };
+            }),
+            w: (maxExp ? Math.round((exp / maxExp) * 100) : 0) + "%",
+            bg: a.id === "home" ? DARK : ACC,
+            badge: a.name === s.acct ? L.t_inUse : "",
+          };
+        });
+      })(),
 
       expBg: s.kind === "expense" ? ACC : "transparent",
       expFg: s.kind === "expense" ? "#f2f2f3" : MUTED,
@@ -1322,12 +1526,17 @@ class Component extends DCLogic {
       })),
       chips: s.cats.map((c) => ({ name: catName(c), pick: () => this.setState({ cat: c.th }), ...sel(s.cat === c.th) })),
       methods: L.methods.map((name) => ({ name, pick: () => this.setState({ method: name }), ...sel(s.method === name) })),
-      members: s.accts.map((a) => a.name).map((name) => ({ name, pick: () => this.setState({ who: name }), ...sel(s.who === name) })),
+      // ใครล็อกอิน ก็เลือกได้แค่บัญชีตัวเอง — บัญชีหลักเลือกได้ทุกบัญชี
+      members: (admin ? s.accts.map((a) => a.name) : [s.acct])
+        .map((name) => ({ name, pick: () => this.setState({ who: name }), ...sel(this.targetWho === name) })),
+      acctNote: admin ? "" : L.t_lockedAcct,
 
       amount: s.amount,
       note: s.note,
+      date: s.date,
       onAmount: (e) => this.setState({ amount: e.target.value }),
       onNote: (e) => this.setState({ note: e.target.value }),
+      onDate: (e) => this.setState({ date: e.target.value }),
 
       toggleRepeat: () => this.setState({ repeat: !s.repeat }),
       repBg: s.repeat ? "#eef6ff" : "transparent",
@@ -1336,8 +1545,36 @@ class Component extends DCLogic {
       repNote: s.repeat ? L.t_repOn : L.t_repOff,
 
       save: this.save,
-      reset: () => this.setState({ amount: "", note: "", repeat: false, saved: "" }),
-      saveMsg: s.saved,
+      reset: () => this.setState({ amount: "", note: "", repeat: false, saved: "", date: TODAY_ISO }),
+      saveMsg: s.busy ? L.t_loading : s.saved,
+      saveLabel: s.editId != null ? L.t_saveEdit : L.t_save,
+      editingDisp: s.editId != null ? "flex" : "none",
+      editingNote: L.t_editing,
+      cancelEdit: this.cancelEdit,
+      t_cancel: L.t_cancel,
+
+      // แถบสถานะฐานข้อมูล
+      bannerDisp: (s.loading || s.dbErr) ? "block" : "none",
+      bannerText: s.dbErr || L.t_loading,
+      bannerBg: s.dbErr ? "#fdecec" : "#eef6ff",
+      bannerFg: s.dbErr ? "#8a2020" : "#416180",
+      bannerBd: s.dbErr ? "#e0a0a0" : "#94bce3",
+      emptyDisp: (!s.loading && !s.dbErr && !shown.length) ? "block" : "none",
+      emptyText: L.t_noData,
+
+      // แถบเลือกเดือน
+      t_monthTitle: L.mFull[s.vMonth - 1] + " " + s.vYear,
+      t_prevM: "‹ " + L.mAbbr[(s.vMonth + 10) % 12],
+      t_thisM: L.mAbbr[s.vMonth - 1] + " " + s.vYear,
+      t_nextM: L.mAbbr[s.vMonth % 12] + " ›",
+      prevMonth: () => this.setState(s.vMonth === 1
+        ? { vMonth: 12, vYear: s.vYear - 1 } : { vMonth: s.vMonth - 1 }),
+      nextMonth: () => this.setState(s.vMonth === 12
+        ? { vMonth: 1, vYear: s.vYear + 1 } : { vMonth: s.vMonth + 1 }),
+      thisMonth: () => this.setState({ vMonth: NOW_M, vYear: NOW_Y }),
+
+      logout: this.logout,
+      refresh: this.reload,
     };
   }
 }
