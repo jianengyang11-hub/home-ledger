@@ -33,27 +33,113 @@
   input, select, textarea { font: inherit; }
   ::selection { background: #d6ebff; }
   :focus-visible { outline: 2px solid #5980a6; outline-offset: 2px; }
+
+  /* ───────── มือถือ / แท็บเล็ต ─────────
+     สไตล์ในหน้านี้เป็น inline ทั้งหมด จึงต้องใช้ !important เพื่อทับ */
+
+  /* ตารางกว้าง ๆ ให้เลื่อนแนวนอนในกรอบตัวเอง ไม่ดันทั้งหน้าให้เลื่อน */
+  @media (max-width: 1000px) {
+    div:has(> .hl-tr) { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+    .hl-tr { min-width: 660px; }
+  }
+
+  @media (max-width: 900px) {
+    .hl-2col  { grid-template-columns: minmax(0,1fr) !important; }
+    .hl-kpi4  { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    .hl-page  { padding: 16px !important; gap: 14px !important; }
+    .hl-hd    { padding: 0 16px !important; }
+  }
+
+  @media (max-width: 620px) {
+    /* หน้า login: ซ้อนบน-ล่าง ไม่ต้องแบ่งซ้ายขวา */
+    .hl-login { grid-template-columns: minmax(0,1fr) !important; min-height: 0 !important; }
+    .hl-hero  { padding: 28px 20px !important; gap: 20px !important; min-height: 0 !important; }
+    .hl-hero > div:nth-child(2) { max-width: none !important; }
+    .hl-pad   { padding: 28px 20px !important; align-items: flex-start !important; }
+
+    /* แถบหัว: ซ่อนโลโก้ แล้วให้แท็บเลื่อนแนวนอนแทนการตัดบรรทัด */
+    .hl-hd       { min-height: 0 !important; padding: 6px 12px !important; gap: 8px !important; }
+    .hl-brand    { display: none !important; }
+    .hl-brandbar { flex: 1 1 100% !important; min-width: 0 !important; gap: 0 !important;
+                   flex-wrap: nowrap !important; }
+    .hl-tabs     { flex: 1 1 auto !important; min-width: 0 !important; flex-wrap: nowrap !important;
+                   overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .hl-tabs::-webkit-scrollbar { display: none; }
+    .hl-tabs button { height: 42px !important; padding: 0 11px !important; font-size: 15px !important; flex: none; }
+    .hl-tools    { flex: 1 1 100% !important; min-width: 0 !important;
+                   flex-wrap: wrap !important; gap: 6px !important; padding-bottom: 6px !important; }
+    /* บีบให้พอดีบรรทัดเดียว — ป้ายชื่อซ้ำกับชิปอยู่แล้ว ซ่อนได้ */
+    .hl-tools button { padding: 7px 10px !important; font-size: 14px !important; }
+    .hl-tools > div:first-child { padding-right: 6px !important; gap: 6px !important; }
+    .hl-tools > div:first-child > span:nth-child(2) { display: none !important; }
+
+    /* หัวข้อหน้ากับปุ่มเลือกเดือน: ซ้อนกัน */
+    .hl-head  { flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
+    .hl-head > div:last-child { align-self: flex-start; }
+
+    .hl-kpi4  { gap: 10px !important; }
+    .hl-page  { padding: 14px !important; }
+
+    /* การ์ดบัญชีเรียงเดี่ยว — ยอดหลายสกุลยาวเกินกว่าจะบีบ 3 ช่อง
+       ยกเว้นสถิติในหน้า login ที่สั้น ให้คง 3 ช่องไว้ */
+    .hl-3col { grid-template-columns: minmax(0,1fr) !important; gap: 10px !important; }
+    .hl-hero .hl-3col { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+
+    /* ยอดสรุปหัวหน้ารายการ: ให้ตัดบรรทัดแทนการดันหน้า */
+    .hl-sums { flex-wrap: wrap !important; white-space: normal !important;
+               gap: 4px 14px !important; }
+
+    /* กราฟ 12 เดือน: ชื่อเดือน 12 อันดันหน้าให้กว้าง ต้องบีบช่องไฟกับตัวอักษร */
+    .hl-chart, .hl-chartx { gap: 3px !important; }
+    .hl-chart  > div { min-width: 0 !important; }
+    .hl-chartx > div { min-width: 0 !important; font-size: 10px !important;
+                       letter-spacing: 0 !important; overflow: hidden; }
+
+    /* ช่องกรอก โดยเฉพาะ input[type=date] มีความกว้างขั้นต่ำในตัว ต้องบังคับให้หด */
+    input, select, textarea { max-width: 100% !important; min-width: 0 !important; }
+    input[type="date"] { width: 100% !important; }
+  }
+
+  /* จอเล็กมาก: KPI เรียงเดี่ยว อ่านง่ายกว่าบีบ 2 ช่อง */
+  @media (max-width: 400px) {
+    .hl-kpi4 { grid-template-columns: minmax(0,1fr) !important; }
+  }
+
+  /* จอแคบสุด (iPhone SE ~320px): ปุ่มยาว ๆ ต้องยอมตัดบรรทัด */
+  @media (max-width: 380px) {
+    .hl-actions { flex-wrap: wrap !important; }
+    .hl-actions button { flex: 1 1 auto !important; padding-left: 16px !important; padding-right: 16px !important; }
+    .hl-sums { font-size: 12px !important; }
+
+    /* แถบตัวกรองหน้ารายการ: บีบปุ่มให้พอดีจอแคบ */
+    .hl-filters { gap: 10px !important; }
+    .hl-filters > div { gap: 8px !important; flex-wrap: wrap; min-width: 0; }
+    .hl-filters button { padding: 7px 11px !important; font-size: 13px !important; }
+
+    /* หน้า "มือถือ" เป็นภาพตัวอย่างจอโทรศัพท์กว้างตายตัว 320px ให้ย่อตามจอ */
+    .hl-phone { width: 100% !important; max-width: 320px; }
+  }
 </style>
 </helmet>
 
 <div style="min-height:100vh;background:var(--color-bg,#f2f2f3);color:var(--color-text,#1d1f20);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:14px">
 
 <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
-  <div style="min-height:100vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)">
-    <div style="background:#1d2d3d;color:#eef6ff;padding:54px;display:flex;flex-direction:column;justify-content:space-between">
+  <div class="hl-login" style="min-height:100vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)">
+    <div class="hl-hero" style="background:#1d2d3d;color:#eef6ff;padding:54px;display:flex;flex-direction:column;justify-content:space-between">
       <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px;letter-spacing:.18em;text-transform:uppercase">บ้านเรา · Home Ledger</div>
       <div style="display:flex;flex-direction:column;gap:20.4px;max-width:540px">
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(32px,4.2vw,52px);line-height:1.1"><span style="white-space:nowrap">{{ t_hero1 }}</span><br>{{ t_hero2 }}</div>
         <div style="color:#b5d9fd;line-height:1.6">{{ t_heroSub }}</div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13.6px;border-top:1px solid rgba(181,217,253,.28);padding-top:20.4px">
+      <div class="hl-3col" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13.6px;border-top:1px solid rgba(181,217,253,.28);padding-top:20.4px">
         <div><div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:24px;white-space:nowrap">{{ loginInc }}</div><div style="font-size:12px;color:#94bce3;letter-spacing:.08em">{{ t_incYear }}</div></div>
         <div><div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:24px;white-space:nowrap">{{ loginExp }}</div><div style="font-size:12px;color:#94bce3;letter-spacing:.08em">{{ t_expYear }}</div></div>
         <div><div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:24px;white-space:nowrap">{{ loginNet }}</div><div style="font-size:12px;color:#94bce3;letter-spacing:.08em">{{ t_balance }}</div></div>
       </div>
     </div>
 
-    <div style="display:flex;align-items:center;justify-content:center;padding:54px">
+    <div class="hl-pad" style="display:flex;align-items:center;justify-content:center;padding:54px">
       <div style="width:100%;max-width:378px;display:flex;flex-direction:column;gap:27.2px">
         <div style="display:flex;flex-direction:column;gap:6.8px">
           <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_signin }}</div>
@@ -85,16 +171,16 @@
 
 <sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
 <div>
-  <div style="position:sticky;top:0;z-index:5;background:#f2f2f3;border-bottom:1px solid rgba(29,31,32,0.16);display:flex;align-items:center;justify-content:space-between;gap:13.6px;flex-wrap:wrap;padding:0 27.2px;min-height:60px">
-    <div style="display:flex;align-items:center;gap:20.4px;flex-wrap:wrap">
-      <div style="flex:none;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap">บ้านเรา · Home Ledger</div>
-      <div style="display:flex;gap:0;flex-wrap:wrap">
+  <div class="hl-hd" style="position:sticky;top:0;z-index:5;background:#f2f2f3;border-bottom:1px solid rgba(29,31,32,0.16);display:flex;align-items:center;justify-content:space-between;gap:13.6px;flex-wrap:wrap;padding:0 27.2px;min-height:60px">
+    <div class="hl-brandbar" style="display:flex;align-items:center;gap:20.4px;flex-wrap:wrap">
+      <div class="hl-brand" style="flex:none;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap">บ้านเรา · Home Ledger</div>
+      <div class="hl-tabs" style="display:flex;gap:0;flex-wrap:wrap">
         <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
           <button onClick="{{ t.go }}" style="border:0;background:transparent;padding:0 14px;height:52px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.06em;color:{{ t.fg }};border-bottom:2px solid {{ t.bd }}" style-hover="color:#416180">{{ t.label }}</button>
         </sc-for>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:10.2px;flex:none">
+    <div class="hl-tools" style="display:flex;align-items:center;gap:10.2px;flex:none">
       <div style="display:flex;align-items:center;gap:8px;flex:none;padding-right:8px;border-right:1px solid rgba(29,31,32,0.16)">
         <span style="min-width:28px;height:28px;flex:none;padding:0 6px;background:#1d2d3d;color:#eef6ff;display:flex;align-items:center;justify-content:center;font-size:12px;white-space:nowrap">{{ activeAcct }}</span>
         <span style="display:flex;flex-direction:column;line-height:1.15;white-space:nowrap"><span style="font-size:13px">{{ activeAcct }}</span><span style="font-size:11px;color:#5d5d60">{{ t_loggedIn }}</span></span>
@@ -111,8 +197,8 @@
   </div>
 
   <sc-if value="{{ isMonth }}" hint-placeholder-val="{{ true }}">
-  <div style="padding:27.2px;display:flex;flex-direction:column;gap:20.4px;max-width:1440px;margin:0 auto">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between">
+  <div class="hl-page" style="padding:27.2px;display:flex;flex-direction:column;gap:20.4px;max-width:1440px;margin:0 auto">
+    <div class="hl-head" style="display:flex;align-items:flex-end;justify-content:space-between">
       <div>
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_monthKicker }}</div>
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_monthTitle }}</div>
@@ -133,7 +219,7 @@
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20.4px">
+    <div class="hl-kpi4" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20.4px">
       <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_income }}</div>
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25;color:#1d2d3d">{{ kpiIncome }}</div>
@@ -160,7 +246,7 @@
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20.4px">
+    <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20.4px">
       <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:20.4px">
         <div style="display:flex;align-items:baseline;justify-content:space-between">
           <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_daily }}</div>
@@ -193,17 +279,17 @@
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20.4px;align-items:start">
+    <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20.4px;align-items:start">
       <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:13.6px">
         <div style="display:flex;align-items:baseline;justify-content:space-between">
           <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_recent }}</div>
           <a href="#" style="font-size:13px">{{ t_seeAll }}</a>
         </div>
-        <div style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) max-content;gap:10.2px;padding-bottom:8px;border-bottom:1px solid rgba(29,31,32,0.16);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">
+        <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) max-content;gap:10.2px;padding-bottom:8px;border-bottom:1px solid rgba(29,31,32,0.16);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">
           <span>{{ t_hDate }}</span><span>{{ t_hItem }}</span><span>{{ t_hCat }}</span><span>{{ t_hMethod }}</span><span>{{ t_hAcct }}</span><span style="text-align:right">{{ t_hAmount }}</span>
         </div>
         <sc-for list="{{ txns }}" as="t" hint-placeholder-count="6">
-          <div style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) max-content;gap:10.2px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08);align-items:center">
+          <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) max-content;gap:10.2px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08);align-items:center">
             <span style="font-size:13px;color:#5d5d60">{{ t.date }}</span>
             <span style="display:flex;align-items:center;gap:8px">{{ t.name }}<span style="font-size:11px;letter-spacing:.1em;color:#416180">{{ t.flag }}</span></span>
             <span style="font-size:13px;color:#5d5d60">{{ t.cat }}</span>
@@ -241,7 +327,7 @@
         <div style="font-weight:600;font-size:22px">{{ t_byAcct }}</div>
         <div style="font-size:12px;color:#5d5d60">{{ t_acctCaption }}</div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20.4px">
+      <div class="hl-3col" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20.4px">
         <sc-for list="{{ acctRows }}" as="a" hint-placeholder-count="3">
           <div style="border:1px solid rgba(29,31,32,0.16);padding:16px;display:flex;flex-direction:column;gap:10px">
             <div style="display:flex;align-items:baseline;justify-content:space-between">
@@ -267,8 +353,8 @@
   </sc-if>
 
   <sc-if value="{{ isYear }}" hint-placeholder-val="{{ true }}">
-  <div style="padding:27.2px;display:flex;flex-direction:column;gap:20.4px;max-width:1440px;margin:0 auto">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between">
+  <div class="hl-page" style="padding:27.2px;display:flex;flex-direction:column;gap:20.4px;max-width:1440px;margin:0 auto">
+    <div class="hl-head" style="display:flex;align-items:flex-end;justify-content:space-between">
       <div>
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_yearKicker }}</div>
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_yearTitle }}</div>
@@ -280,7 +366,7 @@
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20.4px">
+    <div class="hl-kpi4" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20.4px">
       <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_yInc }}</div>
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25;color:#1d2d3d">{{ yIncome }}</div>
@@ -305,7 +391,7 @@
 
     <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:16px">
       <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_chart12 }}</div>
-      <div style="display:flex;align-items:flex-end;gap:13.6px;height:190px;border-bottom:1px solid rgba(29,31,32,0.16)">
+      <div class="hl-chart" style="display:flex;align-items:flex-end;gap:13.6px;height:190px;border-bottom:1px solid rgba(29,31,32,0.16)">
         <sc-for list="{{ months }}" as="m" hint-placeholder-count="12">
           <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:190px">
             <div style="width:42%;height:{{ m.ih }};background:{{ m.ibg }}"></div>
@@ -313,7 +399,7 @@
           </div>
         </sc-for>
       </div>
-      <div style="display:flex;gap:13.6px">
+      <div class="hl-chartx" style="display:flex;gap:13.6px">
         <sc-for list="{{ months }}" as="m" hint-placeholder-count="12">
           <div style="flex:1;text-align:center;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:14px;letter-spacing:.06em;color:{{ m.fg }}">{{ m.label }}</div>
         </sc-for>
@@ -325,7 +411,7 @@
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_monthTable }}</div>
         <div style="font-size:13px;color:#5d5d60">{{ t_clickMonth }}</div>
       </div>
-      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.4fr);gap:10.2px;padding-bottom:8px;border-bottom:1px solid rgba(29,31,32,0.16);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">
+      <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.4fr);gap:10.2px;padding-bottom:8px;border-bottom:1px solid rgba(29,31,32,0.16);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">
         <span>{{ t_monthCol }}</span><span style="text-align:right">{{ t_legendInc }}</span><span style="text-align:right">{{ t_legendExp }}</span><span style="text-align:right">{{ t_colBal }}</span><span>{{ t_saveRateCol }}</span>
       </div>
       <sc-for list="{{ rows }}" as="r" hint-placeholder-count="9">
@@ -346,18 +432,18 @@
 
 
   <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
-  <div style="padding:var(--space-8,27.2px);display:flex;flex-direction:column;gap:var(--space-6,20.4px);max-width:1440px;margin:0 auto">
+  <div class="hl-page" style="padding:var(--space-8,27.2px);display:flex;flex-direction:column;gap:var(--space-6,20.4px);max-width:1440px;margin:0 auto">
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-6,20.4px);flex-wrap:wrap">
       <div>
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">{{ t_listKicker }}</div>
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ listTitle }}</div>
       </div>
-      <div style="display:flex;gap:var(--space-6,20.4px);font-size:13px;color:var(--color-neutral-600,#5d5d60);white-space:nowrap">
+      <div class="hl-sums" style="display:flex;gap:var(--space-6,20.4px);font-size:13px;color:var(--color-neutral-600,#5d5d60);white-space:nowrap">
         <span>{{ listInc }}</span><span>{{ listExp }}</span><span style="color:var(--color-accent-700,#416180)">{{ t_netLabel }} {{ sumNet }}</span>
       </div>
     </div>
 
-    <div style="display:flex;align-items:center;gap:var(--space-6,20.4px);flex-wrap:wrap">
+    <div class="hl-filters" style="display:flex;align-items:center;gap:var(--space-6,20.4px);flex-wrap:wrap">
       <div style="display:flex;align-items:center;gap:var(--space-4,13.6px)">
         <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">{{ t_periodLabel }}</span>
         <div style="display:flex;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16))">
@@ -387,7 +473,7 @@
     </div>
 
 
-    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-6,20.4px)">
+    <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-6,20.4px)">
       <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
         <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3,10.2px)">
           <div style="font-weight:600;font-size:20px">{{ sumIncLabel }}</div>
@@ -421,11 +507,11 @@
     </div>
 
     <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:0">
-      <div style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
+      <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
         <span></span><span>{{ t_hDate }}</span><span>{{ t_hItem }}</span><span>{{ t_hCat }}</span><span>{{ t_hMethod }}</span><span>{{ t_hAcct }}</span><span style="text-align:right">{{ t_hAmount }}</span><span></span>
       </div>
       <sc-for list="{{ listRows }}" as="r" hint-placeholder-count="6">
-        <div style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content max-content;gap:var(--space-3,10.2px);padding:11px 0;border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08));align-items:center" style-hover="background:var(--color-accent-100,#eef6ff)">
+        <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content max-content;gap:var(--space-3,10.2px);padding:11px 0;border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08));align-items:center" style-hover="background:var(--color-accent-100,#eef6ff)">
           <span style="width:4px;height:20px;background:{{ r.mark }}"></span>
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.date }}</span>
           <span style="display:flex;align-items:center;gap:8px;min-width:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span><span style="font-size:11px;letter-spacing:.1em;color:var(--color-accent-700,#416180);flex:none">{{ r.flag }}</span></span>
@@ -445,7 +531,7 @@
   </sc-if>
 
   <sc-if value="{{ isAdd }}" hint-placeholder-val="{{ true }}">
-  <div style="padding:27.2px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,0.9fr);gap:20.4px;max-width:1440px;margin:0 auto;align-items:start">
+  <div class="hl-2col hl-page" style="padding:27.2px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,0.9fr);gap:20.4px;max-width:1440px;margin:0 auto;align-items:start">
     <div style="display:flex;flex-direction:column;gap:20.4px;min-width:0">
       <div>
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_addKicker }}</div>
@@ -459,7 +545,7 @@
           <button onClick="{{ setIncome }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 24px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.06em;background:{{ incBg }};color:{{ incFg }}">{{ t_kindInc }}</button>
         </div>
 
-        <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20.4px">
+        <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20.4px">
           <div style="display:flex;flex-direction:column;gap:6.8px">
             <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60;display:flex;justify-content:space-between;gap:10px"><span>{{ t_amount }}</span><span style="text-transform:none;letter-spacing:0;color:#416180;min-width:0;text-align:right">{{ entryNote }}</span></label>
             <div style="display:flex;align-items:center;border:1px solid rgba(29,31,32,0.16);background:#f5f5f8">
@@ -490,7 +576,7 @@
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20.4px">
+        <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20.4px">
           <div style="display:flex;flex-direction:column;gap:10.2px">
             <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_method }}</label>
             <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
@@ -514,7 +600,7 @@
           <input value="{{ note }}" onChange="{{ onNote }}" placeholder="{{ notePh }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:11px 13.6px;font-size:15px;outline:none">
         </div>
 
-        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20.4px;align-items:stretch">
+        <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20.4px;align-items:stretch">
           <div style="display:flex;flex-direction:column;gap:6.8px">
             <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_slip }}</label>
             <div style="border:1px dashed #94bce3;background:#eef6ff;padding:20.4px;text-align:center;color:#416180;font-size:13px;line-height:1.6">{{ t_drop }} <a href="#">{{ t_pick }}</a><br><span style="color:#5d5d60;font-size:12px">{{ t_fileNote }}</span></div>
@@ -538,7 +624,7 @@
           <button onClick="{{ cancelEdit }}" style="border:1px solid #94bce3;background:transparent;padding:6px 14px;font-size:13px;color:#416180">{{ t_cancel }}</button>
         </div>
 
-        <div style="display:flex;gap:13.6px;border-top:1px solid rgba(29,31,32,0.16);padding-top:20.4px">
+        <div class="hl-actions" style="display:flex;gap:13.6px;border-top:1px solid rgba(29,31,32,0.16);padding-top:20.4px">
           <button onClick="{{ save }}" style="border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:12px 34px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;letter-spacing:.08em;background-image:var(--w1),var(--w2),var(--w3),var(--w4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%" style-hover="background-color:#416180">{{ saveLabel }}</button>
           <button onClick="{{ reset }}" style="border:1px solid rgba(29,31,32,0.16);background:transparent;padding:12px 24px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;letter-spacing:.08em;color:#5d5d60" style-hover="background:#eef6ff">{{ t_reset }}</button>
           <div style="flex:1"></div>
@@ -571,22 +657,22 @@
 
 
   <sc-if value="{{ isSet }}" hint-placeholder-val="{{ true }}">
-  <div style="padding:var(--space-8,27.2px);display:flex;flex-direction:column;gap:var(--space-6,20.4px);max-width:1440px;margin:0 auto">
+  <div class="hl-page" style="padding:var(--space-8,27.2px);display:flex;flex-direction:column;gap:var(--space-6,20.4px);max-width:1440px;margin:0 auto">
     <div>
       <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">{{ t_setKicker }}</div>
       <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_setTitle }}</div>
       <div style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ t_setNote }}</div>
     </div>
 
-    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:var(--space-6,20.4px);align-items:start">
+    <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:var(--space-6,20.4px);align-items:start">
 
       <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
         <div style="font-weight:600;font-size:22px">{{ t_catPanel }}</div>
-        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
+        <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
           <span>{{ t_colTh }}</span><span>{{ t_colLo }}</span><span></span>
         </div>
         <sc-for list="{{ catRows }}" as="c" hint-placeholder-count="8">
-          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) max-content;gap:var(--space-3,10.2px);align-items:center;padding-bottom:var(--space-3,10.2px);border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
+          <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) max-content;gap:var(--space-3,10.2px);align-items:center;padding-bottom:var(--space-3,10.2px);border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
             <input value="{{ c.th }}" onChange="{{ c.onTh }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
             <input value="{{ c.lo }}" onChange="{{ c.onLo }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
             <button onClick="{{ c.del }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:transparent;color:var(--color-neutral-600,#5d5d60);padding:7px 12px;font-size:13px" style-hover="background:var(--color-accent-100,#eef6ff)">{{ t_del }}</button>
@@ -597,11 +683,11 @@
 
       <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
         <div style="font-weight:600;font-size:22px">{{ t_acctPanel }}</div>
-        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,0.7fr) minmax(0,0.7fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
+        <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,0.7fr) minmax(0,0.7fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
           <span>{{ t_colName }}</span><span>{{ t_colRole }}</span><span>{{ t_colCur }}</span><span>{{ t_colEmail }}</span><span>{{ t_colPerm }}</span>
         </div>
         <sc-for list="{{ acctEdits }}" as="a" hint-placeholder-count="3">
-          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,0.7fr) minmax(0,0.7fr) max-content;gap:var(--space-3,10.2px);align-items:center;padding-bottom:var(--space-3,10.2px);border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
+          <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,0.7fr) minmax(0,0.7fr) max-content;gap:var(--space-3,10.2px);align-items:center;padding-bottom:var(--space-3,10.2px);border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
             <input value="{{ a.name }}" onChange="{{ a.onName }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
             <input value="{{ a.role }}" onChange="{{ a.onRole }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
             <select value="{{ a.code }}" onChange="{{ a.onCode }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
@@ -621,15 +707,15 @@
   </sc-if>
 
   <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ true }}">
-  <div style="padding:27.2px;max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:20.4px">
+  <div class="hl-page" style="padding:27.2px;max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:20.4px">
     <div>
       <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_mKicker }}</div>
       <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_mTitle }}</div>
     </div>
     <div style="display:flex;gap:34px;flex-wrap:wrap">
 
-      <div style="width:320px;display:flex;flex-direction:column;gap:10.2px">
-        <div style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);background:#1d2d3d;color:#eef6ff;padding:27.2px;display:flex;flex-direction:column;justify-content:center;gap:27.2px">
+      <div class="hl-phone" style="width:320px;display:flex;flex-direction:column;gap:10.2px">
+        <div class="hl-phone" style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);background:#1d2d3d;color:#eef6ff;padding:27.2px;display:flex;flex-direction:column;justify-content:center;gap:27.2px">
           <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#94bce3">บ้านเรา · Home Ledger</div>
           <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:28px">{{ t_hello }} {{ activeAcct }}<br>{{ t_enterPin }}</div>
           <div style="display:flex;gap:12px">
@@ -640,7 +726,7 @@
             <span style="width:14px;height:14px;border:1px solid #94bce3"></span>
             <span style="width:14px;height:14px;border:1px solid #94bce3"></span>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(148,188,227,.3);border:1px solid rgba(148,188,227,.3)">
+          <div class="hl-3col" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(148,188,227,.3);border:1px solid rgba(148,188,227,.3)">
             <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
               <div style="background:#1d2d3d;padding:15px 0;text-align:center;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px;color:#eef6ff">{{ k.label }}</div>
             </sc-for>
@@ -649,8 +735,8 @@
         <div style="font-size:13px;color:#5d5d60">{{ t_mCap1 }}</div>
       </div>
 
-      <div style="width:320px;display:flex;flex-direction:column;gap:10.2px">
-        <div style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);padding:20.4px;display:flex;flex-direction:column;gap:16px;overflow:hidden">
+      <div class="hl-phone" style="width:320px;display:flex;flex-direction:column;gap:10.2px">
+        <div class="hl-phone" style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);padding:20.4px;display:flex;flex-direction:column;gap:16px;overflow:hidden">
           <div style="display:flex;justify-content:space-between;align-items:center">
             <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px">{{ t_monthTitle }}</span>
             <span style="font-size:12px;color:#5d5d60">{{ t_family }}</span>
@@ -677,8 +763,8 @@
         <div style="font-size:13px;color:#5d5d60">{{ t_mCap2 }}</div>
       </div>
 
-      <div style="width:320px;display:flex;flex-direction:column;gap:10.2px">
-        <div style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);padding:20.4px;display:flex;flex-direction:column;gap:16px">
+      <div class="hl-phone" style="width:320px;display:flex;flex-direction:column;gap:10.2px">
+        <div class="hl-phone" style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);padding:20.4px;display:flex;flex-direction:column;gap:16px">
           <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px">{{ t_addTitle }}</div>
           <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
             <div style="flex:1;text-align:center;padding:9px 0;background:#5980a6;color:#f2f2f3;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px">{{ t_kindExp }}</div>
