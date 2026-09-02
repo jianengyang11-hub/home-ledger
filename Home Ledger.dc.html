@@ -226,6 +226,16 @@
       </div>
     </div>
 
+    <div class="hl-curbar" style="display:flex;align-items:center;gap:13.6px;flex-wrap:wrap">
+      <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+        <sc-for list="{{ viewOpts }}" as="c" hint-placeholder-count="3">
+          <button onClick="{{ c.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);background:{{ c.bg }};color:{{ c.fg }};padding:7px 15px;font-size:14px;letter-spacing:.04em">{{ c.label }}</button>
+        </sc-for>
+      </div>
+      <span style="font-size:13px;color:#5d5d60">{{ viewNote }}</span>
+      <span style="font-size:13px;color:#416180">{{ viewSkipped }}</span>
+    </div>
+
     <div class="hl-kpi4" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20.4px">
       <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_income }}</div>
@@ -395,6 +405,15 @@
       </div>
     </div>
 
+    <div class="hl-curbar" style="display:flex;align-items:center;gap:13.6px;flex-wrap:wrap">
+      <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+        <sc-for list="{{ viewOpts }}" as="c" hint-placeholder-count="3">
+          <button onClick="{{ c.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);background:{{ c.bg }};color:{{ c.fg }};padding:7px 15px;font-size:14px;letter-spacing:.04em">{{ c.label }}</button>
+        </sc-for>
+      </div>
+      <span style="font-size:13px;color:#5d5d60">{{ viewNote }}</span>
+    </div>
+
     <div class="hl-kpi4" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20.4px">
       <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_yInc }}</div>
@@ -556,6 +575,19 @@
         </div>
       </sc-for>
       <div style="display:{{ emptyDisp }};padding:34px 0;text-align:center;color:#98989b;font-size:14px">{{ emptyText }}</div>
+    </div>
+
+    <div class="hl-hist" style="display:{{ askDisp }};flex-direction:column;gap:13.6px;border:1px solid #1d2d3d;background:#f7fbff;padding:20.4px">
+      <div style="display:flex;align-items:baseline;gap:10px;min-width:0;flex-wrap:wrap">
+        <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px;flex:none">{{ askTitle }}</span>
+        <span style="font-size:13px;color:#5d5d60;overflow:hidden;text-overflow:ellipsis">{{ askName }}</span>
+      </div>
+      <input value="{{ voidReason }}" onChange="{{ onVoidReason }}" placeholder="{{ askPh }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:11px 13.6px;font-size:15px;color:#1d1f20;outline:none;width:100%;box-sizing:border-box">
+      <div style="display:{{ voidErrDisp }};font-size:13px;color:#1d2d3d">{{ voidErr }}</div>
+      <div style="display:flex;gap:10.2px;flex-wrap:wrap">
+        <button onClick="{{ askConfirm }}" style="border:1px solid #1d2d3d;background:#1d2d3d;color:#f2f2f3;padding:8px 18px;font-size:14px">{{ t_confirmVoid }}</button>
+        <button onClick="{{ askCancel }}" style="border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:8px 18px;font-size:14px">{{ t_notVoid }}</button>
+      </div>
     </div>
 
     <div class="hl-hist" style="display:{{ histDisp }};flex-direction:column;gap:13.6px;border:1px solid #94bce3;background:#f7fbff;padding:20.4px">
@@ -735,7 +767,10 @@
     <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:var(--space-6,20.4px);align-items:start">
 
       <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
-        <div style="font-weight:600;font-size:22px">{{ t_catPanel }}</div>
+        <div>
+          <div style="font-weight:600;font-size:22px">{{ t_catPanel }}</div>
+          <div style="font-size:12px;color:{{ catNoteFg }};line-height:1.5">{{ catNote }}</div>
+        </div>
         <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
           <span>{{ t_colTh }}</span><span>{{ t_colLo }}</span><span></span>
         </div>
@@ -746,7 +781,7 @@
             <button onClick="{{ c.del }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:transparent;color:var(--color-neutral-600,#5d5d60);padding:7px 12px;font-size:13px" style-hover="background:var(--color-accent-100,#eef6ff)">{{ t_del }}</button>
           </div>
         </sc-for>
-        <button onClick="{{ addCat }}" style="border:1px solid var(--color-accent,#5980a6);background:transparent;color:var(--color-accent-700,#416180);padding:9px 18px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;letter-spacing:.06em;align-self:flex-start" style-hover="background:var(--color-accent-100,#eef6ff)">{{ t_addCat }}</button>
+        <button onClick="{{ addCat }}" style="display:{{ addCatDisp }};border:1px solid var(--color-accent,#5980a6);background:transparent;color:var(--color-accent-700,#416180);padding:9px 18px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;letter-spacing:.06em;align-self:flex-start" style-hover="background:var(--color-accent-100,#eef6ff)">{{ t_addCat }}</button>
       </div>
 
       <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
@@ -920,13 +955,18 @@ const T = {
     t_needTo: "เลือกช่องทางปลายทางที่ไม่ใช่ช่องทางเดิม",
     t_xferNote: "ย้ายเงินระหว่างช่องทาง เช่น ถอน ATM (โอน → เงินสด) หรือจ่ายบัตร (โอน → บัตร) ไม่นับเป็นรายรับหรือรายจ่าย",
     t_openNote: "เงินตั้งต้นที่มีอยู่ก่อนเริ่มใช้สมุดนี้ ใส่ครั้งเดียวต่อช่องทาง ไม่นับเป็นรายรับของเดือนไหน",
+    t_viewCur: "กราฟและ % คิดเฉพาะสกุล", t_otherCur: "อีก {n} รายการเป็นสกุลอื่น ไม่รวมในหน้านี้",
+    t_catsOffline: "ยังแก้หมวดหมู่ไม่ได้ — ตาราง cats ยังไม่มีในฐานข้อมูล (ต้องรัน upgrade_v2.sql ก่อน)",
+    t_catsAdminOnly: "เฉพาะบัญชีหลักที่แก้หมวดหมู่ได้ · ทุกคนเห็นชุดเดียวกัน",
     t_balTitle: "ยอดคงเหลือแยกช่องทาง",
     t_balCash: "เงินสดคงเหลือ", t_balBank: "เงินในบัญชี", t_balCard: "ยอดค้างบัตร",
     t_balCardNote: "หนี้ที่ต้องจ่าย ไม่ใช่เงินคงเหลือ",
     t_balReal: "สะสมจากยอดยกมาถึงวันนี้",
     t_balNoOpening: "ยังไม่ได้ใส่ยอดยกมา — นี่คือยอดตั้งแต่วันแรกที่บันทึก ไม่ใช่เงินจริงในกระเป๋า",
-    t_void: "ยกเลิก", t_confirmVoid: "ยืนยันยกเลิก?", t_restore: "กู้คืน",
-    t_voidedBy: "ยกเลิกโดย",
+    t_void: "ยกเลิก", t_confirmVoid: "ยืนยันยกเลิก", t_restore: "กู้คืน",
+    t_notVoid: "ไม่ยกเลิก", t_voidedBy: "ยกเลิกโดย",
+    t_voidTitle: "ยกเลิกรายการ", t_reasonPh: "เหตุผลที่ยกเลิก เช่น บันทึกซ้ำ / กรอกผิด / ยกเลิกการซื้อ",
+    t_needReason: "ต้องระบุเหตุผลที่ยกเลิกก่อน",
     t_acctNote: "รหัสผ่านและสิทธิ์ admin/member แก้ที่ Supabase เท่านั้น (Authentication → Users และตาราง profiles) — แก้จากหน้านี้ไม่ได้ เพราะฐานข้อมูลไม่เปิดให้เขียน",
     t_edit: "แก้", t_del: "ลบ", t_confirmDel: "ยืนยัน?", t_cancel: "ยกเลิก",
     t_editing: "กำลังแก้ไขรายการ", t_saveEdit: "บันทึกการแก้ไข",
@@ -937,7 +977,8 @@ const T = {
     t_mCap1: "เข้าสู่ระบบ", t_mCap2: "ภาพรวมเดือน", t_mCap3: "บันทึกข้อมูลแบบเร็ว",
     t_sampleNote: "ซื้อของเข้าบ้าน โลตัส",
     t_keepThb: "เก็บค่าเป็นบาท", t_keepNative: "เก็บค่าเป็นสกุล", t_inThb: "บันทึกเป็นเงินบาท",
-    t_repOff: "ปิดอยู่", t_repOn: "จะสร้างรายการอัตโนมัติทุกวันที่ 28",
+    t_repOff: "ปิดอยู่", t_repOn: "จะสร้างซ้ำให้เองทุกเดือน วันเดียวกับรายการนี้",
+    t_recurMade: "เติมรายการประจำที่ค้างให้แล้ว {n} รายการ",
     t_notePh: "เช่น ซื้อของเข้าบ้าน โลตัส",
     t_needAmount: "ใส่จำนวนเงินก่อนบันทึก", t_needAcct: "เลือกบัญชีก่อนบันทึก",
     t_savedOk: "บันทึกแล้ว", t_toAcct: "บัญชี", t_goalYear: "เป้าทั้งปี",
@@ -1013,13 +1054,18 @@ const T = {
     t_needTo: "ເລືອກຊ່ອງທາງປາຍທາງທີ່ບໍ່ແມ່ນຊ່ອງທາງເດີມ",
     t_xferNote: "ຍ້າຍເງິນລະຫວ່າງຊ່ອງທາງ ເຊັ່ນ ຖອນ ATM (ໂອນ → ເງິນສົດ) ຫຼືຈ່າຍບັດ (ໂອນ → ບັດ) ບໍ່ນັບເປັນລາຍຮັບຫຼືລາຍຈ່າຍ",
     t_openNote: "ເງິນຕັ້ງຕົ້ນທີ່ມີຢູ່ກ່ອນເລີ່ມໃຊ້ປຶ້ມນີ້ ໃສ່ຄັ້ງດຽວຕໍ່ຊ່ອງທາງ ບໍ່ນັບເປັນລາຍຮັບຂອງເດືອນໃດ",
+    t_viewCur: "ກຣາຟແລະ % ຄິດສະເພາະສະກຸນ", t_otherCur: "ອີກ {n} ລາຍການເປັນສະກຸນອື່ນ ບໍ່ລວມໃນໜ້ານີ້",
+    t_catsOffline: "ຍັງແກ້ໝວດໝູ່ບໍ່ໄດ້ — ຕາຕະລາງ cats ຍັງບໍ່ມີໃນຖານຂໍ້ມູນ",
+    t_catsAdminOnly: "ສະເພາະບັນຊີຫຼັກທີ່ແກ້ໝວດໝູ່ໄດ້ · ທຸກຄົນເຫັນຊຸດດຽວກັນ",
     t_balTitle: "ຍອດຄົງເຫຼືອແຍກຊ່ອງທາງ",
     t_balCash: "ເງິນສົດຄົງເຫຼືອ", t_balBank: "ເງິນໃນບັນຊີ", t_balCard: "ຍອດຄ້າງບັດ",
     t_balCardNote: "ໜີ້ທີ່ຕ້ອງຈ່າຍ ບໍ່ແມ່ນເງິນຄົງເຫຼືອ",
     t_balReal: "ສະສົມຈາກຍອດຍົກມາເຖິງມື້ນີ້",
     t_balNoOpening: "ຍັງບໍ່ໄດ້ໃສ່ຍອດຍົກມາ — ນີ້ແມ່ນຍອດຕັ້ງແຕ່ມື້ທຳອິດທີ່ບັນທຶກ ບໍ່ແມ່ນເງິນຈິງໃນກະເປົາ",
-    t_void: "ຍົກເລີກ", t_confirmVoid: "ຢືນຢັນຍົກເລີກ?", t_restore: "ກູ້ຄືນ",
-    t_voidedBy: "ຍົກເລີກໂດຍ",
+    t_void: "ຍົກເລີກ", t_confirmVoid: "ຢືນຢັນຍົກເລີກ", t_restore: "ກູ້ຄືນ",
+    t_notVoid: "ບໍ່ຍົກເລີກ", t_voidedBy: "ຍົກເລີກໂດຍ",
+    t_voidTitle: "ຍົກເລີກລາຍການ", t_reasonPh: "ເຫດຜົນທີ່ຍົກເລີກ ເຊັ່ນ ບັນທຶກຊ້ຳ / ພິມຜິດ / ຍົກເລີກການຊື້",
+    t_needReason: "ຕ້ອງລະບຸເຫດຜົນທີ່ຍົກເລີກກ່ອນ",
     t_acctNote: "ລະຫັດຜ່ານແລະສິດ admin/member ແກ້ທີ່ Supabase ເທົ່ານັ້ນ — ແກ້ຈາກໜ້ານີ້ບໍ່ໄດ້",
     t_edit: "ແກ້", t_del: "ລຶບ", t_confirmDel: "ຢືນຢັນ?", t_cancel: "ຍົກເລີກ",
     t_editing: "ກຳລັງແກ້ໄຂລາຍການ", t_saveEdit: "ບັນທຶກການແກ້ໄຂ",
@@ -1030,7 +1076,8 @@ const T = {
     t_mCap1: "ເຂົ້າສູ່ລະບົບ", t_mCap2: "ພາບລວມເດືອນ", t_mCap3: "ບັນທຶກຂໍ້ມູນແບບໄວ",
     t_sampleNote: "ຊື້ເຄື່ອງເຂົ້າເຮືອນ",
     t_keepThb: "ເກັບຄ່າເປັນເງິນບາດ", t_keepNative: "ເກັບຄ່າເປັນສະກຸນ", t_inThb: "ບັນທຶກເປັນເງິນບາດ",
-    t_repOff: "ປິດຢູ່", t_repOn: "ຈະສ້າງລາຍການອັດຕະໂນມັດທຸກວັນທີ 28",
+    t_repOff: "ປິດຢູ່", t_repOn: "ຈະສ້າງຄືນໃຫ້ເອງທຸກເດືອນ ວັນດຽວກັບລາຍການນີ້",
+    t_recurMade: "ເຕີມລາຍການປະຈຳທີ່ຄ້າງໃຫ້ແລ້ວ {n} ລາຍການ",
     t_notePh: "ຕົວຢ່າງ ຊື້ເຄື່ອງເຂົ້າເຮືອນ",
     t_needAmount: "ໃສ່ຈຳນວນເງິນກ່ອນບັນທຶກ", t_needAcct: "ເລືອກບັນຊີກ່ອນບັນທຶກ",
     t_savedOk: "ບັນທຶກແລ້ວ", t_toAcct: "ບັນຊີ", t_goalYear: "ເປົ້າໝາຍທັງປີ",
@@ -1065,13 +1112,30 @@ const KINDS = ["expense", "income", "transfer", "opening"];
 const KIND_LABEL = (L) => ({
   expense: L.t_kindExp, income: L.t_kindInc, transfer: L.t_kindXfer, opening: L.t_kindOpen,
 });
+// ไม่มีช่อง rate โดยตั้งใจ — ระบบนี้ไม่แปลงค่าเงินข้ามสกุลเลย
+// เงินคนละสกุลคือคนละก้อน บวกกันไม่ได้ ยอดรวมจึงแยกตามสกุลเสมอ
+// ส่วนกราฟกับ % ที่ต้องมีฐานเดียวกัน จะคิดทีละสกุลตามที่เลือกบนหน้าจอ
+const CURRENCIES = (Array.isArray(CFG.CURRENCIES) && CFG.CURRENCIES.length ? CFG.CURRENCIES : [
+  { code: "KIP", sym: "₭", dp: 0, name: "กีบลาว" },
+  { code: "THB", sym: "฿", dp: 0, name: "บาท" },
+  { code: "USD", sym: "$", dp: 2, name: "ดอลลาร์สหรัฐ" },
+]);
+const CODES = CURRENCIES.map((c) => c.code);
+const cur = (code) => CURRENCIES.find((c) => c.code === code) || CURRENCIES[0];
+const raw = (n, code) => {
+  const c = cur(code), a = Math.abs(n);
+  const short = a >= 1e9 ? (a / 1e9).toFixed(2) + "B" : a >= 1e6 ? (a / 1e6).toFixed(2) + "M"
+    : a.toLocaleString("en-US", { minimumFractionDigits: c.dp, maximumFractionDigits: c.dp });
+  return (n < 0 ? "−" : "") + c.sym + short;
+};
+
 // รายชื่อบัญชีสำหรับหน้า login — ไม่มีรหัสผ่านในโค้ดอีกต่อไป
 // ชื่อจริงกับสิทธิ์ admin/member อ่านจากตาราง profiles หลังล็อกอินสำเร็จ
 const ACCOUNTS = (CFG.ACCOUNTS && CFG.ACCOUNTS.length ? CFG.ACCOUNTS : [
   { id: "pin", name: "ปิ่น", role: "บัญชีส่วนตัว", email: "pin@homeledger.local" },
   { id: "ton", name: "ต้น", role: "บัญชีส่วนตัว", email: "ton@homeledger.local" },
   { id: "home", name: "บ้านเรา", role: "บัญชีกลางของบ้าน", email: "home@homeledger.local" },
-]).map((a) => ({ code: "KIP", ...a }));
+]).map((a) => ({ code: CODES[0], ...a }));
 const MEMBERS = ACCOUNTS.map((a) => a.name);
 
 const CAT_SEED = [
@@ -1094,13 +1158,16 @@ const APP_NAME = CFG.APP_NAME || "บ้านเรา · Home Ledger";
 // เป้างบประมาณต่อเดือน (หน่วยเป็นบาท) — ยอดที่ใช้จริงคำนวณจากรายการใน DB
 // แก้ได้ที่ config.js · รับทั้งรูปแบบใหม่ {cat,limit} และแบบเก่า ["ชื่อ", จำนวน]
 const SAVE_GOAL = "เป้าหมายออม";
-const BUDGET_TARGETS = (Array.isArray(CFG.BUDGETS) ? CFG.BUDGETS : [
-  { cat: "อาหาร", limit: 16000 }, { cat: "เดินทาง", limit: 6000 },
-  { cat: "บันเทิง", limit: 4000 }, { cat: SAVE_GOAL, limit: 30000 },
-]).map((b) => (Array.isArray(b) ? { cat: b[0], limit: b[1] } : b))
-  .filter((b) => b && b.cat);
+const BUDGET_TARGETS = (Array.isArray(CFG.BUDGETS) ? CFG.BUDGETS : [])
+  .map((b) => (Array.isArray(b) ? { cat: b[0], limit: b[1] } : b))
+  .filter((b) => b && b.cat)
+  .map((b) => ({ ...b, code: b.code || CODES[0] }));
 
-const YEAR_GOAL = Number(CFG.YEAR_GOAL) || 300000; // เป้าเงินเก็บทั้งปี (บาท)
+// เป้าเงินเก็บทั้งปี — ผูกกับสกุลเงินตรง ๆ ไม่แปลงค่า
+const YG = CFG.YEAR_GOAL;
+const YEAR_GOAL = typeof YG === "object" && YG
+  ? { amount: Number(YG.amount) || 0, code: YG.code || CODES[0] }
+  : { amount: Number(YG) || 0, code: CODES[0] };
 
 // ───────────────── Supabase (Auth + REST) ─────────────────
 const DB_ON = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY
@@ -1213,11 +1280,40 @@ const DB = {
     await call(REST("txns") + "?id=eq." + encodeURIComponent(id),
       { method: "PATCH", body: JSON.stringify(patch) }, "แก้ไขไม่สำเร็จ");
   },
+  // เติมรายการประจำที่ยังขาดของทุกเดือนจนถึงเดือนนี้ — ฐานข้อมูลกันซ้ำให้เอง
+  async runRecurring() {
+    const r = await call(CFG.SUPABASE_URL + "/rest/v1/rpc/run_recurring",
+      { method: "POST", body: "{}" }, "สร้างรายการประจำไม่สำเร็จ");
+    return Number(await r.json()) || 0;
+  },
+
+  // ───── หมวดหมู่ — เก็บในฐานข้อมูล ทุกคนเห็นชุดเดียวกัน ─────
+  async cats() {
+    const r = await call(REST("cats") + "?select=*&order=sort.asc,id.asc", {}, "โหลดหมวดหมู่ไม่สำเร็จ");
+    return r.json();
+  },
+  async catAdd(row) {
+    const r = await call(REST("cats"), {
+      method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(row),
+    }, "เพิ่มหมวดหมู่ไม่สำเร็จ");
+    return r.json();
+  },
+  async catSave(id, patch) {
+    await call(REST("cats") + "?id=eq." + encodeURIComponent(id),
+      { method: "PATCH", body: JSON.stringify(patch) }, "แก้หมวดหมู่ไม่สำเร็จ");
+  },
+  async catDel(id) {
+    await call(REST("cats") + "?id=eq." + encodeURIComponent(id), { method: "DELETE" }, "ลบหมวดหมู่ไม่สำเร็จ");
+  },
+
   // ยกเลิก / กู้คืน — ไม่ลบทิ้ง แถวยังอยู่ ประวัติการแก้ไขจึงไม่หาย
   // ส่งแค่ void_at ไป ฐานข้อมูลเขียน "ใครยกเลิก เมื่อไหร่" เองด้วย trigger
-  async setVoid(id, on) {
+  async setVoid(id, on, reason) {
+    const patch = on
+      ? { void_at: new Date().toISOString(), void_reason: reason || "" }
+      : { void_at: null };
     await call(REST("txns") + "?id=eq." + encodeURIComponent(id),
-      { method: "PATCH", body: JSON.stringify({ void_at: on ? new Date().toISOString() : null }) },
+      { method: "PATCH", body: JSON.stringify(patch) },
       on ? "ยกเลิกรายการไม่สำเร็จ" : "กู้คืนรายการไม่สำเร็จ");
   },
 };
@@ -1243,7 +1339,7 @@ const fromDb = (r) => {
     date: pad2(day) + " " + M_ABBR[mo - 1] + " " + String(yAD + 543).slice(-2),
     name: r.name || "", cat: r.cat || "", method: r.method || "", who: r.who || "",
     methodTo: r.method_to || "",
-    voidAt: r.void_at || null, voidBy: r.void_by || "",
+    voidAt: r.void_at || null, voidBy: r.void_by || "", voidReason: r.void_reason || "",
     kind: r.kind, val, code: r.code || "THB", flag: r.flag || "",
     amount: (SIGN_OF[r.kind] || "−") + val.toLocaleString("en-US"),
   };
@@ -1252,31 +1348,7 @@ const fromDb = (r) => {
 // income/opening เข้ากระเป๋า · expense ออก · transfer ย้ายที่ ไม่เข้าไม่ออก
 const SIGN_OF = { income: "+", opening: "+", expense: "−", transfer: "→" };
 
-const CURRENCIES = [
-  { code: "THB", sym: "฿", rate: 1, dp: 0, name: "บาท" },
-  { code: "USD", sym: "$", rate: 0.0278, dp: 2, name: "ดอลลาร์สหรัฐ" },
-  { code: "KIP", sym: "₭", rate: 660, dp: 0, name: "กีบลาว" },
-];
-const acctCode = (name) => (ACCOUNTS.find((a) => a.name === name) || {}).code || "THB";
-const cur = (code) => CURRENCIES.find((c) => c.code === code) || CURRENCIES[0];
-const num = (n, code) => {
-  const c = cur(code);
-  const v = Math.abs(n * c.rate).toLocaleString("en-US", { minimumFractionDigits: c.dp, maximumFractionDigits: c.dp });
-  return (n < 0 ? "−" : "") + v;
-};
-const big = (n, code) => {
-  const c = cur(code), v = n * c.rate, a = Math.abs(v), sign = v < 0 ? "−" : "";
-  if (a >= 1e9) return sign + c.sym + (a / 1e9).toFixed(2) + "B";
-  if (a >= 1e6) return sign + c.sym + (a / 1e6).toFixed(2) + "M";
-  return money(n, code);
-};
-const raw = (n, code) => {
-  const c = cur(code), a = Math.abs(n);
-  const short = a >= 1e9 ? (a / 1e9).toFixed(2) + "B" : a >= 1e6 ? (a / 1e6).toFixed(2) + "M"
-    : a.toLocaleString("en-US", { minimumFractionDigits: c.dp, maximumFractionDigits: c.dp });
-  return (n < 0 ? "−" : "") + c.sym + short;
-};
-const money = (n, code) => (n < 0 ? "−" : "") + cur(code).sym + num(Math.abs(n), code);
+const acctCode = (name) => (ACCOUNTS.find((a) => a.name === name) || {}).code || CODES[0];
 
 class Component extends DCLogic {
   state = {
@@ -1289,7 +1361,6 @@ class Component extends DCLogic {
     pinErr: "",
     signing: false,
     filter: "ทุกบัญชี",
-    curCode: "THB",
     entryCode: null,
     lang: null,
     kindFilter: "all",
@@ -1299,6 +1370,9 @@ class Component extends DCLogic {
     cat: CAT_SEED[0] ? CAT_SEED[0].th : "",
     method: METHODS[0],
     methodTo: "",
+    voidReason: "",
+    voidErr: "",
+    viewCode: null,          // สกุลเงินที่หน้าเดือน/หน้าปีกำลังวิเคราะห์ (null = ใช้ของบัญชีตัวเอง)
     who: MEMBERS[0] || "",
     amount: "",
     note: "",
@@ -1316,6 +1390,7 @@ class Component extends DCLogic {
     vYear: NOW_Y,
     txns: [],
     cats: CAT_SEED,
+    catsLive: false,         // true = อ่านมาจากตาราง cats จริง แก้แล้วบันทึกได้
     accts: ACCT_SEED,
   };
 
@@ -1342,7 +1417,12 @@ class Component extends DCLogic {
         meId: (ACCOUNTS.find((a) => a.name === me.name) || {}).id || null,
         screen: this.state.screen === "login" || !this.state.screen ? "month" : this.state.screen,
       });
+      // เติมรายการประจำที่ค้างก่อนโหลด จะได้เห็นครบตั้งแต่หน้าจอแรก
+      // ถ้าฟังก์ชันยังไม่มีในฐานข้อมูล ก็ข้ามไป ไม่ทำให้เข้าใช้งานไม่ได้
+      const made = await DB.runRecurring()
+        .catch((e) => { console.warn("รายการประจำใช้ไม่ได้:", e.message || e); return 0; });
       await this.load();
+      if (made) this.setState({ saved: this.L.t_recurMade.replace("{n}", made) });
     } catch (e) {
       await AUTH.signOut();
       this.setState({ loading: false, screen: "login", meId: null, meRole: "member", pinErr: e.message || String(e) });
@@ -1352,13 +1432,22 @@ class Component extends DCLogic {
   load = async () => {
     this.setState({ loading: true, dbErr: "" });
     try {
-      // ประวัติการแก้ไขเป็นของเสริม — ถ้าตาราง txn_edits ยังไม่มี (ยังไม่ได้รัน schema.sql บล็อก 4b)
+      // ประวัติการแก้ไขกับหมวดหมู่เป็นของเสริม — ถ้าตารางยังไม่มี (ยังไม่ได้รัน SQL)
       // รายการหลักต้องยังขึ้นได้ตามปกติ ไม่ใช่พังทั้งหน้า
-      const [rows, edits] = await Promise.all([
+      const soft = (what) => (e) => { console.warn(what + ":", e.message || e); return null; };
+      const [rows, edits, cats] = await Promise.all([
         DB.list(),
-        DB.edits().catch((e) => { console.warn("ประวัติการแก้ไขใช้ไม่ได้:", e.message || e); return []; }),
+        DB.edits().catch(soft("ประวัติการแก้ไขใช้ไม่ได้")),
+        DB.cats().catch(soft("หมวดหมู่ใช้ไม่ได้ ใช้ชุดเริ่มต้นไปก่อน")),
       ]);
-      this.setState({ txns: rows.map(fromDb), edits, loading: false, dbErr: "" });
+      this.setState({
+        txns: rows.map(fromDb),
+        edits: edits || [],
+        // ถ้าตาราง cats ยังไม่มี ก็ยังใช้งานต่อได้ด้วยชุดเริ่มต้น (แต่แก้แล้วไม่ถูกบันทึก)
+        cats: cats && cats.length ? cats : CAT_SEED,
+        catsLive: !!(cats && cats.length),
+        loading: false, dbErr: "",
+      });
     } catch (e) {
       this.setState({ loading: false, dbErr: e.message || String(e) });
     }
@@ -1400,15 +1489,39 @@ class Component extends DCLogic {
     });
   };
 
+  // ───── หมวดหมู่ — พิมพ์แล้วเห็นทันที แล้วค่อยบันทึกลงฐานข้อมูล ─────
+  // ถ้าบันทึกไม่ผ่าน (ไม่ใช่บัญชีหลัก / ตารางยังไม่มี) จะโหลดของจริงกลับมาทับ
+  // จะได้ไม่หลอกตาว่าแก้สำเร็จทั้งที่ฐานข้อมูลไม่รับ
+  catFail = (e) => { this.setState({ dbErr: e.message || String(e) }); this.reload(); };
+
   setCat = (i, k) => (e) => {
-    const cats = this.state.cats.map((c, j) => (j === i ? { ...c, [k]: e.target.value } : c));
+    const val = e.target.value;
+    const cats = this.state.cats.map((c, j) => (j === i ? { ...c, [k]: val } : c));
     this.setState({ cats });
+    const row = cats[i];
+    if (!this.state.catsLive || !row || row.id == null) return;
+    clearTimeout(this._catT);
+    this._catT = setTimeout(() => {
+      DB.catSave(row.id, { [k]: val }).catch(this.catFail);
+    }, 600);   // หน่วงไว้ไม่ให้ยิงทุกตัวอักษรที่พิมพ์
   };
-  addCat = () => {
+
+  addCat = async () => {
     const L = this.L;
-    this.setState({ cats: [...this.state.cats, { th: L.t_newCat, lo: L.t_newCat, amount: 0, pct: 0 }] });
+    if (!this.state.catsLive) return this.setState({ dbErr: L.t_catsOffline });
+    const sort = this.state.cats.reduce((n, c) => Math.max(n, Number(c.sort) || 0), 0) + 1;
+    try {
+      const made = await DB.catAdd({ th: L.t_newCat, lo: L.t_newCat, sort });
+      this.setState({ cats: [...this.state.cats, ...(made || [])] });
+    } catch (e) { this.catFail(e); }
   };
-  delCat = (i) => () => this.setState({ cats: this.state.cats.filter((_, j) => j !== i) });
+
+  delCat = (i) => async () => {
+    const row = this.state.cats[i];
+    if (!this.state.catsLive || !row) return this.setState({ dbErr: this.L.t_catsOffline });
+    this.setState({ cats: this.state.cats.filter((_, j) => j !== i) });
+    try { await DB.catDel(row.id); } catch (e) { this.catFail(e); }
+  };
 
   // ชื่อ/คำอธิบาย/สกุลเงิน ปรับได้แค่การแสดงผลในเครื่องนี้
   // ส่วนรหัสผ่านกับสิทธิ์ admin/member อยู่ที่ Supabase แก้จากหน้าเว็บไม่ได้
@@ -1495,26 +1608,35 @@ class Component extends DCLogic {
   showHistory = (id) => () => this.setState({ historyId: this.state.historyId === id ? null : id });
   closeHistory = () => this.setState({ historyId: null });
 
-  askDel = (id) => () => this.setState({ pendingDel: id });
+  askDel = (id) => () => this.setState({ pendingDel: id, voidReason: "", voidErr: "", historyId: null });
 
   // ยกเลิก (on=true) / กู้คืน (on=false) — ไม่ลบทิ้ง ประวัติการแก้ไขจึงอยู่ครบ
   setVoid = (id, on) => async () => {
     if (!this.isAdmin || this.state.busy) return;
-    this.setState({ busy: true });
+    const reason = (this.state.voidReason || "").trim();
+    // ฐานข้อมูลก็ปฏิเสธซ้ำอีกชั้นถ้าเหตุผลว่าง แต่ดักที่นี่ก่อนจะได้ไม่ต้องยิงไปเสียเที่ยว
+    if (on && !reason) return this.setState({ voidErr: this.L.t_needReason });
+    this.setState({ busy: true, voidErr: "" });
     try {
-      await DB.setVoid(id, on);
-      this.setState({ busy: false, pendingDel: null, editId: this.state.editId === id ? null : this.state.editId });
+      await DB.setVoid(id, on, reason);
+      this.setState({
+        busy: false, pendingDel: null, voidReason: "", voidErr: "",
+        editId: this.state.editId === id ? null : this.state.editId,
+      });
       this.reload();
     } catch (e) {
-      this.setState({ busy: false, pendingDel: null, dbErr: e.message || String(e) });
+      this.setState({ busy: false, voidErr: e.message || String(e) });
     }
   };
+
+  askDelClose = () => this.setState({ pendingDel: null, voidReason: "", voidErr: "" });
+  onVoidReason = (e) => this.setState({ voidReason: e.target.value, voidErr: "" });
 
   renderVals() {
     const s = this.state, screen = this.screen;
     const sel = (on) => ({ bg: on ? ACC : "transparent", fg: on ? "#f2f2f3" : MUTED, bd: on ? ACC : "rgba(29,31,32,0.16)" });
 
-    const code = "THB", C = cur(code);
+    const C = cur(V);            // สกุลที่กำลังดู ใช้กับสัญลักษณ์และป้ายกำกับ
     const alt = () => "";
     const lang = s.lang || (this.props.language === "ລາວ" ? "lo" : "th");
     const L = T[lang] || T.th;
@@ -1526,7 +1648,13 @@ class Component extends DCLogic {
     const codeOf = (name) => (s.accts.find((a) => a.name === name) || {}).code || "THB";
     const valOf = (t) => t.val || 0;
     const codeOfTx = (t) => t.code || codeOf(t.who);
-    const thb = (t) => valOf(t) / cur(codeOfTx(t)).rate;      // แปลงเป็นฐานบาทเพื่อเทียบข้ามสกุล
+    // ───── สกุลเงินที่กำลังวิเคราะห์ ─────
+    // กราฟ % งบประมาณ ต้องมีฐานเดียวกันถึงจะเทียบกันได้ แต่ระบบไม่แปลงค่าเงิน
+    // จึงคิดทีละสกุล: หน้าเดือนกับหน้าปีจะกรองเหลือสกุลนี้สกุลเดียว
+    const V = s.viewCode || acctCode(s.acct) || CODES[0];
+    const inView = (t) => codeOfTx(t) === V;
+    const fmt = (n) => raw(n, V);               // จัดรูปตัวเลขด้วยสกุลที่กำลังดู
+    const sumV = (list) => list.reduce((n, t) => n + valOf(t), 0);   // ผู้เรียกต้องกรองสกุลมาแล้ว
 
     const isInc   = (t) => t.kind === "income";
     const isExp   = (t) => t.kind === "expense";
@@ -1538,12 +1666,12 @@ class Component extends DCLogic {
     // ทิศทางเงินสำหรับยอดรับ-จ่าย-คงเหลือ: โอนกับยอดยกมาไม่นับ (เป็น 0)
     const flow = (t) => (isInc(t) ? 1 : isExp(t) ? -1 : 0);
     const signed = (list) => list.map((t) => ({ ...t, val: flow(t) * valOf(t) }));
-    const sumTHB = (list) => list.reduce((n, t) => n + thb(t), 0);
+    // ยอดรวมหลายสกุลในบรรทัดเดียว เช่น "₭2,300,000  ·  ฿12,400" — ไม่บวกข้ามสกุล
     const sumByCode = (list) => {
       const by = {};
       list.forEach((t) => { const c = codeOfTx(t); by[c] = (by[c] || 0) + valOf(t); });
-      const order = CURRENCIES.map((c) => c.code).filter((c) => by[c]);
-      return order.length ? order.map((c) => raw(by[c], c)).join("  ·  ") : raw(0, "THB");
+      const order = CODES.filter((c) => by[c]);
+      return order.length ? order.map((c) => raw(by[c], c)).join("  ·  ") : raw(0, V);
     };
 
     const isToday = (t) => t.ts === TODAY_ISO;
@@ -1558,10 +1686,11 @@ class Component extends DCLogic {
     const shownLive = live(shown);
 
     // ───── ยอดของเดือนที่กำลังดู ─────
-    const monthTx = live(s.txns.filter((t) => inScope(t) && inMonthOf(t, s.vMonth, s.vYear)));
+    // หน้าเดือนทั้งหน้าคิดเฉพาะสกุลที่เลือก จึงบวกกันตรง ๆ ได้โดยไม่ต้องแปลงค่า
+    const monthTx = live(s.txns.filter((t) => inScope(t) && inMonthOf(t, s.vMonth, s.vYear) && inView(t)));
     const monthInc = monthTx.filter(isInc);
     const monthExp = monthTx.filter(isExp);
-    const incTHB = sumTHB(monthInc), expTHB = sumTHB(monthExp);
+    const incV = sumV(monthInc), expV = sumV(monthExp);
 
     const dim = daysInMonth(s.vMonth, s.vYear);
     const isCurMonth = s.vMonth === NOW_M && s.vYear === NOW_Y;
@@ -1569,26 +1698,25 @@ class Component extends DCLogic {
 
     const pm = s.vMonth === 1 ? 12 : s.vMonth - 1;
     const py = s.vMonth === 1 ? s.vYear - 1 : s.vYear;
-    const prevExpTHB = sumTHB(live(s.txns.filter((t) => inScope(t) && inMonthOf(t, pm, py) && isExp(t))));
+    const prevExpV = sumV(live(s.txns.filter((t) => inScope(t) && inMonthOf(t, pm, py) && isExp(t) && inView(t))));
 
     // ───── รายจ่ายรายวันของเดือนนี้ ─────
     const dayTot = [];
     for (let i = 0; i < dim; i++) dayTot.push(0);
-    monthExp.forEach((t) => { if (t.day >= 1 && t.day <= dim) dayTot[t.day - 1] += thb(t); });
+    monthExp.forEach((t) => { if (t.day >= 1 && t.day <= dim) dayTot[t.day - 1] += valOf(t); });
     const dayPeak = dayTot.reduce((a, v) => (v > a ? v : a), 0);
     const activeDays = dayTot.filter((v) => v > 0).length;
 
     // ───── ยอดรายปีของปีที่กำลังดู ─────
-    // yInc/yExp = ยอดฐานบาท ใช้เฉพาะสิ่งที่ต้องเทียบข้ามสกุล (ความสูงกราฟ, %, เดือนที่จ่ายมากสุด)
-    // yIncTx/yExpTx = ตัวรายการจริง ส่งให้ sumByCode แยกแสดงตามสกุลเงินของแต่ละรายการ
+    // ทั้งหน้าคิดเฉพาะสกุลที่เลือก ตัวเลขทุกช่องจึงเป็นสกุลเดียวกันหมด
     const yInc = [], yExp = [], yIncTx = [], yExpTx = [];
     for (let i = 0; i < 12; i++) { yInc.push(0); yExp.push(0); yIncTx.push([]); yExpTx.push([]); }
-    const yearTx = live(s.txns.filter((t) => inScope(t) && t.year === s.vYear));
+    const yearTx = live(s.txns.filter((t) => inScope(t) && t.year === s.vYear && inView(t)));
     yearTx.forEach((t) => {
       const i = t.month - 1;
       if (i < 0 || i > 11) return;
-      if (isInc(t)) { yInc[i] += thb(t); yIncTx[i].push(t); }
-      else if (isExp(t)) { yExp[i] += thb(t); yExpTx[i].push(t); }
+      if (isInc(t)) { yInc[i] += valOf(t); yIncTx[i].push(t); }
+      else if (isExp(t)) { yExp[i] += valOf(t); yExpTx[i].push(t); }
     });
     const yearInc = yearTx.filter(isInc);
     const yearExp = yearTx.filter(isExp);
@@ -1598,16 +1726,17 @@ class Component extends DCLogic {
     let peakI = -1;
     yExp.forEach((v, i) => { if (v > 0 && (peakI < 0 || v > yExp[peakI])) peakI = i; });
     const isFuture = (i) => s.vYear === NOW_Y && i + 1 > NOW_M;
+    // สัดส่วนตามหมวด — คิด % ได้ต่อเมื่อทุกแถวเป็นสกุลเดียวกัน จึงกรอง inView ก่อน
     const breakdown = (income) => {
-      const rows = shownLive.filter(income ? isInc : isExp);
+      const rows = shownLive.filter((t) => (income ? isInc(t) : isExp(t)) && inView(t));
       const byCat = {};
       rows.forEach((t) => { (byCat[t.cat] = byCat[t.cat] || []).push(t); });
-      const share = (list) => list.reduce((a, t) => a + valOf(t) / cur(codeOfTx(t)).rate, 0);
+      const share = (list) => list.reduce((a, t) => a + valOf(t), 0);
       const total = share(rows) || 1;
       return Object.entries(byCat).sort((a, c) => share(c[1]) - share(a[1])).map(([k, list]) => {
         const pct = Math.round((share(list) / total) * 100);
         return {
-          name: catLabel(k), amount: sumByCode(list),
+          name: catLabel(k), amount: fmt(share(list)),
           pct: pct + "%", w: pct + "%", bg: income ? DARK : ACC,
         };
       });
@@ -1615,7 +1744,7 @@ class Component extends DCLogic {
     // ───── ยอดคงเหลือแยกช่องทาง ─────
     // สะสมตั้งแต่รายการแรกจนถึงวันนี้ ไม่ผูกกับเดือนที่กำลังดู เพราะเงินในกระเป๋าไม่รีเซ็ตทุกเดือน
     // เงินสด/โอน = เงินจริงที่มี · บัตร = หนี้ที่ต้องจ่าย จึงกลับเครื่องหมายตอนแสดง
-    const balTx = live(s.txns.filter(inScope));
+    const balTx = live(s.txns.filter((t) => inScope(t) && inView(t)));
     const inMethod = (t, m) => (isXfer(t) ? t.method === m || t.methodTo === m : t.method === m);
     const balOf = (m) => balTx.filter((t) => inMethod(t, m)).map((t) => {
       const sign = isXfer(t) ? (t.methodTo === m ? 1 : -1)
@@ -1628,10 +1757,10 @@ class Component extends DCLogic {
 
     const admin = this.isAdmin;
     const E = cur(s.entryCode || acctCode(this.targetWho));
-    const b = (n) => raw(n, "THB");
 
     // ───── ประวัติการแก้ไข ─────
     const editsOf = (id) => (s.edits || []).filter((e) => e.txn_id === id);
+    const askTx = s.pendingDel != null ? s.txns.find((t) => t.id === s.pendingDel) : null;
     const histTx = s.historyId != null ? s.txns.find((t) => t.id === s.historyId) : null;
     const hist = histTx ? { tx: histTx, list: editsOf(histTx.id) } : null;
 
@@ -1712,15 +1841,15 @@ class Component extends DCLogic {
       cats: (() => {
         const by = {};
         monthExp.forEach((t) => { (by[t.cat] = by[t.cat] || []).push(t); });
-        const tot = expTHB || 1;
+        const tot = expV || 1;
         return Object.keys(by)
-          .map((k) => ({ k, list: by[k], v: sumTHB(by[k]) }))
+          .map((k) => ({ k, list: by[k], v: sumV(by[k]) }))
           .sort((a, c) => c.v - a.v)
           .map(({ k, list, v }) => {
             const pct = Math.round((v / tot) * 100);
             return {
-              name: catLabel(k), pct, amount: sumByCode(list),
-              w: Math.max(2, Math.min(100, (v / (expTHB || 1)) * 100)) + "%",
+              name: catLabel(k), pct, amount: fmt(v),
+              w: Math.max(2, Math.min(100, (v / tot) * 100)) + "%",
               bg: pct > 20 ? DARK : ACC,
             };
           });
@@ -1746,31 +1875,31 @@ class Component extends DCLogic {
         const rate = inc ? Math.round((net / inc) * 100) : 0;
         return {
           month: L.mFull[i],
-          income: sumByCode(yIncTx[i]), expense: sumByCode(yExpTx[i]),
-          net: sumByCode(signed(yIncTx[i].concat(yExpTx[i]))),
+          income: fmt(inc), expense: fmt(exp), net: fmt(net),
           rate: inc ? rate + "%" : "—",
           w: Math.max(0, Math.min(100, rate)) + "%",
         };
       }),
 
-      budgets: BUDGET_TARGETS.map(({ cat: name, limit }) => {
+      // งบประมาณผูกกับสกุลเงินตรง ๆ — แสดงเฉพาะอันที่ตรงกับสกุลที่กำลังดู ไม่มีการแปลงค่า
+      budgets: BUDGET_TARGETS.filter((t) => t.code === V).map(({ cat: name, limit }) => {
         const goal = name === SAVE_GOAL;
         const total = Number(limit) || 0;
         // ชื่อแปลผ่าน catLabel เหมือนหมวดหมู่ทั่วไป จึงเพิ่มบรรทัดใน config.js ได้เลย
         // ไม่ต้องมาแก้รายการคำแปลในไฟล์นี้ให้ตรงลำดับกันอีก
         const used = goal
-          ? Math.max(0, incTHB - expTHB)
-          : sumTHB(monthExp.filter((t) => t.cat === name));
+          ? Math.max(0, incV - expV)
+          : sumV(monthExp.filter((t) => t.cat === name));
         const over = goal ? used < total : used > total;
         const diff = Math.abs(total - used);
         return {
-          name: goal ? L.t_saveGoal : catLabel(name), used: b(used), total: b(total),
+          name: goal ? L.t_saveGoal : catLabel(name), used: fmt(used), total: fmt(total),
           w: Math.min(100, total ? (used / total) * 100 : 0) + "%",
           bg: over ? DARK : ACC,
           color: over ? DARK : MUTED,
           note: (goal
             ? (used >= total ? L.t_over + " " : L.t_left + " ")
-            : (over ? L.t_over + " " : L.t_left + " ")) + b(diff),
+            : (over ? L.t_over + " " : L.t_left + " ")) + fmt(diff),
         };
       }),
 
@@ -1789,8 +1918,18 @@ class Component extends DCLogic {
       cur: C.sym,
       curCode: C.code,
       curName: (L.curNames || {})[C.code] || C.name,
-      curOpts: CURRENCIES.map((c) => ({ code: c.code, label: c.sym + " " + c.code })),
-      onCur: (e) => this.setState({ curCode: e.target.value }),
+      // ตัวเลือก "สกุลเงินที่กำลังดู" — คุมทั้งหน้าเดือนและหน้าปี
+      viewOpts: CURRENCIES.map((c) => ({
+        label: c.sym + " " + c.code,
+        pick: () => this.setState({ viewCode: c.code }),
+        bg: c.code === V ? ACC : "transparent",
+        fg: c.code === V ? "#f2f2f3" : MUTED,
+      })),
+      viewNote: L.t_viewCur + " " + (cur(V).name || V),
+      viewSkipped: (() => {
+        const n = live(s.txns.filter((t) => inScope(t) && inMonthOf(t, s.vMonth, s.vYear) && !inView(t))).length;
+        return n ? L.t_otherCur.replace("{n}", n) : "";
+      })(),
       amountPh: E.dp ? "0.00" : "0",
       notePh: L.t_notePh,
       entrySym: E.sym,
@@ -1802,18 +1941,20 @@ class Component extends DCLogic {
       entryNote: L.t_keepNative + " " + E.code,
       rateNote: L.t_mainCur + " " + C.code,
       amountHint: "",
-      // ยอดเงินแยกตามสกุลจริง — เหลือ % กับเป้าหมายปีที่ยังคิดบนฐานบาท เพราะต้องเทียบข้ามสกุล
-      yIncome: sumByCode(yearInc), yExpense: sumByCode(yearExp),
-      yNet: sumByCode(signed(yearTx)),
-      yAvg: sumByCode(monthsUsed ? yearExp.map((t) => ({ ...t, val: valOf(t) / monthsUsed })) : []),
-      yGoalNote: L.t_goalYear + " " + b(YEAR_GOAL) + " · "
-        + Math.max(0, Math.round(((yIncTot - yExpTot) / YEAR_GOAL) * 100)) + "%",
+      // หน้าปีคิดสกุลเดียวทั้งหน้า ตัวเลขทุกช่องจึงเทียบกันได้โดยไม่ต้องแปลงค่า
+      yIncome: fmt(yIncTot), yExpense: fmt(yExpTot), yNet: fmt(yIncTot - yExpTot),
+      yAvg: fmt(monthsUsed ? yExpTot / monthsUsed : 0),
+      // เป้าหมายปีผูกกับสกุลของมันเอง ถ้าไม่ตรงกับที่กำลังดูก็ไม่แสดง แทนที่จะแปลงค่ามั่ว
+      yGoalNote: YEAR_GOAL.code === V && YEAR_GOAL.amount
+        ? L.t_goalYear + " " + fmt(YEAR_GOAL.amount) + " · "
+          + Math.max(0, Math.round(((yIncTot - yExpTot) / YEAR_GOAL.amount) * 100)) + "%"
+        : "",
       t_yPeakName: peakI >= 0 ? L.mFull[peakI] : "—",
-      yPeakNote: peakI >= 0 ? sumByCode(yExpTx[peakI]) : L.t_noData,
+      yPeakNote: peakI >= 0 ? fmt(yExp[peakI]) : L.t_noData,
       t_yRange: L.mAbbr[0] + "–" + L.mAbbr[Math.max(0, (s.vYear === NOW_Y ? NOW_M : 12) - 1)] + " " + s.vYear,
       t_yearTitle: L.t_yearWord + " " + s.vYear,
-      dayMax: "1–" + dim + " " + L.mAbbr[s.vMonth - 1] + " " + s.vYear + " · " + L.t_peak + " " + b(dayPeak),
-      mBal: sumByCode(signed(monthTx)), mInc: sumByCode(monthInc), mExp: sumByCode(monthExp),
+      dayMax: "1–" + dim + " " + L.mAbbr[s.vMonth - 1] + " " + s.vYear + " · " + L.t_peak + " " + fmt(dayPeak),
+      mBal: fmt(incV - expV), mInc: fmt(incV), mExp: fmt(expV),
       todayRows: live(s.txns.filter(isToday)).map((t) => ({
         name: t.name, cat: catLabel(t.cat),
         method: (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method),
@@ -1823,7 +1964,7 @@ class Component extends DCLogic {
       })),
       todayTotal: sumByCode(signed(live(s.txns.filter(isToday)))),
       t_todayDate: TODAY.getDate() + " " + L.mAbbr[TODAY.getMonth()] + " " + NOW_Y,
-      loginInc: b(yIncTot), loginExp: b(yExpTot), loginNet: b(yIncTot - yExpTot),
+      loginInc: fmt(yIncTot), loginExp: fmt(yExpTot), loginNet: fmt(yIncTot - yExpTot),
       kindOpts: [["all", L.t_typeAll], ["income", L.t_kindInc], ["expense", L.t_kindExp],
                  ["transfer", L.t_kindXfer], ["opening", L.t_kindOpen]].map(([id, label]) => ({
         label, pick: () => this.setState({ kindFilter: id }), ...sel(s.kindFilter === id),
@@ -1851,7 +1992,10 @@ class Component extends DCLogic {
             strike: dead ? "line-through" : "none",
             fade: dead ? "0.55" : "1",
             voidDisp: dead ? "inline-flex" : "none",
-            voidLabel: dead ? L.t_voidedBy + " " + t.voidBy + " · " + fmtWhen(t.voidAt) : "",
+            voidLabel: dead
+              ? L.t_voidedBy + " " + t.voidBy + " · " + fmtWhen(t.voidAt)
+                + (t.voidReason ? " · " + t.voidReason : "")
+              : "",
 
             // ป้าย "แก้ไขแล้ว" กดดูประวัติได้
             editedDisp: nEdits ? "inline-flex" : "none",
@@ -1866,15 +2010,28 @@ class Component extends DCLogic {
 
             // ปิ่นเท่านั้น — ยกเลิก (ไม่ลบทิ้ง) และกู้คืนได้ทีหลัง
             delDisp: admin ? "inline-flex" : "none",
-            delLabel: dead ? L.t_restore : asking ? L.t_confirmVoid : L.t_void,
+            // ปุ่มในแถวแค่เปิด/ปิดแผงกรอกเหตุผล ตัวยืนยันจริงอยู่ในแผง
+            delLabel: dead ? L.t_restore : asking ? L.t_notVoid : L.t_void,
             delBd: asking || dead ? DARK : "rgba(29,31,32,0.16)",
             delFg: asking ? "#f2f2f3" : dead ? DARK : MUTED,
             delBg: asking ? DARK : "transparent",
             del: !admin ? () => {}
               : dead ? this.setVoid(t.id, false)
-              : asking ? this.setVoid(t.id, true) : this.askDel(t.id),
+              : asking ? this.askDelClose : this.askDel(t.id),
           };
         }),
+
+      // แผงกรอกเหตุผลก่อนยกเลิก — เปิดเมื่อกดปุ่ม "ยกเลิก" ที่แถวใดแถวหนึ่ง
+      askDisp: askTx ? "flex" : "none",
+      askTitle: L.t_voidTitle,
+      askName: askTx ? (askTx.name || catLabel(askTx.cat)) + " · " + askTx.date : "",
+      askPh: L.t_reasonPh,
+      voidReason: s.voidReason || "",
+      onVoidReason: this.onVoidReason,
+      askConfirm: askTx ? this.setVoid(askTx.id, true) : () => {},
+      askCancel: this.askDelClose,
+      voidErr: s.voidErr || "",
+      voidErrDisp: s.voidErr ? "block" : "none",
 
       // แผงประวัติการแก้ไขของรายการที่กดเลือก
       histDisp: hist ? "flex" : "none",
@@ -1913,6 +2070,9 @@ class Component extends DCLogic {
       t_colEmail: L.t_colEmail, t_colPerm: L.t_colPerm, t_acctNote: L.t_acctNote,
       curCodes: CURRENCIES.map((c) => ({ code: c.code, label: c.sym + " " + c.code })),
       addCat: this.addCat,
+      catNote: !s.catsLive ? L.t_catsOffline : L.t_catsAdminOnly,
+      catNoteFg: !s.catsLive ? "#1d2d3d" : "#5d5d60",
+      addCatDisp: s.catsLive && admin ? "inline-flex" : "none",
       listTitle: s.period === "month" ? L.t_pMonthTitle : s.period === "year" ? L.t_pYearTitle : L.t_pAllTitle,
       periodOpts: [["month", L.t_pMonth], ["year", L.t_pYear], ["all", L.t_pAll]].map(([id, label]) => ({
         label, pick: () => this.setState({ period: id }), ...sel(s.period === id),
@@ -1929,32 +2089,33 @@ class Component extends DCLogic {
       listInc: L.t_sumInc + " " + sumByCode(shownLive.filter(isInc)),
       listExp: L.t_sumExp + " " + sumByCode(shownLive.filter(isExp)),
       // ยอดคงเหลือแยกช่องทาง
-      balCash: sumByCode(balOf(METHODS[0])),
-      balBank: sumByCode(balOf(METHODS[1])),
-      balCard: sumByCode(cardDebt),
+      balCash: fmt(sumV(balOf(METHODS[0]))),
+      balBank: fmt(sumV(balOf(METHODS[1]))),
+      balCard: fmt(sumV(cardDebt)),
       balNote: hasOpening ? L.t_balReal : L.t_balNoOpening,
       balNoteFg: hasOpening ? "#5d5d60" : "#416180",
 
-      kpiIncome: sumByCode(monthInc),
-      kpiExpense: sumByCode(monthExp),
-      kpiBalance: sumByCode(signed(monthTx)),
-      kpiAvg: sumByCode(monthExp.map((t) => ({ ...t, val: valOf(t) / elapsed }))),
+      kpiIncome: fmt(incV),
+      kpiExpense: fmt(expV),
+      kpiBalance: fmt(incV - expV),
+      kpiAvg: fmt(elapsed ? expV / elapsed : 0),
       kpiIncomeAlt: "", kpiExpenseAlt: "", kpiBalanceAlt: "", kpiAvgAlt: "",
       kpiScope: s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ" ? L.t_scopeAll : L.t_scopeOne + " " + s.filter,
-      kpiRate: incTHB ? Math.round(((incTHB - expTHB) / incTHB) * 100) + "%" : "—",
-      kpiExpNote: prevExpTHB
-        ? (expTHB <= prevExpTHB ? "↓ " : "↑ ") + Math.abs(Math.round(((expTHB - prevExpTHB) / prevExpTHB) * 1000) / 10) + "% " + L.t_fromPrev
+      kpiRate: incV ? Math.round(((incV - expV) / incV) * 100) + "%" : "—",
+      kpiExpNote: prevExpV
+        ? (expV <= prevExpV ? "↓ " : "↑ ") + Math.abs(Math.round(((expV - prevExpV) / prevExpV) * 1000) / 10) + "% " + L.t_fromPrev
         : "—",
       t_daysNote: activeDays + " / " + dim + " " + (lang === "lo" ? "ວັນມີລາຍການ" : "วันมีรายการ"),
       acctRows: (() => {
         const per = s.accts.map((a) => {
           const mine = live(s.txns.filter((t) => t.who === a.name && inMonthOf(t, s.vMonth, s.vYear)));
-          return { a, mine, exp: sumTHB(mine.filter(isExp)) };
+          // แท่งเทียบระหว่างบัญชีต้องเป็นสกุลเดียวกันถึงจะเทียบได้ ส่วนยอดในการ์ดยังแยกทุกสกุล
+          return { a, mine, exp: sumV(mine.filter((t) => isExp(t) && inView(t))) };
         });
         const maxExp = per.reduce((n, p) => (p.exp > n ? p.exp : n), 0);
         return per.map(({ a, mine, exp }) => {
           const inc = mine.filter(isInc), out = mine.filter(isExp);
-          const codes = CURRENCIES.map((c) => c.code).filter((c) => mine.some((t) => codeOfTx(t) === c));
+          const codes = CODES.filter((c) => mine.some((t) => codeOfTx(t) === c));
           return {
             name: a.name, role: lang === "lo" ? a.roleLo : a.roleTh,
             income: sumByCode(inc), expense: sumByCode(out), net: sumByCode(signed(mine)),
