@@ -477,7 +477,7 @@
       <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
         <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3,10.2px)">
           <div style="font-weight:600;font-size:20px">{{ sumIncLabel }}</div>
-          <div style="font-size:26px;color:#1d2d3d;white-space:nowrap">{{ sumInc }}</div>
+          <div style="font-size:26px;color:#1d2d3d">{{ sumInc }}</div>
         </div>
         <sc-for list="{{ incRows }}" as="r" hint-placeholder-count="2">
           <div style="display:flex;flex-direction:column;gap:4px">
@@ -492,7 +492,7 @@
       <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
         <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3,10.2px)">
           <div style="font-weight:600;font-size:20px">{{ sumExpLabel }}</div>
-          <div style="font-size:26px;color:var(--color-accent,#5980a6);white-space:nowrap">{{ sumExp }}</div>
+          <div style="font-size:26px;color:var(--color-accent,#5980a6)">{{ sumExp }}</div>
         </div>
         <sc-for list="{{ expRows }}" as="r" hint-placeholder-count="4">
           <div style="display:flex;flex-direction:column;gap:4px">
@@ -769,7 +769,7 @@
           </div>
           <div style="border:1px solid rgba(29,31,32,0.16);padding:13.6px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%">
             <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_bal }}</div>
-            <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:34px;line-height:1.2;white-space:nowrap">{{ mBal }}</div>
+            <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:34px;line-height:1.2">{{ mBal }}</div>
             <div style="display:flex;gap:16px;font-size:12px;color:#5d5d60"><span>รับ {{ mInc }}</span><span>จ่าย {{ mExp }}</span></div>
           </div>
           <div style="display:flex;align-items:flex-end;gap:3px;height:90px;border-bottom:1px solid rgba(29,31,32,0.16)">
@@ -1469,12 +1469,19 @@ class Component extends DCLogic {
     const activeDays = dayTot.filter((v) => v > 0).length;
 
     // ───── ยอดรายปีของปีที่กำลังดู ─────
-    const yInc = [], yExp = [];
-    for (let i = 0; i < 12; i++) { yInc.push(0); yExp.push(0); }
-    s.txns.filter((t) => inScope(t) && t.year === s.vYear).forEach((t) => {
+    // yInc/yExp = ยอดฐานบาท ใช้เฉพาะสิ่งที่ต้องเทียบข้ามสกุล (ความสูงกราฟ, %, เดือนที่จ่ายมากสุด)
+    // yIncTx/yExpTx = ตัวรายการจริง ส่งให้ sumByCode แยกแสดงตามสกุลเงินของแต่ละรายการ
+    const yInc = [], yExp = [], yIncTx = [], yExpTx = [];
+    for (let i = 0; i < 12; i++) { yInc.push(0); yExp.push(0); yIncTx.push([]); yExpTx.push([]); }
+    const yearTx = s.txns.filter((t) => inScope(t) && t.year === s.vYear);
+    yearTx.forEach((t) => {
       const i = t.month - 1;
-      if (i >= 0 && i < 12) { if (isInc(t)) yInc[i] += thb(t); else yExp[i] += thb(t); }
+      if (i < 0 || i > 11) return;
+      if (isInc(t)) { yInc[i] += thb(t); yIncTx[i].push(t); }
+      else { yExp[i] += thb(t); yExpTx[i].push(t); }
     });
+    const yearInc = yearTx.filter(isInc);
+    const yearExp = yearTx.filter((t) => !isInc(t));
     const yPeakV = Math.max(yInc.reduce((a, v) => (v > a ? v : a), 0), yExp.reduce((a, v) => (v > a ? v : a), 0));
     const yIncTot = yInc.reduce((a, v) => a + v, 0), yExpTot = yExp.reduce((a, v) => a + v, 0);
     const monthsUsed = yExp.filter((v) => v > 0).length || yInc.filter((v) => v > 0).length;
@@ -1610,8 +1617,10 @@ class Component extends DCLogic {
         const exp = yExp[i], net = inc - exp;
         const rate = inc ? Math.round((net / inc) * 100) : 0;
         return {
-          month: L.mFull[i], income: b(inc), expense: b(exp),
-          net: b(net), rate: inc ? rate + "%" : "—",
+          month: L.mFull[i],
+          income: sumByCode(yIncTx[i]), expense: sumByCode(yExpTx[i]),
+          net: sumByCode(signed(yIncTx[i].concat(yExpTx[i]))),
+          rate: inc ? rate + "%" : "—",
           w: Math.max(0, Math.min(100, rate)) + "%",
         };
       }),
@@ -1662,16 +1671,18 @@ class Component extends DCLogic {
       entryNote: L.t_keepNative + " " + E.code,
       rateNote: L.t_mainCur + " " + C.code,
       amountHint: "",
-      yIncome: b(yIncTot), yExpense: b(yExpTot), yNet: b(yIncTot - yExpTot),
-      yAvg: b(monthsUsed ? yExpTot / monthsUsed : 0),
+      // ยอดเงินแยกตามสกุลจริง — เหลือ % กับเป้าหมายปีที่ยังคิดบนฐานบาท เพราะต้องเทียบข้ามสกุล
+      yIncome: sumByCode(yearInc), yExpense: sumByCode(yearExp),
+      yNet: sumByCode(signed(yearTx)),
+      yAvg: sumByCode(monthsUsed ? yearExp.map((t) => ({ ...t, val: valOf(t) / monthsUsed })) : []),
       yGoalNote: L.t_goalYear + " " + b(YEAR_GOAL) + " · "
         + Math.max(0, Math.round(((yIncTot - yExpTot) / YEAR_GOAL) * 100)) + "%",
       t_yPeakName: peakI >= 0 ? L.mFull[peakI] : "—",
-      yPeakNote: peakI >= 0 ? b(yExp[peakI]) : L.t_noData,
+      yPeakNote: peakI >= 0 ? sumByCode(yExpTx[peakI]) : L.t_noData,
       t_yRange: L.mAbbr[0] + "–" + L.mAbbr[Math.max(0, (s.vYear === NOW_Y ? NOW_M : 12) - 1)] + " " + s.vYear,
       t_yearTitle: L.t_yearWord + " " + s.vYear,
       dayMax: "1–" + dim + " " + L.mAbbr[s.vMonth - 1] + " " + s.vYear + " · " + L.t_peak + " " + b(dayPeak),
-      mBal: b(incTHB - expTHB), mInc: b(incTHB), mExp: b(expTHB),
+      mBal: sumByCode(signed(monthTx)), mInc: sumByCode(monthInc), mExp: sumByCode(monthExp),
       todayRows: s.txns.filter(isToday).map((t) => ({
         name: t.name, cat: catLabel(t.cat),
         method: (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method),
