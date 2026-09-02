@@ -47,6 +47,10 @@
     .hl-2col  { grid-template-columns: minmax(0,1fr) !important; }
     .hl-kpi4  { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
     .hl-page  { padding: 16px !important; gap: 14px !important; }
+    /* การ์ดยอดคงเหลือแยกช่องทาง + ปุ่มเลือกประเภท 4 แบบ */
+    .hl-kpi3  { gap: 14px !important; }
+    .hl-kinds { width: 100% !important; }
+    .hl-kinds > button { flex: 1 1 50% !important; padding: 9px 8px !important; font-size: 15px !important; }
     .hl-hd    { padding: 0 16px !important; }
   }
 
@@ -79,6 +83,8 @@
 
     .hl-kpi4  { gap: 10px !important; }
     .hl-page  { padding: 14px !important; }
+    /* ยอดแยกช่องทางเรียงเดี่ยว — ยอดหลายสกุลยาวเกินกว่าจะบีบ 3 ช่อง */
+    .hl-kpi3  { grid-template-columns: minmax(0,1fr) !important; gap: 12px !important; }
 
     /* การ์ดบัญชีเรียงเดี่ยว — ยอดหลายสกุลยาวเกินกว่าจะบีบ 3 ช่อง
        ยกเว้นสถิติในหน้า login ที่สั้น ให้คง 3 ช่องไว้ */
@@ -243,6 +249,28 @@
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25">{{ kpiAvg }}</div>
         <div style="font-size:13px;color:#416180;white-space:nowrap">{{ kpiAvgAlt }}</div>
         <div style="font-size:13px;color:#5d5d60">{{ t_daysNote }}</div>
+      </div>
+    </div>
+
+    <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:13.6px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:13.6px;flex-wrap:wrap">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_balTitle }}</div>
+        <div style="font-size:12px;color:{{ balNoteFg }}">{{ balNote }}</div>
+      </div>
+      <div class="hl-kpi3" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20.4px">
+        <div style="border-left:3px solid #1d2d3d;padding-left:13.6px;min-width:0">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_balCash }}</div>
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(19px,1.7vw,27px);line-height:1.25">{{ balCash }}</div>
+        </div>
+        <div style="border-left:3px solid #5980a6;padding-left:13.6px;min-width:0">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_balBank }}</div>
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(19px,1.7vw,27px);line-height:1.25">{{ balBank }}</div>
+        </div>
+        <div style="border-left:3px solid #94bce3;padding-left:13.6px;min-width:0">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_balCard }}</div>
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(19px,1.7vw,27px);line-height:1.25;color:#416180">{{ balCard }}</div>
+          <div style="font-size:12px;color:#5d5d60">{{ t_balCardNote }}</div>
+        </div>
       </div>
     </div>
 
@@ -514,11 +542,11 @@
         <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content max-content;gap:var(--space-3,10.2px);padding:11px 0;border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08));align-items:center" style-hover="background:var(--color-accent-100,#eef6ff)">
           <span style="width:4px;height:20px;background:{{ r.mark }}"></span>
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.date }}</span>
-          <span style="display:flex;align-items:center;gap:8px;min-width:0"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span><span style="font-size:11px;letter-spacing:.1em;color:var(--color-accent-700,#416180);flex:none">{{ r.flag }}</span></span>
-          <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.cat }}</span>
-          <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.method }}</span>
-          <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.who }}</span>
-          <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ r.color }};white-space:nowrap">{{ r.amount }}</span>
+          <span style="display:flex;align-items:center;gap:8px;min-width:0;opacity:{{ r.fade }}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:{{ r.strike }}">{{ r.name }}</span><span style="font-size:11px;letter-spacing:.1em;color:var(--color-accent-700,#416180);flex:none">{{ r.flag }}</span><span style="display:{{ r.voidDisp }};font-size:11px;letter-spacing:.04em;color:#98989b;flex:none;white-space:nowrap">{{ r.voidLabel }}</span></span>
+          <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.cat }}</span>
+          <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.method }}</span>
+          <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.who }}</span>
+          <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ r.color }};white-space:nowrap;text-decoration:{{ r.strike }}">{{ r.amount }}</span>
           <span style="display:flex;gap:6px;align-items:center;padding-left:10px">
             <button onClick="{{ r.openHistory }}" style="display:{{ r.editedDisp }};border:1px solid #94bce3;background:{{ r.editedBg }};color:{{ r.editedFg }};padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ r.editedLabel }}</button>
             <button onClick="{{ r.edit }}" style="display:{{ r.editDisp }};border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:4px 11px;font-size:12px" style-hover="background:#eef6ff">{{ r.editLabel }}</button>
@@ -566,9 +594,13 @@
 
       <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:20.4px">
 
-        <div style="display:flex;border:1px solid rgba(29,31,32,0.16);width:fit-content">
-          <button onClick="{{ setExpense }}" style="border:0;padding:9px 24px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.06em;background:{{ expBg }};color:{{ expFg }}">{{ t_kindExp }}</button>
-          <button onClick="{{ setIncome }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 24px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.06em;background:{{ incBg }};color:{{ incFg }}">{{ t_kindInc }}</button>
+        <div>
+          <div class="hl-kinds" style="display:flex;border:1px solid rgba(29,31,32,0.16);width:fit-content;flex-wrap:wrap">
+            <sc-for list="{{ kindBtns }}" as="k" hint-placeholder-count="4">
+              <button onClick="{{ k.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 20px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.06em;background:{{ k.bg }};color:{{ k.fg }}">{{ k.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:{{ kindNoteDisp }};margin-top:8px;font-size:13px;color:#416180;max-width:52ch;line-height:1.5">{{ kindNote }}</div>
         </div>
 
         <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20.4px">
@@ -593,11 +625,20 @@
           </div>
         </div>
 
-        <div style="display:flex;flex-direction:column;gap:10.2px">
+        <div style="display:{{ catDisp }};flex-direction:column;gap:10.2px">
           <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_cat }}</label>
           <div style="display:flex;flex-wrap:wrap;gap:8px">
             <sc-for list="{{ chips }}" as="c" hint-placeholder-count="8">
               <button onClick="{{ c.pick }}" style="border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};padding:7px 14px;font-size:14px">{{ c.name }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:{{ xferDisp }};flex-direction:column;gap:10.2px">
+          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_to }}</label>
+          <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+            <sc-for list="{{ toMethods }}" as="m" hint-placeholder-count="3">
+              <button onClick="{{ m.pick }}" style="flex:1;border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 0;font-size:14px;background:{{ m.bg }};color:{{ m.fg }}">{{ m.name }}</button>
             </sc-for>
           </div>
         </div>
@@ -872,7 +913,19 @@ const T = {
     t_edited: "แก้ไขแล้ว", t_histTitle: "ประวัติการแก้ไข", t_editedBy: "แก้โดย",
     t_close: "ปิด", t_blank: "(ว่าง)",
     fields: { ts: "วันที่", name: "รายการ", cat: "หมวดหมู่", method: "ช่องทาง",
+              method_to: "โอนไปยัง", void: "สถานะ",
               kind: "ประเภท", amt: "จำนวนเงิน", code: "สกุลเงิน", flag: "รายการประจำ", who: "บัญชี" },
+    t_kindXfer: "โอนระหว่างช่องทาง", t_kindOpen: "ยอดยกมา", t_to: "ไปยัง",
+    t_needTo: "เลือกช่องทางปลายทางที่ไม่ใช่ช่องทางเดิม",
+    t_xferNote: "ย้ายเงินระหว่างช่องทาง เช่น ถอน ATM (โอน → เงินสด) หรือจ่ายบัตร (โอน → บัตร) ไม่นับเป็นรายรับหรือรายจ่าย",
+    t_openNote: "เงินตั้งต้นที่มีอยู่ก่อนเริ่มใช้สมุดนี้ ใส่ครั้งเดียวต่อช่องทาง ไม่นับเป็นรายรับของเดือนไหน",
+    t_balTitle: "ยอดคงเหลือแยกช่องทาง",
+    t_balCash: "เงินสดคงเหลือ", t_balBank: "เงินในบัญชี", t_balCard: "ยอดค้างบัตร",
+    t_balCardNote: "หนี้ที่ต้องจ่าย ไม่ใช่เงินคงเหลือ",
+    t_balReal: "สะสมจากยอดยกมาถึงวันนี้",
+    t_balNoOpening: "ยังไม่ได้ใส่ยอดยกมา — นี่คือยอดตั้งแต่วันแรกที่บันทึก ไม่ใช่เงินจริงในกระเป๋า",
+    t_void: "ยกเลิก", t_confirmVoid: "ยืนยันยกเลิก?", t_restore: "กู้คืน",
+    t_voidedBy: "ยกเลิกโดย",
     t_acctNote: "รหัสผ่านและสิทธิ์ admin/member แก้ที่ Supabase เท่านั้น (Authentication → Users และตาราง profiles) — แก้จากหน้านี้ไม่ได้ เพราะฐานข้อมูลไม่เปิดให้เขียน",
     t_edit: "แก้", t_del: "ลบ", t_confirmDel: "ยืนยัน?", t_cancel: "ยกเลิก",
     t_editing: "กำลังแก้ไขรายการ", t_saveEdit: "บันทึกการแก้ไข",
@@ -953,7 +1006,19 @@ const T = {
     t_edited: "ແກ້ໄຂແລ້ວ", t_histTitle: "ປະຫວັດການແກ້ໄຂ", t_editedBy: "ແກ້ໂດຍ",
     t_close: "ປິດ", t_blank: "(ຫວ່າງ)",
     fields: { ts: "ວັນທີ", name: "ລາຍການ", cat: "ໝວດໝູ່", method: "ຊ່ອງທາງ",
+              method_to: "ໂອນໄປຫາ", void: "ສະຖານະ",
               kind: "ປະເພດ", amt: "ຈຳນວນເງິນ", code: "ສະກຸນເງິນ", flag: "ລາຍການປະຈຳ", who: "ບັນຊີ" },
+    t_kindXfer: "ໂອນລະຫວ່າງຊ່ອງທາງ", t_kindOpen: "ຍອດຍົກມາ", t_to: "ໄປຫາ",
+    t_needTo: "ເລືອກຊ່ອງທາງປາຍທາງທີ່ບໍ່ແມ່ນຊ່ອງທາງເດີມ",
+    t_xferNote: "ຍ້າຍເງິນລະຫວ່າງຊ່ອງທາງ ເຊັ່ນ ຖອນ ATM (ໂອນ → ເງິນສົດ) ຫຼືຈ່າຍບັດ (ໂອນ → ບັດ) ບໍ່ນັບເປັນລາຍຮັບຫຼືລາຍຈ່າຍ",
+    t_openNote: "ເງິນຕັ້ງຕົ້ນທີ່ມີຢູ່ກ່ອນເລີ່ມໃຊ້ປຶ້ມນີ້ ໃສ່ຄັ້ງດຽວຕໍ່ຊ່ອງທາງ ບໍ່ນັບເປັນລາຍຮັບຂອງເດືອນໃດ",
+    t_balTitle: "ຍອດຄົງເຫຼືອແຍກຊ່ອງທາງ",
+    t_balCash: "ເງິນສົດຄົງເຫຼືອ", t_balBank: "ເງິນໃນບັນຊີ", t_balCard: "ຍອດຄ້າງບັດ",
+    t_balCardNote: "ໜີ້ທີ່ຕ້ອງຈ່າຍ ບໍ່ແມ່ນເງິນຄົງເຫຼືອ",
+    t_balReal: "ສະສົມຈາກຍອດຍົກມາເຖິງມື້ນີ້",
+    t_balNoOpening: "ຍັງບໍ່ໄດ້ໃສ່ຍອດຍົກມາ — ນີ້ແມ່ນຍອດຕັ້ງແຕ່ມື້ທຳອິດທີ່ບັນທຶກ ບໍ່ແມ່ນເງິນຈິງໃນກະເປົາ",
+    t_void: "ຍົກເລີກ", t_confirmVoid: "ຢືນຢັນຍົກເລີກ?", t_restore: "ກູ້ຄືນ",
+    t_voidedBy: "ຍົກເລີກໂດຍ",
     t_acctNote: "ລະຫັດຜ່ານແລະສິດ admin/member ແກ້ທີ່ Supabase ເທົ່ານັ້ນ — ແກ້ຈາກໜ້ານີ້ບໍ່ໄດ້",
     t_edit: "ແກ້", t_del: "ລຶບ", t_confirmDel: "ຢືນຢັນ?", t_cancel: "ຍົກເລີກ",
     t_editing: "ກຳລັງແກ້ໄຂລາຍການ", t_saveEdit: "ບັນທຶກການແກ້ໄຂ",
@@ -995,6 +1060,10 @@ const CFG = window.LEDGER_CONFIG || {};
 
 const CHIPS = ["อาหาร", "ที่อยู่อาศัย", "เดินทาง", "ลูก", "ของใช้ในบ้าน", "สุขภาพ", "บันเทิง", "อื่น ๆ"];
 const METHODS = ["เงินสด", "โอน", "บัตร"];
+const KINDS = ["expense", "income", "transfer", "opening"];
+const KIND_LABEL = (L) => ({
+  expense: L.t_kindExp, income: L.t_kindInc, transfer: L.t_kindXfer, opening: L.t_kindOpen,
+});
 // รายชื่อบัญชีสำหรับหน้า login — ไม่มีรหัสผ่านในโค้ดอีกต่อไป
 // ชื่อจริงกับสิทธิ์ admin/member อ่านจากตาราง profiles หลังล็อกอินสำเร็จ
 const ACCOUNTS = (CFG.ACCOUNTS && CFG.ACCOUNTS.length ? CFG.ACCOUNTS : [
@@ -1137,8 +1206,12 @@ const DB = {
     await call(REST("txns") + "?id=eq." + encodeURIComponent(id),
       { method: "PATCH", body: JSON.stringify(patch) }, "แก้ไขไม่สำเร็จ");
   },
-  async remove(id) {
-    await call(REST("txns") + "?id=eq." + encodeURIComponent(id), { method: "DELETE" }, "ลบไม่สำเร็จ");
+  // ยกเลิก / กู้คืน — ไม่ลบทิ้ง แถวยังอยู่ ประวัติการแก้ไขจึงไม่หาย
+  // ส่งแค่ void_at ไป ฐานข้อมูลเขียน "ใครยกเลิก เมื่อไหร่" เองด้วย trigger
+  async setVoid(id, on) {
+    await call(REST("txns") + "?id=eq." + encodeURIComponent(id),
+      { method: "PATCH", body: JSON.stringify({ void_at: on ? new Date().toISOString() : null }) },
+      on ? "ยกเลิกรายการไม่สำเร็จ" : "กู้คืนรายการไม่สำเร็จ");
   },
 };
 
@@ -1162,10 +1235,15 @@ const fromDb = (r) => {
     month: mo, year: yAD + 543, day,
     date: pad2(day) + " " + M_ABBR[mo - 1] + " " + String(yAD + 543).slice(-2),
     name: r.name || "", cat: r.cat || "", method: r.method || "", who: r.who || "",
+    methodTo: r.method_to || "",
+    voidAt: r.void_at || null, voidBy: r.void_by || "",
     kind: r.kind, val, code: r.code || "THB", flag: r.flag || "",
-    amount: (r.kind === "income" ? "+" : "−") + val.toLocaleString("en-US"),
+    amount: (SIGN_OF[r.kind] || "−") + val.toLocaleString("en-US"),
   };
 };
+
+// income/opening เข้ากระเป๋า · expense ออก · transfer ย้ายที่ ไม่เข้าไม่ออก
+const SIGN_OF = { income: "+", opening: "+", expense: "−", transfer: "→" };
 
 const CURRENCIES = [
   { code: "THB", sym: "฿", rate: 1, dp: 0, name: "บาท" },
@@ -1212,6 +1290,7 @@ class Component extends DCLogic {
     kind: "expense",
     cat: "อาหาร",
     method: "บัตร",
+    methodTo: "",
     who: "ปิ่น",
     amount: "",
     note: "",
@@ -1345,16 +1424,26 @@ class Component extends DCLogic {
     const who = this.targetWho;
     if (!who) return this.setState({ saved: this.L.t_needAcct });
     const code = s.entryCode || (s.accts.find((a) => a.name === who) || {}).code || "THB";
+
+    // โอนระหว่างช่องทางต้องมีปลายทาง และต้องไม่ใช่ช่องทางเดิม (ฐานข้อมูลก็บังคับซ้ำอีกชั้น)
+    const xfer = s.kind === "transfer";
+    const to = xfer ? (s.methodTo || METHODS.find((m) => m !== s.method)) : "";
+    if (xfer && to === s.method) return this.setState({ saved: this.L.t_needTo });
+
+    // โอนกับยอดยกมาไม่มีหมวดหมู่ ใช้ชื่อประเภทเป็นชื่อรายการตั้งต้นแทน
+    const plain = s.kind === "income" || s.kind === "expense";
+    const label = KIND_LABEL(this.L)[s.kind] || s.kind;
     const row = {
       ts: s.date || TODAY_ISO,
-      name: s.note || (s.kind === "income" ? "รายรับ" : s.cat),
-      cat: s.kind === "income" ? "รายรับ" : s.cat,
+      name: s.note || (plain ? (s.kind === "income" ? "รายรับ" : s.cat) : label),
+      cat: plain ? (s.kind === "income" ? "รายรับ" : s.cat) : "",
       method: s.method,
+      method_to: to,
       who,
       kind: s.kind,
       amt: n,
       code,
-      flag: s.repeat ? "ประจำ" : "",
+      flag: s.repeat && plain ? "ประจำ" : "",
     };
 
     this.setState({ busy: true, saved: "" });
@@ -1368,7 +1457,7 @@ class Component extends DCLogic {
       }
       const done = s.editId != null ? "แก้ไขแล้ว" : this.L.t_savedOk;
       this.setState({
-        busy: false, editId: null, entryCode: null, amount: "", note: "", repeat: false,
+        busy: false, editId: null, entryCode: null, amount: "", note: "", repeat: false, methodTo: "",
         saved: done + " · " + code + " → " + this.L.t_toAcct + " " + who,
       });
       this.reload();
@@ -1385,14 +1474,14 @@ class Component extends DCLogic {
     if (!this.canEdit(t)) return;
     this.setState({
       screen: "add", editId: t.id, pendingDel: null, saved: "", historyId: null,
-      kind: t.kind, cat: t.kind === "income" ? this.state.cat : t.cat,
-      method: t.method, who: t.who, amount: String(t.val),
+      kind: t.kind, cat: t.cat || this.state.cat,
+      method: t.method, methodTo: t.methodTo || "", who: t.who, amount: String(t.val),
       note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
     });
   };
 
   cancelEdit = () => this.setState({
-    editId: null, amount: "", note: "", repeat: false, entryCode: null, saved: "",
+    editId: null, amount: "", note: "", repeat: false, entryCode: null, saved: "", methodTo: "",
   });
 
   showHistory = (id) => () => this.setState({ historyId: this.state.historyId === id ? null : id });
@@ -1400,11 +1489,12 @@ class Component extends DCLogic {
 
   askDel = (id) => () => this.setState({ pendingDel: id });
 
-  confirmDel = (id) => async () => {
+  // ยกเลิก (on=true) / กู้คืน (on=false) — ไม่ลบทิ้ง ประวัติการแก้ไขจึงอยู่ครบ
+  setVoid = (id, on) => async () => {
     if (!this.isAdmin || this.state.busy) return;
     this.setState({ busy: true });
     try {
-      await DB.remove(id);
+      await DB.setVoid(id, on);
       this.setState({ busy: false, pendingDel: null, editId: this.state.editId === id ? null : this.state.editId });
       this.reload();
     } catch (e) {
@@ -1429,8 +1519,17 @@ class Component extends DCLogic {
     const valOf = (t) => t.val || 0;
     const codeOfTx = (t) => t.code || codeOf(t.who);
     const thb = (t) => valOf(t) / cur(codeOfTx(t)).rate;      // แปลงเป็นฐานบาทเพื่อเทียบข้ามสกุล
-    const isInc = (t) => t.kind === "income";
-    const signed = (list) => list.map((t) => ({ ...t, val: (isInc(t) ? 1 : -1) * valOf(t) }));
+
+    const isInc   = (t) => t.kind === "income";
+    const isExp   = (t) => t.kind === "expense";
+    const isXfer  = (t) => t.kind === "transfer";   // ย้ายเงินระหว่างช่องทาง ไม่ใช่รับ ไม่ใช่จ่าย
+    const isOpen  = (t) => t.kind === "opening";    // ยอดยกมา ไม่ใช่รายรับของงวดไหน
+    const isVoid  = (t) => !!t.voidAt;              // ยกเลิกแล้ว — ยังอยู่ในตาราง แต่ไม่นับในยอดใด ๆ
+    const live    = (list) => list.filter((t) => !isVoid(t));
+
+    // ทิศทางเงินสำหรับยอดรับ-จ่าย-คงเหลือ: โอนกับยอดยกมาไม่นับ (เป็น 0)
+    const flow = (t) => (isInc(t) ? 1 : isExp(t) ? -1 : 0);
+    const signed = (list) => list.map((t) => ({ ...t, val: flow(t) * valOf(t) }));
     const sumTHB = (list) => list.reduce((n, t) => n + thb(t), 0);
     const sumByCode = (list) => {
       const by = {};
@@ -1445,12 +1544,15 @@ class Component extends DCLogic {
     const inPeriod = (t) => s.period === "all" ? true
       : s.period === "year" ? t.year === s.vYear
       : inMonthOf(t, s.vMonth, s.vYear);
-    const shown = s.txns.filter((t) => inScope(t) && inPeriod(t) && (s.kindFilter === "all" || (s.kindFilter === "income") === isInc(t)));
+    // หน้ารายการยังโชว์รายการที่ยกเลิกแล้ว (ขีดฆ่าไว้ ให้กู้คืนได้) แต่ทุกยอดรวมไม่นับ
+    const kindOk = (t) => s.kindFilter === "all" || t.kind === s.kindFilter;
+    const shown = s.txns.filter((t) => inScope(t) && inPeriod(t) && kindOk(t));
+    const shownLive = live(shown);
 
     // ───── ยอดของเดือนที่กำลังดู ─────
-    const monthTx = s.txns.filter((t) => inScope(t) && inMonthOf(t, s.vMonth, s.vYear));
+    const monthTx = live(s.txns.filter((t) => inScope(t) && inMonthOf(t, s.vMonth, s.vYear)));
     const monthInc = monthTx.filter(isInc);
-    const monthExp = monthTx.filter((t) => !isInc(t));
+    const monthExp = monthTx.filter(isExp);
     const incTHB = sumTHB(monthInc), expTHB = sumTHB(monthExp);
 
     const dim = daysInMonth(s.vMonth, s.vYear);
@@ -1459,7 +1561,7 @@ class Component extends DCLogic {
 
     const pm = s.vMonth === 1 ? 12 : s.vMonth - 1;
     const py = s.vMonth === 1 ? s.vYear - 1 : s.vYear;
-    const prevExpTHB = sumTHB(s.txns.filter((t) => inScope(t) && inMonthOf(t, pm, py) && !isInc(t)));
+    const prevExpTHB = sumTHB(live(s.txns.filter((t) => inScope(t) && inMonthOf(t, pm, py) && isExp(t))));
 
     // ───── รายจ่ายรายวันของเดือนนี้ ─────
     const dayTot = [];
@@ -1473,15 +1575,15 @@ class Component extends DCLogic {
     // yIncTx/yExpTx = ตัวรายการจริง ส่งให้ sumByCode แยกแสดงตามสกุลเงินของแต่ละรายการ
     const yInc = [], yExp = [], yIncTx = [], yExpTx = [];
     for (let i = 0; i < 12; i++) { yInc.push(0); yExp.push(0); yIncTx.push([]); yExpTx.push([]); }
-    const yearTx = s.txns.filter((t) => inScope(t) && t.year === s.vYear);
+    const yearTx = live(s.txns.filter((t) => inScope(t) && t.year === s.vYear));
     yearTx.forEach((t) => {
       const i = t.month - 1;
       if (i < 0 || i > 11) return;
       if (isInc(t)) { yInc[i] += thb(t); yIncTx[i].push(t); }
-      else { yExp[i] += thb(t); yExpTx[i].push(t); }
+      else if (isExp(t)) { yExp[i] += thb(t); yExpTx[i].push(t); }
     });
     const yearInc = yearTx.filter(isInc);
-    const yearExp = yearTx.filter((t) => !isInc(t));
+    const yearExp = yearTx.filter(isExp);
     const yPeakV = Math.max(yInc.reduce((a, v) => (v > a ? v : a), 0), yExp.reduce((a, v) => (v > a ? v : a), 0));
     const yIncTot = yInc.reduce((a, v) => a + v, 0), yExpTot = yExp.reduce((a, v) => a + v, 0);
     const monthsUsed = yExp.filter((v) => v > 0).length || yInc.filter((v) => v > 0).length;
@@ -1489,7 +1591,7 @@ class Component extends DCLogic {
     yExp.forEach((v, i) => { if (v > 0 && (peakI < 0 || v > yExp[peakI])) peakI = i; });
     const isFuture = (i) => s.vYear === NOW_Y && i + 1 > NOW_M;
     const breakdown = (income) => {
-      const rows = shown.filter((t) => t.amount.startsWith("+") === income);
+      const rows = shownLive.filter(income ? isInc : isExp);
       const byCat = {};
       rows.forEach((t) => { (byCat[t.cat] = byCat[t.cat] || []).push(t); });
       const share = (list) => list.reduce((a, t) => a + valOf(t) / cur(codeOfTx(t)).rate, 0);
@@ -1502,6 +1604,20 @@ class Component extends DCLogic {
         };
       });
     };
+    // ───── ยอดคงเหลือแยกช่องทาง ─────
+    // สะสมตั้งแต่รายการแรกจนถึงวันนี้ ไม่ผูกกับเดือนที่กำลังดู เพราะเงินในกระเป๋าไม่รีเซ็ตทุกเดือน
+    // เงินสด/โอน = เงินจริงที่มี · บัตร = หนี้ที่ต้องจ่าย จึงกลับเครื่องหมายตอนแสดง
+    const balTx = live(s.txns.filter(inScope));
+    const inMethod = (t, m) => (isXfer(t) ? t.method === m || t.methodTo === m : t.method === m);
+    const balOf = (m) => balTx.filter((t) => inMethod(t, m)).map((t) => {
+      const sign = isXfer(t) ? (t.methodTo === m ? 1 : -1)
+        : isInc(t) || isOpen(t) ? 1
+        : isExp(t) ? -1 : 0;
+      return { ...t, val: sign * valOf(t) };
+    });
+    const cardDebt = balOf(METHODS[2]).map((t) => ({ ...t, val: -valOf(t) }));
+    const hasOpening = balTx.some(isOpen);
+
     const admin = this.isAdmin;
     const E = cur(s.entryCode || acctCode(this.targetWho));
     const b = (n) => raw(n, "THB");
@@ -1521,9 +1637,9 @@ class Component extends DCLogic {
     const fieldVal = (f, v) => {
       if (v == null || v === "") return "";
       if (f === "amt") return Number(v).toLocaleString("en-US");
-      if (f === "kind") return v === "income" ? L.t_kindInc : L.t_kindExp;
+      if (f === "kind") return KIND_LABEL(L)[v] || v;
       if (f === "cat") return catLabel(v);
-      if (f === "method") { const i = METHODS.indexOf(v); return i >= 0 ? L.methods[i] : v; }
+      if (f === "method" || f === "method_to") { const i = METHODS.indexOf(v); return i >= 0 ? L.methods[i] : v; }
       if (f === "ts") { const p = String(v).slice(0, 10).split("-");
         return pad2(Number(p[2])) + " " + M_ABBR[Number(p[1]) - 1] + " " + (Number(p[0]) + 543); }
       return String(v);
@@ -1683,34 +1799,44 @@ class Component extends DCLogic {
       t_yearTitle: L.t_yearWord + " " + s.vYear,
       dayMax: "1–" + dim + " " + L.mAbbr[s.vMonth - 1] + " " + s.vYear + " · " + L.t_peak + " " + b(dayPeak),
       mBal: sumByCode(signed(monthTx)), mInc: sumByCode(monthInc), mExp: sumByCode(monthExp),
-      todayRows: s.txns.filter(isToday).map((t) => ({
+      todayRows: live(s.txns.filter(isToday)).map((t) => ({
         name: t.name, cat: catLabel(t.cat),
         method: (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method),
         who: t.who,
         amount: (isInc(t) ? "+" : "−") + raw(valOf(t), codeOfTx(t)),
         color: isInc(t) ? DARK : INK,
       })),
-      todayTotal: sumByCode(signed(s.txns.filter(isToday))),
+      todayTotal: sumByCode(signed(live(s.txns.filter(isToday)))),
       t_todayDate: TODAY.getDate() + " " + L.mAbbr[TODAY.getMonth()] + " " + NOW_Y,
       loginInc: b(yIncTot), loginExp: b(yExpTot), loginNet: b(yIncTot - yExpTot),
-      kindOpts: [["all", L.t_typeAll], ["income", L.t_kindInc], ["expense", L.t_kindExp]].map(([id, label]) => ({
+      kindOpts: [["all", L.t_typeAll], ["income", L.t_kindInc], ["expense", L.t_kindExp],
+                 ["transfer", L.t_kindXfer], ["opening", L.t_kindOpen]].map(([id, label]) => ({
         label, pick: () => this.setState({ kindFilter: id }), ...sel(s.kindFilter === id),
       })),
       listRows: shown.map((t) => {
           const inc = isInc(t);
           const mi = METHODS.indexOf(t.method);
+          const ti = METHODS.indexOf(t.methodTo);
           const asking = s.pendingDel === t.id;
-          const mine = this.canEdit(t);
+          const mine = this.canEdit(t) && !isVoid(t);
           const nEdits = editsOf(t.id).length;
           const open = s.historyId === t.id;
+          const dead = isVoid(t);
+          const mLabel = mi >= 0 ? L.methods[mi] : t.method;
           return {
             date: t.date, name: t.name, who: t.who,
-            cat: catLabel(t.cat),
-            method: mi >= 0 ? L.methods[mi] : t.method,
+            cat: isXfer(t) || isOpen(t) ? KIND_LABEL(L)[t.kind] : catLabel(t.cat),
+            method: isXfer(t) ? mLabel + " → " + (ti >= 0 ? L.methods[ti] : t.methodTo) : mLabel,
             flag: t.flag ? L.t_recurFlag : "",
-            amount: (inc ? "+" : "−") + raw(valOf(t), codeOfTx(t)),
-            color: inc ? DARK : INK,
-            mark: inc ? DARK : ACC,
+            amount: (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+            color: dead ? "#98989b" : inc || isOpen(t) ? DARK : INK,
+            mark: dead ? "#d4d4d7" : isXfer(t) || isOpen(t) ? "#94bce3" : inc ? DARK : ACC,
+
+            // รายการที่ยกเลิกแล้ว — ขีดฆ่า จางลง แต่ยังอยู่ให้กู้คืนได้
+            strike: dead ? "line-through" : "none",
+            fade: dead ? "0.55" : "1",
+            voidDisp: dead ? "inline-flex" : "none",
+            voidLabel: dead ? L.t_voidedBy + " " + t.voidBy + " · " + fmtWhen(t.voidAt) : "",
 
             // ป้าย "แก้ไขแล้ว" กดดูประวัติได้
             editedDisp: nEdits ? "inline-flex" : "none",
@@ -1723,12 +1849,15 @@ class Component extends DCLogic {
             editLabel: L.t_edit,
             edit: mine ? this.beginEdit(t) : () => {},
 
+            // ปิ่นเท่านั้น — ยกเลิก (ไม่ลบทิ้ง) และกู้คืนได้ทีหลัง
             delDisp: admin ? "inline-flex" : "none",
-            delLabel: asking ? L.t_confirmDel : L.t_del,
-            delBd: asking ? DARK : "rgba(29,31,32,0.16)",
-            delFg: asking ? "#f2f2f3" : MUTED,
+            delLabel: dead ? L.t_restore : asking ? L.t_confirmVoid : L.t_void,
+            delBd: asking || dead ? DARK : "rgba(29,31,32,0.16)",
+            delFg: asking ? "#f2f2f3" : dead ? DARK : MUTED,
             delBg: asking ? DARK : "transparent",
-            del: admin ? (asking ? this.confirmDel(t.id) : this.askDel(t.id)) : () => {},
+            del: !admin ? () => {}
+              : dead ? this.setVoid(t.id, false)
+              : asking ? this.setVoid(t.id, true) : this.askDel(t.id),
           };
         }),
 
@@ -1777,13 +1906,20 @@ class Component extends DCLogic {
       expRows: breakdown(false),
       sumIncLabel: L.t_breakInc,
       sumExpLabel: L.t_breakExp,
-      sumInc: sumByCode(shown.filter((t) => t.amount.startsWith("+"))),
-      sumExp: sumByCode(shown.filter((t) => !t.amount.startsWith("+"))),
-      sumNet: sumByCode(shown.map((t) => ({ ...t, val: (t.amount.startsWith("+") ? 1 : -1) * valOf(t) }))),
+      sumInc: sumByCode(shownLive.filter(isInc)),
+      sumExp: sumByCode(shownLive.filter(isExp)),
+      sumNet: sumByCode(signed(shownLive)),
       t_netLabel: L.t_net,
       listCount: L.t_found + " " + shown.length + " " + L.t_items,
-      listInc: L.t_sumInc + " " + sumByCode(shown.filter((t) => t.amount.startsWith("+"))),
-      listExp: L.t_sumExp + " " + sumByCode(shown.filter((t) => !t.amount.startsWith("+"))),
+      listInc: L.t_sumInc + " " + sumByCode(shownLive.filter(isInc)),
+      listExp: L.t_sumExp + " " + sumByCode(shownLive.filter(isExp)),
+      // ยอดคงเหลือแยกช่องทาง
+      balCash: sumByCode(balOf(METHODS[0])),
+      balBank: sumByCode(balOf(METHODS[1])),
+      balCard: sumByCode(cardDebt),
+      balNote: hasOpening ? L.t_balReal : L.t_balNoOpening,
+      balNoteFg: hasOpening ? "#5d5d60" : "#416180",
+
       kpiIncome: sumByCode(monthInc),
       kpiExpense: sumByCode(monthExp),
       kpiBalance: sumByCode(signed(monthTx)),
@@ -1797,12 +1933,12 @@ class Component extends DCLogic {
       t_daysNote: activeDays + " / " + dim + " " + (lang === "lo" ? "ວັນມີລາຍການ" : "วันมีรายการ"),
       acctRows: (() => {
         const per = s.accts.map((a) => {
-          const mine = s.txns.filter((t) => t.who === a.name && inMonthOf(t, s.vMonth, s.vYear));
-          return { a, mine, exp: sumTHB(mine.filter((t) => !isInc(t))) };
+          const mine = live(s.txns.filter((t) => t.who === a.name && inMonthOf(t, s.vMonth, s.vYear)));
+          return { a, mine, exp: sumTHB(mine.filter(isExp)) };
         });
         const maxExp = per.reduce((n, p) => (p.exp > n ? p.exp : n), 0);
         return per.map(({ a, mine, exp }) => {
-          const inc = mine.filter(isInc), out = mine.filter((t) => !isInc(t));
+          const inc = mine.filter(isInc), out = mine.filter(isExp);
           const codes = CURRENCIES.map((c) => c.code).filter((c) => mine.some((t) => codeOfTx(t) === c));
           return {
             name: a.name, role: lang === "lo" ? a.roleLo : a.roleTh,
@@ -1824,12 +1960,32 @@ class Component extends DCLogic {
         });
       })(),
 
-      expBg: s.kind === "expense" ? ACC : "transparent",
-      expFg: s.kind === "expense" ? "#f2f2f3" : MUTED,
-      incBg: s.kind === "income" ? ACC : "transparent",
-      incFg: s.kind === "income" ? "#f2f2f3" : MUTED,
-      setExpense: () => this.setState({ kind: "expense" }),
-      setIncome: () => this.setState({ kind: "income" }),
+      // ปุ่มเลือกประเภท 4 แบบ — รายจ่าย / รายรับ / โอนระหว่างช่องทาง / ยอดยกมา
+      kindBtns: KINDS.map((id) => ({
+        label: KIND_LABEL(L)[id],
+        pick: () => this.setState({ kind: id }),
+        bg: s.kind === id ? ACC : "transparent",
+        fg: s.kind === id ? "#f2f2f3" : MUTED,
+      })),
+      // หมวดหมู่กับรายการประจำใช้ได้เฉพาะรายรับ/รายจ่าย
+      catDisp: s.kind === "income" || s.kind === "expense" ? "flex" : "none",
+      // ช่องปลายทาง โผล่เฉพาะตอนโอน
+      xferDisp: s.kind === "transfer" ? "flex" : "none",
+      toMethods: L.methods.map((name, i) => {
+        const id = METHODS[i];
+        const on = (s.methodTo || METHODS.find((m) => m !== s.method)) === id;
+        const same = id === s.method;
+        return {
+          name, pick: same ? () => {} : () => this.setState({ methodTo: id }),
+          bg: on && !same ? ACC : "transparent",
+          fg: same ? "#c4c4c8" : on ? "#f2f2f3" : MUTED,
+        };
+      }),
+      kindNote: s.kind === "transfer" ? L.t_xferNote : s.kind === "opening" ? L.t_openNote : "",
+      kindNoteDisp: s.kind === "transfer" || s.kind === "opening" ? "block" : "none",
+
+      // แป้นตัวเลขในหน้าตัวอย่างมือถือ (เดิมไม่เคยผูกค่า ช่องเลยว่างเปล่า)
+      keys: ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "←"].map((label) => ({ label })),
 
       mobileChips: s.cats.slice(0, 5).map((c, i) => ({
         name: catName(c),
