@@ -1282,7 +1282,7 @@ const DB = {
   },
   // เติมรายการประจำที่ยังขาดของทุกเดือนจนถึงเดือนนี้ — ฐานข้อมูลกันซ้ำให้เอง
   async runRecurring() {
-    const r = await call(CFG.SUPABASE_URL + "/rest/v1/rpc/run_recurring",
+    const r = await call(REST("rpc/run_recurring"),
       { method: "POST", body: "{}" }, "สร้างรายการประจำไม่สำเร็จ");
     return Number(await r.json()) || 0;
   },
@@ -1636,7 +1636,6 @@ class Component extends DCLogic {
     const s = this.state, screen = this.screen;
     const sel = (on) => ({ bg: on ? ACC : "transparent", fg: on ? "#f2f2f3" : MUTED, bd: on ? ACC : "rgba(29,31,32,0.16)" });
 
-    const C = cur(V);            // สกุลที่กำลังดู ใช้กับสัญลักษณ์และป้ายกำกับ
     const alt = () => "";
     const lang = s.lang || (this.props.language === "ລາວ" ? "lo" : "th");
     const L = T[lang] || T.th;
@@ -1645,13 +1644,14 @@ class Component extends DCLogic {
       const hit = s.cats.find((c) => c.th === raw || c.lo === raw);
       return raw === "รายรับ" ? L.t_incomeCat : hit ? catName(hit) : raw;
     };
-    const codeOf = (name) => (s.accts.find((a) => a.name === name) || {}).code || "THB";
+    const codeOf = (name) => (s.accts.find((a) => a.name === name) || {}).code || CODES[0];
     const valOf = (t) => t.val || 0;
     const codeOfTx = (t) => t.code || codeOf(t.who);
     // ───── สกุลเงินที่กำลังวิเคราะห์ ─────
     // กราฟ % งบประมาณ ต้องมีฐานเดียวกันถึงจะเทียบกันได้ แต่ระบบไม่แปลงค่าเงิน
     // จึงคิดทีละสกุล: หน้าเดือนกับหน้าปีจะกรองเหลือสกุลนี้สกุลเดียว
     const V = s.viewCode || acctCode(s.acct) || CODES[0];
+    const C = cur(V);                           // ใช้กับสัญลักษณ์และป้ายกำกับ
     const inView = (t) => codeOfTx(t) === V;
     const fmt = (n) => raw(n, V);               // จัดรูปตัวเลขด้วยสกุลที่กำลังดู
     const sumV = (list) => list.reduce((n, t) => n + valOf(t), 0);   // ผู้เรียกต้องกรองสกุลมาแล้ว
