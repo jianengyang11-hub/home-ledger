@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -69,23 +69,15 @@
           </sc-for>
         </div>
 
-        <div style="display:flex;gap:13.6px;justify-content:center;padding:6.8px 0">
-          <sc-for list="{{ pinDots }}" as="d" hint-placeholder-count="6">
-            <span style="width:16px;height:16px;border:1px solid #5980a6;background:{{ d.bg }}"></span>
-          </sc-for>
+        <div style="display:flex;flex-direction:column;gap:6.8px">
+          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_password }}</label>
+          <input type="password" value="{{ pw }}" onChange="{{ onPw }}" onKeyDown="{{ onPwKey }}" autoComplete="current-password" placeholder="{{ t_pwPh }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:13px 13.6px;font:inherit;font-size:17px;letter-spacing:.08em;color:#1d1f20;outline:none;width:100%">
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(29,31,32,0.16);border:1px solid rgba(29,31,32,0.16)">
-          <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
-            <button onClick="{{ k.press }}" style="background:#f2f2f3;border:0;padding:16px 0;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:24px;color:#1d1f20" style-hover="background:#eef6ff" style-active="background:#d6ebff">{{ k.label }}</button>
-          </sc-for>
-        </div>
+        <button onClick="{{ signIn }}" style="border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:13px 0;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;letter-spacing:.1em;width:100%;background-image:var(--w1),var(--w2),var(--w3),var(--w4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%" style-hover="background-color:#416180">{{ signInLabel }}</button>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px;color:#5d5d60">
-          <span style="color:{{ pinHintColor }}">{{ pinHint }}</span>
-          <a href="#">{{ t_forgot }}</a>
-        </div>
-        <div style="font-size:12px;color:#98989b;border-top:1px solid rgba(29,31,32,0.16);padding-top:13.6px">{{ pinDemo }}</div>
+        <div style="font-size:13px;min-height:19px;color:{{ pinHintColor }}">{{ pinHint }}</div>
+        <div style="font-size:12px;color:#98989b;border-top:1px solid rgba(29,31,32,0.16);padding-top:13.6px;line-height:1.6">{{ pinDemo }}</div>
       </div>
     </div>
   </div>
@@ -606,7 +598,7 @@
       <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
         <div style="font-weight:600;font-size:22px">{{ t_acctPanel }}</div>
         <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,0.7fr) minmax(0,0.7fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
-          <span>{{ t_colName }}</span><span>{{ t_colRole }}</span><span>{{ t_colCur }}</span><span>{{ t_colPin }}</span><span></span>
+          <span>{{ t_colName }}</span><span>{{ t_colRole }}</span><span>{{ t_colCur }}</span><span>{{ t_colEmail }}</span><span>{{ t_colPerm }}</span>
         </div>
         <sc-for list="{{ acctEdits }}" as="a" hint-placeholder-count="3">
           <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,0.7fr) minmax(0,0.7fr) max-content;gap:var(--space-3,10.2px);align-items:center;padding-bottom:var(--space-3,10.2px);border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
@@ -617,11 +609,11 @@
                 <option value="{{ c.code }}">{{ c.label }}</option>
               </sc-for>
             </select>
-            <input value="{{ a.pin }}" onChange="{{ a.onPin }}" inputMode="numeric" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
-            <button onClick="{{ a.del }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:transparent;color:var(--color-neutral-600,#5d5d60);padding:7px 12px;font-size:13px" style-hover="background:var(--color-accent-100,#eef6ff)">{{ t_del }}</button>
+            <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ a.email }}</span>
+            <span style="font-size:12px;letter-spacing:.06em;color:{{ a.roleFg }};white-space:nowrap">{{ a.roleTag }}</span>
           </div>
         </sc-for>
-        <button onClick="{{ addAcct }}" style="border:1px solid var(--color-accent,#5980a6);background:transparent;color:var(--color-accent-700,#416180);padding:9px 18px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;letter-spacing:.06em;align-self:flex-start" style-hover="background:var(--color-accent-100,#eef6ff)">{{ t_addAcct }}</button>
+        <div style="font-size:12px;color:#5d5d60;line-height:1.7;border-top:1px solid rgba(29,31,32,0.08);padding-top:10.2px">{{ t_acctNote }}</div>
       </div>
 
     </div>
@@ -724,10 +716,10 @@ const T = {
   th: {
     t_month: "ภาพรวมรายเดือน", t_year: "สรุปรายปี", t_add: "บันทึกข้อมูล", t_mobile: "มือถือ",
     t_loggedIn: "เข้าสู่ระบบอยู่", t_addBtn: "+ เพิ่มรายการ", t_out: "ออก",
-    t_signin: "เข้าสู่ระบบ / Sign in", t_enterPin: "ใส่ PIN 6 หลัก",
+    t_signin: "เข้าสู่ระบบ / Sign in", t_enterPin: "เข้าสู่ระบบ",
     t_hero1: "บัญชีรายรับรายจ่าย", t_hero2: "ของบ้านเรา",
     t_heroSub: "บันทึกร่วมกันสองคน ดูสรุปรายเดือนและรายปีในที่เดียว",
-    t_incYear: "รายรับปีนี้", t_expYear: "รายจ่ายปีนี้", t_balance: "คงเหลือ", t_forgot: "ลืม PIN?",
+    t_incYear: "รายรับปีนี้", t_expYear: "รายจ่ายปีนี้", t_balance: "คงเหลือ", t_forgot: "",
     t_monthKicker: "ภาพรวมรายเดือน / Monthly overview", t_monthTitle: "กันยายน 2569",
     t_acctLabel: "บัญชี / Account", t_all: "ทุกบัญชี",
     t_income: "รายรับ / Income", t_expense: "รายจ่าย / Expense", t_bal: "คงเหลือ / Balance", t_perday: "เฉลี่ยต่อวัน / Per day",
@@ -752,7 +744,7 @@ const T = {
     t_fromPrev: "จากเดือนก่อน", t_peak: "สูงสุด", t_range: "1–30 ก.ย. 2569",
     t_prevM: "‹ ส.ค.", t_thisM: "ก.ย. 2569", t_nextM: "ต.ค. ›",
     t_left: "เหลือ", t_over: "เกินงบ",
-    t_acctCaption: "กันยายน 2569 · แต่ละบัญชีมี PIN ของตัวเอง", t_inUse: "กำลังใช้งาน",
+    t_acctCaption: "ยอดเดือนนี้ แยกตามบัญชี", t_inUse: "กำลังใช้งาน",
     t_mainCur: "สกุลหลัก", t_totalBal: "คงเหลือรวม",
     t_clickMonth: "คลิกเดือนเพื่อดูรายละเอียด", t_saveRateCol: "อัตราเก็บออม", t_monthCol: "เดือน",
     t_scopeAll: "รวมทุกบัญชี", t_scopeOne: "เฉพาะบัญชี",
@@ -760,13 +752,19 @@ const T = {
     t_yInc: "รายรับสะสม", t_yExp: "รายจ่ายสะสม", t_yNet: "คงเหลือสะสม", t_yPeakM: "เดือนที่จ่ายมากสุด",
     t_yRange: "ม.ค.–ก.ย. 2569", t_yPeakName: "เมษายน", t_colBal: "คงเหลือ",
     t_yearWord: "ปี", t_noData: "ยังไม่มีรายการ", t_loading: "กำลังโหลด…",
+    t_password: "รหัสผ่าน / Password", t_pwPh: "ใส่รหัสผ่านของบัญชีนี้",
+    t_signinBtn: "เข้าสู่ระบบ", t_signingIn: "กำลังเข้าสู่ระบบ…",
+    t_secureNote: "รหัสผ่านตรวจสอบที่เซิร์ฟเวอร์ Supabase ไม่มีเก็บไว้ในหน้าเว็บ · สิทธิ์แก้/ลบบังคับที่ฐานข้อมูล",
+    t_roleAdmin: "บัญชีหลัก", t_roleMember: "เพิ่มรายการได้อย่างเดียว",
+    t_colEmail: "อีเมลที่ใช้เข้าระบบ", t_colPerm: "สิทธิ์",
+    t_acctNote: "รหัสผ่านและสิทธิ์ admin/member แก้ที่ Supabase เท่านั้น (Authentication → Users และตาราง profiles) — แก้จากหน้านี้ไม่ได้ เพราะฐานข้อมูลไม่เปิดให้เขียน",
     t_edit: "แก้", t_del: "ลบ", t_confirmDel: "ยืนยัน?", t_cancel: "ยกเลิก",
     t_editing: "กำลังแก้ไขรายการ", t_saveEdit: "บันทึกการแก้ไข",
     t_lockedAcct: "บันทึกในชื่อบัญชีของคุณเท่านั้น", t_adminOnly: "เฉพาะบัญชีหลัก",
     t_drop: "ลากไฟล์มาวาง หรือ", t_pick: "เลือกจากเครื่อง", t_fileNote: "JPG / PNG / PDF · ไม่เกิน 5 MB",
     t_repeatM: "ทำซ้ำทุกเดือน", t_todayDate: "28 ก.ย. 2569",
     t_mKicker: "มือถือ / Mobile", t_mTitle: "สามหน้าหลักบนมือถือ",
-    t_mCap1: "เข้าสู่ระบบด้วย PIN", t_mCap2: "ภาพรวมเดือน", t_mCap3: "บันทึกข้อมูลแบบเร็ว",
+    t_mCap1: "เข้าสู่ระบบ", t_mCap2: "ภาพรวมเดือน", t_mCap3: "บันทึกข้อมูลแบบเร็ว",
     t_sampleNote: "ซื้อของเข้าบ้าน โลตัส",
     t_keepThb: "เก็บค่าเป็นบาท", t_keepNative: "เก็บค่าเป็นสกุล", t_inThb: "บันทึกเป็นเงินบาท",
     t_repOff: "ปิดอยู่", t_repOn: "จะสร้างรายการอัตโนมัติทุกวันที่ 28",
@@ -787,19 +785,18 @@ const T = {
     t_typeAll: "ทั้งหมด", t_found: "พบ", t_items: "รายการ",
     t_sumInc: "รวมรายรับ", t_sumExp: "รวมรายจ่าย", t_empty: "ไม่พบรายการตามเงื่อนไขที่เลือก",
     t_entered: "ใส่แล้ว", t_of6: "/ 6 หลัก",
-    t_demo: "ตัวอย่าง: ปิ่น 111111 · ต้น 222222 · บ้านเรา 123456",
     t_peakWhy: "สงกรานต์ + ค่าเทอม",
     curNames: { THB: "บาท", USD: "ดอลลาร์สหรัฐ", KIP: "กีบลาว" },
     t_hello: "สวัสดี", t_saveShort: "บันทึก", t_family: "ปิ่น + ต้น",
-    pinOwn: "แต่ละบัญชีใช้ PIN ของตัวเอง", pinWrong: "PIN ไม่ถูกต้อง ลองใหม่อีกครั้ง",
+    pinOwn: "เลือกบัญชีแล้วใส่รหัสผ่าน",
   },
   lo: {
     t_month: "ພາບລວມລາຍເດືອນ", t_year: "ສະຫຼຸບລາຍປີ", t_add: "ບັນທຶກຂໍ້ມູນ", t_mobile: "ມືຖື",
     t_loggedIn: "ກຳລັງໃຊ້ງານ", t_addBtn: "+ ເພີ່ມລາຍການ", t_out: "ອອກ",
-    t_signin: "ເຂົ້າສູ່ລະບົບ / Sign in", t_enterPin: "ໃສ່ PIN 6 ຫຼັກ",
+    t_signin: "ເຂົ້າສູ່ລະບົບ / Sign in", t_enterPin: "ເຂົ້າສູ່ລະບົບ",
     t_hero1: "ບັນຊີລາຍຮັບລາຍຈ່າຍ", t_hero2: "ຂອງບ້ານເຮົາ",
     t_heroSub: "ບັນທຶກຮ່ວມກັນ ເບິ່ງສະຫຼຸບລາຍເດືອນ ແລະ ລາຍປີໃນບ່ອນດຽວ",
-    t_incYear: "ລາຍຮັບປີນີ້", t_expYear: "ລາຍຈ່າຍປີນີ້", t_balance: "ຍອດເຫຼືອ", t_forgot: "ລືມ PIN?",
+    t_incYear: "ລາຍຮັບປີນີ້", t_expYear: "ລາຍຈ່າຍປີນີ້", t_balance: "ຍອດເຫຼືອ", t_forgot: "",
     t_monthKicker: "ພາບລວມລາຍເດືອນ / Monthly overview", t_monthTitle: "ກັນຍາ 2569",
     t_acctLabel: "ບັນຊີ / Account", t_all: "ທຸກບັນຊີ",
     t_income: "ລາຍຮັບ / Income", t_expense: "ລາຍຈ່າຍ / Expense", t_bal: "ຍອດເຫຼືອ / Balance", t_perday: "ສະເລ່ຍຕໍ່ວັນ / Per day",
@@ -824,7 +821,7 @@ const T = {
     t_fromPrev: "ຈາກເດືອນກ່ອນ", t_peak: "ສູງສຸດ", t_range: "1–30 ກັນຍາ 2569",
     t_prevM: "‹ ສ.ຫ.", t_thisM: "ກ.ຍ. 2569", t_nextM: "ຕ.ລ. ›",
     t_left: "ຍັງເຫຼືອ", t_over: "ເກີນງົບ",
-    t_acctCaption: "ກັນຍາ 2569 · ແຕ່ລະບັນຊີມີ PIN ຂອງຕົນເອງ", t_inUse: "ກຳລັງໃຊ້ງານ",
+    t_acctCaption: "ຍອດເດືອນນີ້ ແຍກຕາມບັນຊີ", t_inUse: "ກຳລັງໃຊ້ງານ",
     t_mainCur: "ສະກຸນຫຼັກ", t_totalBal: "ຍອດເຫຼືອລວມ",
     t_clickMonth: "ກົດເລືອກເດືອນເພື່ອເບິ່ງລາຍລະອຽດ", t_saveRateCol: "ອັດຕາເກັບອອມ", t_monthCol: "ເດືອນ",
     t_scopeAll: "ລວມທຸກບັນຊີ", t_scopeOne: "ສະເພາະບັນຊີ",
@@ -832,13 +829,19 @@ const T = {
     t_yInc: "ລາຍຮັບສະສົມ", t_yExp: "ລາຍຈ່າຍສະສົມ", t_yNet: "ຍອດເຫຼືອສະສົມ", t_yPeakM: "ເດືອນທີ່ຈ່າຍຫຼາຍສຸດ",
     t_yRange: "ມ.ກ.–ກ.ຍ. 2569", t_yPeakName: "ເມສາ", t_colBal: "ຍອດເຫຼືອ",
     t_yearWord: "ປີ", t_noData: "ຍັງບໍ່ມີລາຍການ", t_loading: "ກຳລັງໂຫຼດ…",
+    t_password: "ລະຫັດຜ່ານ / Password", t_pwPh: "ໃສ່ລະຫັດຜ່ານຂອງບັນຊີນີ້",
+    t_signinBtn: "ເຂົ້າສູ່ລະບົບ", t_signingIn: "ກຳລັງເຂົ້າສູ່ລະບົບ…",
+    t_secureNote: "ລະຫັດຜ່ານກວດສອບທີ່ເຊີບເວີ Supabase ບໍ່ມີເກັບໄວ້ໃນໜ້າເວັບ · ສິດແກ້/ລຶບບັງຄັບທີ່ຖານຂໍ້ມູນ",
+    t_roleAdmin: "ບັນຊີຫຼັກ", t_roleMember: "ເພີ່ມລາຍການໄດ້ຢ່າງດຽວ",
+    t_colEmail: "ອີເມວທີ່ໃຊ້ເຂົ້າລະບົບ", t_colPerm: "ສິດ",
+    t_acctNote: "ລະຫັດຜ່ານແລະສິດ admin/member ແກ້ທີ່ Supabase ເທົ່ານັ້ນ — ແກ້ຈາກໜ້ານີ້ບໍ່ໄດ້",
     t_edit: "ແກ້", t_del: "ລຶບ", t_confirmDel: "ຢືນຢັນ?", t_cancel: "ຍົກເລີກ",
     t_editing: "ກຳລັງແກ້ໄຂລາຍການ", t_saveEdit: "ບັນທຶກການແກ້ໄຂ",
     t_lockedAcct: "ບັນທຶກໃນຊື່ບັນຊີຂອງທ່ານເທົ່ານັ້ນ", t_adminOnly: "ສະເພາະບັນຊີຫຼັກ",
     t_drop: "ລາກໄຟລ໌ມາວາງ ຫຼື", t_pick: "ເລືອກຈາກເຄື່ອງ", t_fileNote: "JPG / PNG / PDF · ບໍ່ເກີນ 5 MB",
     t_repeatM: "ເຮັດຄືນທຸກເດືອນ", t_todayDate: "28 ກັນຍາ 2569",
     t_mKicker: "ມືຖື / Mobile", t_mTitle: "ສາມໜ້າຫຼັກເທິງມືຖື",
-    t_mCap1: "ເຂົ້າສູ່ລະບົບດ້ວຍ PIN", t_mCap2: "ພາບລວມເດືອນ", t_mCap3: "ບັນທຶກຂໍ້ມູນແບບໄວ",
+    t_mCap1: "ເຂົ້າສູ່ລະບົບ", t_mCap2: "ພາບລວມເດືອນ", t_mCap3: "ບັນທຶກຂໍ້ມູນແບບໄວ",
     t_sampleNote: "ຊື້ເຄື່ອງເຂົ້າເຮືອນ",
     t_keepThb: "ເກັບຄ່າເປັນເງິນບາດ", t_keepNative: "ເກັບຄ່າເປັນສະກຸນ", t_inThb: "ບັນທຶກເປັນເງິນບາດ",
     t_repOff: "ປິດຢູ່", t_repOn: "ຈະສ້າງລາຍການອັດຕະໂນມັດທຸກວັນທີ 28",
@@ -859,23 +862,26 @@ const T = {
     t_typeAll: "ທັງໝົດ", t_found: "ພົບ", t_items: "ລາຍການ",
     t_sumInc: "ລວມລາຍຮັບ", t_sumExp: "ລວມລາຍຈ່າຍ", t_empty: "ບໍ່ພົບລາຍການຕາມເງື່ອນໄຂທີ່ເລືອກ",
     t_entered: "ໃສ່ແລ້ວ", t_of6: "/ 6 ຫຼັກ",
-    t_demo: "ຕົວຢ່າງ: ປິ່ນ 111111 · ຕົ້ນ 222222 · ບ້ານເຮົາ 123456",
     t_peakWhy: "ບຸນປີໃໝ່ + ຄ່າຮຽນ",
     curNames: { THB: "ບາດ", USD: "ໂດລາສະຫະລັດ", KIP: "ກີບລາວ" },
     t_hello: "ສະບາຍດີ", t_saveShort: "ບັນທຶກ", t_family: "ປິ່ນ + ຕົ້ນ",
-    pinOwn: "ແຕ່ລະບັນຊີໃຊ້ PIN ຂອງຕົນເອງ", pinWrong: "PIN ບໍ່ຖືກຕ້ອງ ລອງໃໝ່ອີກຄັ້ງ",
+    pinOwn: "ເລືອກບັນຊີແລ້ວໃສ່ລະຫັດຜ່ານ",
   },
 };
 
 const ACC = "#5980a6", DARK = "#1d2d3d", INK = "#1d1f20", MUTED = "#5d5d60";
 
+const CFG = window.LEDGER_CONFIG || {};
+
 const CHIPS = ["อาหาร", "ที่อยู่อาศัย", "เดินทาง", "ลูก", "ของใช้ในบ้าน", "สุขภาพ", "บันเทิง", "อื่น ๆ"];
 const METHODS = ["เงินสด", "โอน", "บัตร"];
-const ACCOUNTS = [
-  { id: "pin", name: "ปิ่น", role: "บัญชีส่วนตัว", code: "KIP", pin: "111111" },
-  { id: "ton", name: "ต้น", role: "บัญชีส่วนตัว", code: "KIP", pin: "222222" },
-  { id: "home", name: "บ้านเรา", role: "บัญชีกลางของบ้าน", code: "KIP", pin: "123456" },
-];
+// รายชื่อบัญชีสำหรับหน้า login — ไม่มีรหัสผ่านในโค้ดอีกต่อไป
+// ชื่อจริงกับสิทธิ์ admin/member อ่านจากตาราง profiles หลังล็อกอินสำเร็จ
+const ACCOUNTS = (CFG.ACCOUNTS && CFG.ACCOUNTS.length ? CFG.ACCOUNTS : [
+  { id: "pin", name: "ปิ่น", role: "บัญชีส่วนตัว", email: "pin@homeledger.local" },
+  { id: "ton", name: "ต้น", role: "บัญชีส่วนตัว", email: "ton@homeledger.local" },
+  { id: "home", name: "บ้านเรา", role: "บัญชีกลางของบ้าน", email: "home@homeledger.local" },
+]).map((a) => ({ code: "KIP", ...a }));
 const MEMBERS = ACCOUNTS.map((a) => a.name);
 
 const CAT_SEED = [
@@ -889,7 +895,7 @@ const CAT_SEED = [
   { th: "อื่น ๆ", lo: "ອື່ນໆ" },
 ];
 const ACCT_SEED = ACCOUNTS.map((a) => ({
-  id: a.id, name: a.name, code: a.code, pin: a.pin,
+  id: a.id, name: a.name, code: a.code, email: a.email,
   roleTh: a.role, roleLo: { pin: "ບັນຊີສ່ວນຕົວ", ton: "ບັນຊີສ່ວນຕົວ", home: "ບັນຊີກາງຂອງບ້ານ" }[a.id] || a.role,
 }));
 
@@ -900,44 +906,115 @@ const BUDGET_TARGETS = [
 ];
 const YEAR_GOAL = 300000; // เป้าเงินเก็บทั้งปี (บาท)
 
-// ───────────────── Supabase (REST) ─────────────────
-const CFG = window.LEDGER_CONFIG || {};
-const ADMIN_ID = CFG.ADMIN_ID || "pin";
+// ───────────────── Supabase (Auth + REST) ─────────────────
 const DB_ON = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY
   && CFG.SUPABASE_URL.indexOf("PASTE_") < 0 && CFG.SUPABASE_ANON_KEY.indexOf("PASTE_") < 0);
 
-const REST = () => String(CFG.SUPABASE_URL).replace(/\/+$/, "") + "/rest/v1/txns";
-const HEAD = () => ({
-  apikey: CFG.SUPABASE_ANON_KEY,
-  Authorization: "Bearer " + CFG.SUPABASE_ANON_KEY,
-  "Content-Type": "application/json",
+const ORIGIN = () => String(CFG.SUPABASE_URL).replace(/\/+$/, "");
+const REST = (t) => ORIGIN() + "/rest/v1/" + t;
+const SESS_KEY = "homeledger.session";
+
+// session = { access_token, refresh_token, expires_at }
+let SESSION = null;
+try { SESSION = JSON.parse(localStorage.getItem(SESS_KEY) || "null"); } catch (e) { SESSION = null; }
+
+const saveSession = (s) => {
+  SESSION = s;
+  try { s ? localStorage.setItem(SESS_KEY, JSON.stringify(s)) : localStorage.removeItem(SESS_KEY); } catch (e) {}
+};
+
+const packSession = (j) => ({
+  access_token: j.access_token,
+  refresh_token: j.refresh_token,
+  expires_at: Date.now() + (Number(j.expires_in) || 3600) * 1000 - 60000, // เผื่อ 1 นาที
 });
+
+const authFail = async (r) => {
+  let m = "";
+  try { const j = await r.json(); m = j.error_description || j.msg || j.message || ""; } catch (e) {}
+  if (r.status === 400 || r.status === 401) throw new Error("รหัสผ่านไม่ถูกต้อง");
+  throw new Error("เข้าสู่ระบบไม่สำเร็จ (HTTP " + r.status + (m ? " · " + m : "") + ")");
+};
+
+const AUTH = {
+  async signIn(email, password) {
+    const r = await fetch(ORIGIN() + "/auth/v1/token?grant_type=password", {
+      method: "POST",
+      headers: { apikey: CFG.SUPABASE_ANON_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!r.ok) await authFail(r);
+    saveSession(packSession(await r.json()));
+  },
+  async refresh() {
+    if (!SESSION || !SESSION.refresh_token) throw new Error("หมดเวลาเข้าสู่ระบบ");
+    const r = await fetch(ORIGIN() + "/auth/v1/token?grant_type=refresh_token", {
+      method: "POST",
+      headers: { apikey: CFG.SUPABASE_ANON_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ refresh_token: SESSION.refresh_token }),
+    });
+    if (!r.ok) { saveSession(null); throw new Error("หมดเวลาเข้าสู่ระบบ กรุณาเข้าใหม่"); }
+    saveSession(packSession(await r.json()));
+  },
+  async signOut() {
+    const s = SESSION;
+    saveSession(null);
+    if (!s) return;
+    try {
+      await fetch(ORIGIN() + "/auth/v1/logout", {
+        method: "POST",
+        headers: { apikey: CFG.SUPABASE_ANON_KEY, Authorization: "Bearer " + s.access_token },
+      });
+    } catch (e) {}
+  },
+  get signedIn() { return !!(SESSION && SESSION.access_token); },
+};
 
 const dbFail = async (r, what) => {
   let detail = "";
   try { detail = ((await r.json()) || {}).message || ""; } catch (e) {}
+  if (r.status === 401) throw new Error("หมดเวลาเข้าสู่ระบบ กรุณาเข้าใหม่");
+  if (r.status === 403) throw new Error("บัญชีนี้ไม่มีสิทธิ์ทำรายการนี้");
   throw new Error(what + " (HTTP " + r.status + (detail ? " · " + detail : "") + ")");
 };
 
+// ยิง REST ด้วย token ของผู้ใช้ — เจอ 401 ก็ต่ออายุ token แล้วลองใหม่หนึ่งครั้ง
+const call = async (url, opts, what) => {
+  if (!AUTH.signedIn) throw new Error("ยังไม่ได้เข้าสู่ระบบ");
+  if (SESSION.expires_at && Date.now() > SESSION.expires_at) await AUTH.refresh();
+  const go = () => fetch(url, {
+    ...opts,
+    headers: {
+      apikey: CFG.SUPABASE_ANON_KEY,
+      Authorization: "Bearer " + SESSION.access_token,
+      "Content-Type": "application/json",
+      ...(opts && opts.headers),
+    },
+  });
+  let r = await go();
+  if (r.status === 401) { await AUTH.refresh(); r = await go(); }
+  if (!r.ok) await dbFail(r, what);
+  return r;
+};
+
 const DB = {
+  async me() {
+    const r = await call(REST("profiles") + "?select=name,role,code", {}, "โหลดโปรไฟล์ไม่สำเร็จ");
+    return r.json();
+  },
   async list() {
-    const r = await fetch(REST() + "?select=*&order=ts.desc,id.desc", { headers: HEAD() });
-    if (!r.ok) await dbFail(r, "โหลดข้อมูลไม่สำเร็จ");
+    const r = await call(REST("txns") + "?select=*&order=ts.desc,id.desc", {}, "โหลดข้อมูลไม่สำเร็จ");
     return r.json();
   },
   async insert(row) {
-    const r = await fetch(REST(), { method: "POST", headers: HEAD(), body: JSON.stringify(row) });
-    if (!r.ok) await dbFail(r, "บันทึกไม่สำเร็จ");
+    await call(REST("txns"), { method: "POST", body: JSON.stringify(row) }, "บันทึกไม่สำเร็จ");
   },
   async update(id, patch) {
-    const r = await fetch(REST() + "?id=eq." + encodeURIComponent(id), {
-      method: "PATCH", headers: HEAD(), body: JSON.stringify(patch),
-    });
-    if (!r.ok) await dbFail(r, "แก้ไขไม่สำเร็จ");
+    await call(REST("txns") + "?id=eq." + encodeURIComponent(id),
+      { method: "PATCH", body: JSON.stringify(patch) }, "แก้ไขไม่สำเร็จ");
   },
   async remove(id) {
-    const r = await fetch(REST() + "?id=eq." + encodeURIComponent(id), { method: "DELETE", headers: HEAD() });
-    if (!r.ok) await dbFail(r, "ลบไม่สำเร็จ");
+    await call(REST("txns") + "?id=eq." + encodeURIComponent(id), { method: "DELETE" }, "ลบไม่สำเร็จ");
   },
 };
 
@@ -995,11 +1072,13 @@ const money = (n, code) => (n < 0 ? "−" : "") + cur(code).sym + num(Math.abs(n
 class Component extends DCLogic {
   state = {
     screen: null,
-    pin: "",
-    loginId: "pin",
+    pw: "",
+    loginId: ACCOUNTS[0] ? ACCOUNTS[0].id : "pin",
     meId: null,
-    acct: "ปิ่น",
+    meRole: "member",
+    acct: "",
     pinErr: "",
+    signing: false,
     filter: "ทุกบัญชี",
     curCode: "THB",
     entryCode: null,
@@ -1027,14 +1106,37 @@ class Component extends DCLogic {
     accts: ACCT_SEED,
   };
 
-  componentDidMount() { this.reload(); }
-
-  get isAdmin() { return this.state.meId === ADMIN_ID; }
-
-  reload = async () => {
+  componentDidMount() {
     if (!DB_ON) {
-      return this.setState({ loading: false, dbErr: "ยังไม่ได้ตั้งค่า Supabase — เปิดไฟล์ config.js แล้วใส่ URL กับ anon key" });
+      return this.setState({ loading: false, dbErr: "ยังไม่ได้ตั้งค่า Supabase — เปิดไฟล์ config.js แล้วใส่ URL กับ key" });
     }
+    // มี session ค้างอยู่ก็เข้าต่อได้เลย ไม่ต้องล็อกอินซ้ำ
+    if (AUTH.signedIn) this.resume();
+    else this.setState({ loading: false, screen: "login" });
+  }
+
+  // สิทธิ์มาจากตาราง profiles ในฐานข้อมูล ไม่ใช่จากโค้ดหน้าเว็บ
+  get isAdmin() { return this.state.meRole === "admin"; }
+
+  resume = async () => {
+    this.setState({ loading: true, dbErr: "" });
+    try {
+      const rows = await DB.me();
+      const me = rows && rows[0];
+      if (!me) throw new Error("บัญชีนี้ยังไม่ได้ผูกกับชื่อในสมุด — รันบล็อกที่ 5 ใน schema.sql");
+      this.setState({
+        meRole: me.role, acct: me.name, who: me.name,
+        meId: (ACCOUNTS.find((a) => a.name === me.name) || {}).id || null,
+        screen: this.state.screen === "login" || !this.state.screen ? "month" : this.state.screen,
+      });
+      await this.load();
+    } catch (e) {
+      await AUTH.signOut();
+      this.setState({ loading: false, screen: "login", meId: null, meRole: "member", pinErr: e.message || String(e) });
+    }
+  };
+
+  load = async () => {
     this.setState({ loading: true, dbErr: "" });
     try {
       const rows = await DB.list();
@@ -1044,34 +1146,41 @@ class Component extends DCLogic {
     }
   };
 
+  reload = () => { if (AUTH.signedIn) this.load(); };
+
   get screen() {
     return this.state.screen || (this.props.startScreen === "ตั้งค่า" ? "settings" : this.props.startScreen === "รายการทั้งหมด" ? "list" : this.props.startScreen === "เข้าสู่ระบบ" ? "login" : this.props.startScreen === "สรุปรายปี" ? "year" : this.props.startScreen === "บันทึกข้อมูล" ? "add" : this.props.startScreen === "มือถือ" ? "mobile" : "month");
   }
 
   go = (s) => () => this.setState({ screen: s, saved: "" });
 
-  press = (label) => () => {
-    const p = this.state.pin;
-    if (label === "⌫") return this.setState({ pin: p.slice(0, -1), pinErr: "" });
-    if (label === "·") return;
-    if (p.length >= 6) return;
-    const next = p + label;
-    this.setState({ pin: next, pinErr: "" });
-    if (next.length === 6) {
-      const acc = this.state.accts.find((a) => a.id === this.state.loginId) || this.state.accts[0];
-      setTimeout(() => {
-        if (next === acc.pin) {
-          this.setState({ screen: "month", pin: "", pinErr: "", meId: acc.id, acct: acc.name, who: acc.name, filter: "ทุกบัญชี" });
-          this.reload();
-        } else this.setState({ pin: "", pinErr: (T[this.state.lang || (this.props.language === "ລາວ" ? "lo" : "th")] || T.th).pinWrong });
-      }, 240);
+  signIn = async () => {
+    const s = this.state;
+    if (s.signing) return;
+    const acc = s.accts.find((a) => a.id === s.loginId) || s.accts[0];
+    if (!acc || !acc.email) return this.setState({ pinErr: "บัญชีนี้ยังไม่ได้ตั้งอีเมลใน config.js" });
+    if (!s.pw) return this.setState({ pinErr: "ใส่รหัสผ่านก่อน" });
+
+    this.setState({ signing: true, pinErr: "" });
+    try {
+      await AUTH.signIn(acc.email, s.pw);
+      this.setState({ signing: false, pw: "", filter: "ทุกบัญชี" });
+      await this.resume();
+    } catch (e) {
+      this.setState({ signing: false, pw: "", pinErr: e.message || String(e) });
     }
   };
 
-  logout = () => this.setState({
-    screen: "login", meId: null, pin: "", pinErr: "", editId: null,
-    pendingDel: null, saved: "", amount: "", note: "",
-  });
+  onPw = (e) => this.setState({ pw: e.target.value, pinErr: "" });
+  onPwKey = (e) => { if (e.key === "Enter") this.signIn(); };
+
+  logout = async () => {
+    await AUTH.signOut();
+    this.setState({
+      screen: "login", meId: null, meRole: "member", acct: "", pw: "", pinErr: "",
+      editId: null, pendingDel: null, saved: "", amount: "", note: "", txns: [],
+    });
+  };
 
   setCat = (i, k) => (e) => {
     const cats = this.state.cats.map((c, j) => (j === i ? { ...c, [k]: e.target.value } : c));
@@ -1083,22 +1192,12 @@ class Component extends DCLogic {
   };
   delCat = (i) => () => this.setState({ cats: this.state.cats.filter((_, j) => j !== i) });
 
+  // ชื่อ/คำอธิบาย/สกุลเงิน ปรับได้แค่การแสดงผลในเครื่องนี้
+  // ส่วนรหัสผ่านกับสิทธิ์ admin/member อยู่ที่ Supabase แก้จากหน้าเว็บไม่ได้
   setAcct = (i, k) => (e) => {
-    const v = k === "pin" ? e.target.value.replace(/[^0-9]/g, "").slice(0, 6) : e.target.value;
-    const accts = this.state.accts.map((a, j) => (j === i ? { ...a, [k]: v } : a));
+    const accts = this.state.accts.map((a, j) => (j === i ? { ...a, [k]: e.target.value } : a));
     this.setState({ accts });
   };
-  addAcct = () => {
-    const L = this.L;
-    this.setState({
-      accts: [...this.state.accts, {
-        id: "a" + Date.now(), name: L.t_newAcct, roleTh: L.t_newRole, roleLo: L.t_newRole,
-        code: "KIP", pin: "000000", prev: 0, income: 0, expense: 0,
-        wallets: [{ code: "KIP", income: 0, expense: 0 }, { code: "THB", income: 0, expense: 0 }, { code: "USD", income: 0, expense: 0 }],
-      }],
-    });
-  };
-  delAcct = (i) => () => this.setState({ accts: this.state.accts.filter((_, j) => j !== i) });
 
   get L() { return T[this.state.lang || (this.props.language === "ລາວ" ? "lo" : "th")] || T.th; }
 
@@ -1295,7 +1394,7 @@ class Component extends DCLogic {
         const on = s.loginId === a.id;
         return {
           name: a.name, role: lang === "lo" ? a.roleLo : a.roleTh,
-          pick: () => this.setState({ loginId: a.id, pin: "", pinErr: "" }),
+          pick: () => this.setState({ loginId: a.id, pw: "", pinErr: "" }),
           bd: on ? ACC : "rgba(29,31,32,0.16)",
           bg: on ? "#eef6ff" : "transparent",
           avBg: on ? DARK : "#d4d4d7",
@@ -1303,11 +1402,15 @@ class Component extends DCLogic {
         };
       }),
       activeAcct: s.acct,
-      pinDots: [0, 1, 2, 3, 4, 5].map((i) => ({ bg: i < s.pin.length ? ACC : "transparent" })),
-      keys: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "·", "0", "⌫"].map((k) => ({ label: k, press: this.press(k) })),
-      pinHint: s.pinErr || (s.pin.length ? L.t_entered + " " + s.pin.length + " " + L.t_of6 : L.pinOwn),
-      pinHintColor: s.pinErr ? DARK : MUTED,
-      pinDemo: L.t_demo,
+      pw: s.pw,
+      onPw: this.onPw,
+      onPwKey: this.onPwKey,
+      signIn: this.signIn,
+      signInLabel: s.signing ? L.t_signingIn : L.t_signinBtn,
+      pinHint: s.pinErr || L.pinOwn,
+      pinHintColor: s.pinErr ? "#8a2020" : MUTED,
+      pinDemo: L.t_secureNote,
+      roleBadge: admin ? L.t_roleAdmin : L.t_roleMember,
 
       cats: (() => {
         const by = {};
@@ -1449,13 +1552,21 @@ class Component extends DCLogic {
         th: c.th, lo: c.lo,
         onTh: this.setCat(i, "th"), onLo: this.setCat(i, "lo"), del: this.delCat(i),
       })),
-      acctEdits: s.accts.map((a, i) => ({
-        name: a.name, role: lang === "lo" ? a.roleLo : a.roleTh, pin: a.pin, code: a.code,
-        onName: this.setAcct(i, "name"), onRole: this.setAcct(i, lang === "lo" ? "roleLo" : "roleTh"),
-        onPin: this.setAcct(i, "pin"), onCode: this.setAcct(i, "code"), del: this.delAcct(i),
-      })),
+      acctEdits: s.accts.map((a, i) => {
+        const isMe = a.name === s.acct;
+        const adminHere = isMe && admin;
+        return {
+          name: a.name, role: lang === "lo" ? a.roleLo : a.roleTh, code: a.code,
+          email: a.email || "—",
+          roleTag: adminHere ? L.t_roleAdmin : isMe ? L.t_roleMember : "",
+          roleFg: adminHere ? DARK : MUTED,
+          onName: this.setAcct(i, "name"), onRole: this.setAcct(i, lang === "lo" ? "roleLo" : "roleTh"),
+          onCode: this.setAcct(i, "code"),
+        };
+      }),
+      t_colEmail: L.t_colEmail, t_colPerm: L.t_colPerm, t_acctNote: L.t_acctNote,
       curCodes: CURRENCIES.map((c) => ({ code: c.code, label: c.sym + " " + c.code })),
-      addCat: this.addCat, addAcct: this.addAcct,
+      addCat: this.addCat,
       listTitle: s.period === "month" ? L.t_pMonthTitle : s.period === "year" ? L.t_pYearTitle : L.t_pAllTitle,
       periodOpts: [["month", L.t_pMonth], ["year", L.t_pYear], ["all", L.t_pAll]].map(([id, label]) => ({
         label, pick: () => this.setState({ period: id }), ...sel(s.period === id),
