@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./config.js"></script>
+<script>document.title = (window.LEDGER_CONFIG || {}).APP_NAME || "บ้านเรา · Home Ledger";</script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -133,7 +134,7 @@
 <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
   <div class="hl-login" style="min-height:100vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)">
     <div class="hl-hero" style="background:#1d2d3d;color:#eef6ff;padding:54px;display:flex;flex-direction:column;justify-content:space-between">
-      <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px;letter-spacing:.18em;text-transform:uppercase">บ้านเรา · Home Ledger</div>
+      <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px;letter-spacing:.18em;text-transform:uppercase">{{ appName }}</div>
       <div style="display:flex;flex-direction:column;gap:20.4px;max-width:540px">
         <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(32px,4.2vw,52px);line-height:1.1"><span style="white-space:nowrap">{{ t_hero1 }}</span><br>{{ t_hero2 }}</div>
         <div style="color:#b5d9fd;line-height:1.6">{{ t_heroSub }}</div>
@@ -179,7 +180,7 @@
 <div>
   <div class="hl-hd" style="position:sticky;top:0;z-index:5;background:#f2f2f3;border-bottom:1px solid rgba(29,31,32,0.16);display:flex;align-items:center;justify-content:space-between;gap:13.6px;flex-wrap:wrap;padding:0 27.2px;min-height:60px">
     <div class="hl-brandbar" style="display:flex;align-items:center;gap:20.4px;flex-wrap:wrap">
-      <div class="hl-brand" style="flex:none;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap">บ้านเรา · Home Ledger</div>
+      <div class="hl-brand" style="flex:none;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap">{{ appName }}</div>
       <div class="hl-tabs" style="display:flex;gap:0;flex-wrap:wrap">
         <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
           <button onClick="{{ t.go }}" style="border:0;background:transparent;padding:0 14px;height:52px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.06em;color:{{ t.fg }};border-bottom:2px solid {{ t.bd }}" style-hover="color:#416180">{{ t.label }}</button>
@@ -355,7 +356,7 @@
         <div style="font-weight:600;font-size:22px">{{ t_byAcct }}</div>
         <div style="font-size:12px;color:#5d5d60">{{ t_acctCaption }}</div>
       </div>
-      <div class="hl-3col" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20.4px">
+      <div class="hl-3col" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20.4px">
         <sc-for list="{{ acctRows }}" as="a" hint-placeholder-count="3">
           <div style="border:1px solid rgba(29,31,32,0.16);padding:16px;display:flex;flex-direction:column;gap:10px">
             <div style="display:flex;align-items:baseline;justify-content:space-between">
@@ -783,7 +784,7 @@
 
       <div class="hl-phone" style="width:320px;display:flex;flex-direction:column;gap:10.2px">
         <div class="hl-phone" style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);background:#1d2d3d;color:#eef6ff;padding:27.2px;display:flex;flex-direction:column;justify-content:center;gap:27.2px">
-          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#94bce3">บ้านเรา · Home Ledger</div>
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#94bce3">{{ appName }}</div>
           <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:28px">{{ t_hello }} {{ activeAcct }}<br>{{ t_enterPin }}</div>
           <div style="display:flex;gap:12px">
             <span style="width:14px;height:14px;border:1px solid #94bce3;background:#94bce3"></span>
@@ -889,7 +890,7 @@ const T = {
     roles: { pin: "บัญชีส่วนตัว", ton: "บัญชีส่วนตัว", home: "บัญชีกลางของบ้าน" },
     cats: ["อาหาร / Food", "ที่อยู่อาศัย / Housing", "เดินทาง / Transport", "ลูก / Kids", "ของใช้ในบ้าน / Household", "สุขภาพ / Health", "บันเทิง / Leisure", "อื่น ๆ / Other"],
     chips: ["อาหาร", "ที่อยู่อาศัย", "เดินทาง", "ลูก", "ของใช้ในบ้าน", "สุขภาพ", "บันเทิง", "อื่น ๆ"],
-    budgets: ["อาหาร", "เดินทาง", "บันเทิง", "เป้าหมายออม"],
+    t_saveGoal: "เป้าหมายออม",
     mAbbr: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."],
     mFull: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
     t_recurFlag: "ประจำ", t_incomeCat: "รายรับ",
@@ -982,7 +983,7 @@ const T = {
     roles: { pin: "ບັນຊີສ່ວນຕົວ", ton: "ບັນຊີສ່ວນຕົວ", home: "ບັນຊີກາງຂອງບ້ານ" },
     cats: ["ອາຫານ / Food", "ທີ່ຢູ່ອາໄສ / Housing", "ການເດີນທາງ / Transport", "ລູກ / Kids", "ເຄື່ອງໃຊ້ໃນເຮືອນ / Household", "ສຸຂະພາບ / Health", "ບັນເທິງ / Leisure", "ອື່ນໆ / Other"],
     chips: ["ອາຫານ", "ທີ່ຢູ່ອາໄສ", "ການເດີນທາງ", "ລູກ", "ເຄື່ອງໃຊ້ໃນເຮືອນ", "ສຸຂະພາບ", "ບັນເທິງ", "ອື່ນໆ"],
-    budgets: ["ອາຫານ", "ການເດີນທາງ", "ບັນເທິງ", "ເປົ້າໝາຍເກັບອອມ"],
+    t_saveGoal: "ເປົ້າໝາຍເກັບອອມ",
     mAbbr: ["ມ.ກ.", "ກ.ພ.", "ມີ.ນ.", "ເມ.ສ.", "ພ.ພ.", "ມິ.ຖ.", "ກ.ລ.", "ສ.ຫ.", "ກ.ຍ.", "ຕ.ລ.", "ພ.ຈ.", "ທ.ວ."],
     mFull: ["ມັງກອນ", "ກຸມພາ", "ມີນາ", "ເມສາ", "ພຶດສະພາ", "ມິຖຸນາ", "ກໍລະກົດ", "ສິງຫາ", "ກັນຍາ", "ຕຸລາ", "ພະຈິກ", "ທັນວາ"],
     t_recurFlag: "ປະຈຳ", t_incomeCat: "ລາຍຮັບ",
@@ -1088,12 +1089,18 @@ const ACCT_SEED = ACCOUNTS.map((a) => ({
   roleTh: a.role, roleLo: { pin: "ບັນຊີສ່ວນຕົວ", ton: "ບັນຊີສ່ວນຕົວ", home: "ບັນຊີກາງຂອງບ້ານ" }[a.id] || a.role,
 }));
 
+const APP_NAME = CFG.APP_NAME || "บ้านเรา · Home Ledger";
+
 // เป้างบประมาณต่อเดือน (หน่วยเป็นบาท) — ยอดที่ใช้จริงคำนวณจากรายการใน DB
-const BUDGET_TARGETS = [
-  ["อาหาร", 16000], ["เดินทาง", 6000],
-  ["บันเทิง", 4000], ["เป้าหมายออม", 30000],
-];
-const YEAR_GOAL = 300000; // เป้าเงินเก็บทั้งปี (บาท)
+// แก้ได้ที่ config.js · รับทั้งรูปแบบใหม่ {cat,limit} และแบบเก่า ["ชื่อ", จำนวน]
+const SAVE_GOAL = "เป้าหมายออม";
+const BUDGET_TARGETS = (Array.isArray(CFG.BUDGETS) ? CFG.BUDGETS : [
+  { cat: "อาหาร", limit: 16000 }, { cat: "เดินทาง", limit: 6000 },
+  { cat: "บันเทิง", limit: 4000 }, { cat: SAVE_GOAL, limit: 30000 },
+]).map((b) => (Array.isArray(b) ? { cat: b[0], limit: b[1] } : b))
+  .filter((b) => b && b.cat);
+
+const YEAR_GOAL = Number(CFG.YEAR_GOAL) || 300000; // เป้าเงินเก็บทั้งปี (บาท)
 
 // ───────────────── Supabase (Auth + REST) ─────────────────
 const DB_ON = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY
@@ -1288,10 +1295,11 @@ class Component extends DCLogic {
     kindFilter: "all",
     period: "month",
     kind: "expense",
-    cat: "อาหาร",
-    method: "บัตร",
+    // ค่าตั้งต้นอ่านจาก config.js ไม่ตรึงชื่อไว้ — เปลี่ยนชุดบัญชีแล้วยังทำงานได้
+    cat: CAT_SEED[0] ? CAT_SEED[0].th : "",
+    method: METHODS[0],
     methodTo: "",
-    who: "ปิ่น",
+    who: MEMBERS[0] || "",
     amount: "",
     note: "",
     date: TODAY_ISO,
@@ -1651,6 +1659,10 @@ class Component extends DCLogic {
 
     return {
       ...L,
+      // วางหลัง ...L จึงทับคำแปลได้ — สองค่านี้มาจาก config.js ไม่ใช่ไฟล์นี้
+      appName: APP_NAME,
+      t_family: MEMBERS.slice(0, 2).join(" + "),
+
       langOpts: [["th", "ไทย"], ["lo", "ລາວ"]].map(([id, label]) => ({
         label, pick: () => this.setState({ lang: id }),
         bg: lang === id ? ACC : "transparent", fg: lang === id ? "#f2f2f3" : MUTED,
@@ -1741,15 +1753,18 @@ class Component extends DCLogic {
         };
       }),
 
-      budgets: BUDGET_TARGETS.map(([name, total], i) => {
-        const used = name === "เป้าหมายออม"
+      budgets: BUDGET_TARGETS.map(({ cat: name, limit }) => {
+        const goal = name === SAVE_GOAL;
+        const total = Number(limit) || 0;
+        // ชื่อแปลผ่าน catLabel เหมือนหมวดหมู่ทั่วไป จึงเพิ่มบรรทัดใน config.js ได้เลย
+        // ไม่ต้องมาแก้รายการคำแปลในไฟล์นี้ให้ตรงลำดับกันอีก
+        const used = goal
           ? Math.max(0, incTHB - expTHB)
           : sumTHB(monthExp.filter((t) => t.cat === name));
-        const goal = name === "เป้าหมายออม";
         const over = goal ? used < total : used > total;
         const diff = Math.abs(total - used);
         return {
-          name: L.budgets[i], used: b(used), total: b(total),
+          name: goal ? L.t_saveGoal : catLabel(name), used: b(used), total: b(total),
           w: Math.min(100, total ? (used / total) * 100 : 0) + "%",
           bg: over ? DARK : ACC,
           color: over ? DARK : MUTED,
