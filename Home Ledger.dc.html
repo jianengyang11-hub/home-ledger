@@ -519,13 +519,39 @@
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.method }}</span>
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.who }}</span>
           <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ r.color }};white-space:nowrap">{{ r.amount }}</span>
-          <span style="display:{{ r.actDisp }};gap:6px;padding-left:10px">
-            <button onClick="{{ r.edit }}" style="border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:4px 11px;font-size:12px" style-hover="background:#eef6ff">{{ r.editLabel }}</button>
-            <button onClick="{{ r.del }}" style="border:1px solid {{ r.delBd }};background:{{ r.delBg }};color:{{ r.delFg }};padding:4px 11px;font-size:12px">{{ r.delLabel }}</button>
+          <span style="display:flex;gap:6px;align-items:center;padding-left:10px">
+            <button onClick="{{ r.openHistory }}" style="display:{{ r.editedDisp }};border:1px solid #94bce3;background:{{ r.editedBg }};color:{{ r.editedFg }};padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ r.editedLabel }}</button>
+            <button onClick="{{ r.edit }}" style="display:{{ r.editDisp }};border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:4px 11px;font-size:12px" style-hover="background:#eef6ff">{{ r.editLabel }}</button>
+            <button onClick="{{ r.del }}" style="display:{{ r.delDisp }};border:1px solid {{ r.delBd }};background:{{ r.delBg }};color:{{ r.delFg }};padding:4px 11px;font-size:12px">{{ r.delLabel }}</button>
           </span>
         </div>
       </sc-for>
       <div style="display:{{ emptyDisp }};padding:34px 0;text-align:center;color:#98989b;font-size:14px">{{ emptyText }}</div>
+    </div>
+
+    <div class="hl-hist" style="display:{{ histDisp }};flex-direction:column;gap:13.6px;border:1px solid #94bce3;background:#f7fbff;padding:20.4px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:13.6px">
+        <div style="display:flex;align-items:baseline;gap:10px;min-width:0">
+          <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px;flex:none;white-space:nowrap">{{ histTitle }}</span>
+          <span style="font-size:13px;color:#5d5d60;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ histName }}</span>
+        </div>
+        <button onClick="{{ histClose }}" style="border:1px solid #94bce3;background:transparent;color:#416180;padding:5px 13px;font-size:13px;flex:none">{{ t_close }}</button>
+      </div>
+      <sc-for list="{{ histRows }}" as="h" hint-placeholder-count="2">
+        <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(29,31,32,0.1);padding-top:10.2px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:#5d5d60;letter-spacing:.04em">
+            <span>{{ h.when }}</span><span style="color:#416180">{{ h.who }}</span>
+          </div>
+          <sc-for list="{{ h.changes }}" as="c" hint-placeholder-count="2">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:14px">
+              <span style="min-width:96px;color:#5d5d60;font-size:13px">{{ c.field }}</span>
+              <span style="color:#98989b;text-decoration:line-through">{{ c.from }}</span>
+              <span style="color:#5d5d60">→</span>
+              <span style="font-weight:500">{{ c.to }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
     </div>
   </div>
   </sc-if>
@@ -843,6 +869,10 @@ const T = {
     t_secureNote: "รหัสผ่านตรวจสอบที่เซิร์ฟเวอร์ Supabase ไม่มีเก็บไว้ในหน้าเว็บ · สิทธิ์แก้/ลบบังคับที่ฐานข้อมูล",
     t_roleAdmin: "บัญชีหลัก", t_roleMember: "เพิ่มรายการได้อย่างเดียว",
     t_colEmail: "อีเมลที่ใช้เข้าระบบ", t_colPerm: "สิทธิ์",
+    t_edited: "แก้ไขแล้ว", t_histTitle: "ประวัติการแก้ไข", t_editedBy: "แก้โดย",
+    t_close: "ปิด", t_blank: "(ว่าง)",
+    fields: { ts: "วันที่", name: "รายการ", cat: "หมวดหมู่", method: "ช่องทาง",
+              kind: "ประเภท", amt: "จำนวนเงิน", code: "สกุลเงิน", flag: "รายการประจำ", who: "บัญชี" },
     t_acctNote: "รหัสผ่านและสิทธิ์ admin/member แก้ที่ Supabase เท่านั้น (Authentication → Users และตาราง profiles) — แก้จากหน้านี้ไม่ได้ เพราะฐานข้อมูลไม่เปิดให้เขียน",
     t_edit: "แก้", t_del: "ลบ", t_confirmDel: "ยืนยัน?", t_cancel: "ยกเลิก",
     t_editing: "กำลังแก้ไขรายการ", t_saveEdit: "บันทึกการแก้ไข",
@@ -920,6 +950,10 @@ const T = {
     t_secureNote: "ລະຫັດຜ່ານກວດສອບທີ່ເຊີບເວີ Supabase ບໍ່ມີເກັບໄວ້ໃນໜ້າເວັບ · ສິດແກ້/ລຶບບັງຄັບທີ່ຖານຂໍ້ມູນ",
     t_roleAdmin: "ບັນຊີຫຼັກ", t_roleMember: "ເພີ່ມລາຍການໄດ້ຢ່າງດຽວ",
     t_colEmail: "ອີເມວທີ່ໃຊ້ເຂົ້າລະບົບ", t_colPerm: "ສິດ",
+    t_edited: "ແກ້ໄຂແລ້ວ", t_histTitle: "ປະຫວັດການແກ້ໄຂ", t_editedBy: "ແກ້ໂດຍ",
+    t_close: "ປິດ", t_blank: "(ຫວ່າງ)",
+    fields: { ts: "ວັນທີ", name: "ລາຍການ", cat: "ໝວດໝູ່", method: "ຊ່ອງທາງ",
+              kind: "ປະເພດ", amt: "ຈຳນວນເງິນ", code: "ສະກຸນເງິນ", flag: "ລາຍການປະຈຳ", who: "ບັນຊີ" },
     t_acctNote: "ລະຫັດຜ່ານແລະສິດ admin/member ແກ້ທີ່ Supabase ເທົ່ານັ້ນ — ແກ້ຈາກໜ້ານີ້ບໍ່ໄດ້",
     t_edit: "ແກ້", t_del: "ລຶບ", t_confirmDel: "ຢືນຢັນ?", t_cancel: "ຍົກເລີກ",
     t_editing: "ກຳລັງແກ້ໄຂລາຍການ", t_saveEdit: "ບັນທຶກການແກ້ໄຂ",
@@ -1092,6 +1126,10 @@ const DB = {
     const r = await call(REST("txns") + "?select=*&order=ts.desc,id.desc", {}, "โหลดข้อมูลไม่สำเร็จ");
     return r.json();
   },
+  async edits() {
+    const r = await call(REST("txn_edits") + "?select=*&order=edited_at.desc", {}, "โหลดประวัติไม่สำเร็จ");
+    return r.json();
+  },
   async insert(row) {
     await call(REST("txns"), { method: "POST", body: JSON.stringify(row) }, "บันทึกไม่สำเร็จ");
   },
@@ -1182,6 +1220,8 @@ class Component extends DCLogic {
     saved: "",
     editId: null,
     pendingDel: null,
+    edits: [],
+    historyId: null,
     busy: false,
     loading: true,
     dbErr: "",
@@ -1225,8 +1265,8 @@ class Component extends DCLogic {
   load = async () => {
     this.setState({ loading: true, dbErr: "" });
     try {
-      const rows = await DB.list();
-      this.setState({ txns: rows.map(fromDb), loading: false, dbErr: "" });
+      const [rows, edits] = await Promise.all([DB.list(), DB.edits()]);
+      this.setState({ txns: rows.map(fromDb), edits, loading: false, dbErr: "" });
     } catch (e) {
       this.setState({ loading: false, dbErr: e.message || String(e) });
     }
@@ -1315,7 +1355,8 @@ class Component extends DCLogic {
     this.setState({ busy: true, saved: "" });
     try {
       if (s.editId != null) {
-        if (!this.isAdmin) throw new Error("เฉพาะบัญชีหลักเท่านั้นที่แก้ไขได้");
+        const target = s.txns.find((t) => t.id === s.editId);
+        if (target && !this.canEdit(target)) throw new Error("แก้ได้เฉพาะรายการของบัญชีตัวเอง");
         await DB.update(s.editId, row);
       } else {
         await DB.insert(row);
@@ -1331,10 +1372,14 @@ class Component extends DCLogic {
     }
   };
 
+  // แก้ได้ถ้าเป็นรายการของตัวเอง — บัญชีหลักแก้ของทุกคนได้
+  // (ฐานข้อมูลบังคับกฎเดียวกันอีกชั้นด้วย RLS)
+  canEdit = (t) => this.isAdmin || t.who === this.state.acct;
+
   beginEdit = (t) => () => {
-    if (!this.isAdmin) return;
+    if (!this.canEdit(t)) return;
     this.setState({
-      screen: "add", editId: t.id, pendingDel: null, saved: "",
+      screen: "add", editId: t.id, pendingDel: null, saved: "", historyId: null,
       kind: t.kind, cat: t.kind === "income" ? this.state.cat : t.cat,
       method: t.method, who: t.who, amount: String(t.val),
       note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
@@ -1344,6 +1389,9 @@ class Component extends DCLogic {
   cancelEdit = () => this.setState({
     editId: null, amount: "", note: "", repeat: false, entryCode: null, saved: "",
   });
+
+  showHistory = (id) => () => this.setState({ historyId: this.state.historyId === id ? null : id });
+  closeHistory = () => this.setState({ historyId: null });
 
   askDel = (id) => () => this.setState({ pendingDel: id });
 
@@ -1445,6 +1493,29 @@ class Component extends DCLogic {
     const admin = this.isAdmin;
     const E = cur(s.entryCode || acctCode(this.targetWho));
     const b = (n) => raw(n, "THB");
+
+    // ───── ประวัติการแก้ไข ─────
+    const editsOf = (id) => (s.edits || []).filter((e) => e.txn_id === id);
+    const histTx = s.historyId != null ? s.txns.find((t) => t.id === s.historyId) : null;
+    const hist = histTx ? { tx: histTx, list: editsOf(histTx.id) } : null;
+
+    const fmtWhen = (iso) => {
+      const dt = new Date(iso);
+      if (isNaN(dt)) return String(iso);
+      return dt.getDate() + " " + L.mAbbr[dt.getMonth()] + " " + (dt.getFullYear() + 543)
+        + " " + pad2(dt.getHours()) + ":" + pad2(dt.getMinutes());
+    };
+    const fieldLabel = (f) => (L.fields || {})[f] || f;
+    const fieldVal = (f, v) => {
+      if (v == null || v === "") return "";
+      if (f === "amt") return Number(v).toLocaleString("en-US");
+      if (f === "kind") return v === "income" ? L.t_kindInc : L.t_kindExp;
+      if (f === "cat") return catLabel(v);
+      if (f === "method") { const i = METHODS.indexOf(v); return i >= 0 ? L.methods[i] : v; }
+      if (f === "ts") { const p = String(v).slice(0, 10).split("-");
+        return pad2(Number(p[2])) + " " + M_ABBR[Number(p[1]) - 1] + " " + (Number(p[0]) + 543); }
+      return String(v);
+    };
 
     const tabDefs = [[L.t_month, "month"], [L.t_year, "year"], [L.t_list, "list"], [L.t_add, "add"]]
       .concat(admin ? [[L.t_settings, "settings"]] : [])
@@ -1613,6 +1684,9 @@ class Component extends DCLogic {
           const inc = isInc(t);
           const mi = METHODS.indexOf(t.method);
           const asking = s.pendingDel === t.id;
+          const mine = this.canEdit(t);
+          const nEdits = editsOf(t.id).length;
+          const open = s.historyId === t.id;
           return {
             date: t.date, name: t.name, who: t.who,
             cat: catLabel(t.cat),
@@ -1621,9 +1695,19 @@ class Component extends DCLogic {
             amount: (inc ? "+" : "−") + raw(valOf(t), codeOfTx(t)),
             color: inc ? DARK : INK,
             mark: inc ? DARK : ACC,
-            actDisp: admin ? "flex" : "none",
+
+            // ป้าย "แก้ไขแล้ว" กดดูประวัติได้
+            editedDisp: nEdits ? "inline-flex" : "none",
+            editedLabel: L.t_edited + " " + nEdits + "×",
+            editedBg: open ? DARK : "#eef6ff",
+            editedFg: open ? "#eef6ff" : "#416180",
+            openHistory: this.showHistory(t.id),
+
+            editDisp: mine ? "inline-flex" : "none",
             editLabel: L.t_edit,
-            edit: admin ? this.beginEdit(t) : () => {},
+            edit: mine ? this.beginEdit(t) : () => {},
+
+            delDisp: admin ? "inline-flex" : "none",
             delLabel: asking ? L.t_confirmDel : L.t_del,
             delBd: asking ? DARK : "rgba(29,31,32,0.16)",
             delFg: asking ? "#f2f2f3" : MUTED,
@@ -1631,6 +1715,22 @@ class Component extends DCLogic {
             del: admin ? (asking ? this.confirmDel(t.id) : this.askDel(t.id)) : () => {},
           };
         }),
+
+      // แผงประวัติการแก้ไขของรายการที่กดเลือก
+      histDisp: hist ? "flex" : "none",
+      histTitle: L.t_histTitle,
+      histName: hist ? hist.tx.name || catLabel(hist.tx.cat) : "",
+      histClose: this.closeHistory,
+      t_close: L.t_close,
+      histRows: hist ? hist.list.map((e) => ({
+        when: fmtWhen(e.edited_at),
+        who: L.t_editedBy + " " + e.edited_by,
+        changes: (e.changes || []).map((c) => ({
+          field: fieldLabel(c.field),
+          from: fieldVal(c.field, c.from) || L.t_blank,
+          to: fieldVal(c.field, c.to) || L.t_blank,
+        })),
+      })) : [],
       filters: [L.t_all, ...s.accts.map((a) => a.name)].map((name) => ({
         name, pick: () => this.setState({ filter: name }), ...sel(s.filter === name),
       })),
