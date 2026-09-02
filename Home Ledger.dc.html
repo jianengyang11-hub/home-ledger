@@ -1265,7 +1265,12 @@ class Component extends DCLogic {
   load = async () => {
     this.setState({ loading: true, dbErr: "" });
     try {
-      const [rows, edits] = await Promise.all([DB.list(), DB.edits()]);
+      // ประวัติการแก้ไขเป็นของเสริม — ถ้าตาราง txn_edits ยังไม่มี (ยังไม่ได้รัน schema.sql บล็อก 4b)
+      // รายการหลักต้องยังขึ้นได้ตามปกติ ไม่ใช่พังทั้งหน้า
+      const [rows, edits] = await Promise.all([
+        DB.list(),
+        DB.edits().catch((e) => { console.warn("ประวัติการแก้ไขใช้ไม่ได้:", e.message || e); return []; }),
+      ]);
       this.setState({ txns: rows.map(fromDb), edits, loading: false, dbErr: "" });
     } catch (e) {
       this.setState({ loading: false, dbErr: e.message || String(e) });

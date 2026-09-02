@@ -58,6 +58,20 @@ trigger เป็นคนเขียน ไม่ใช่หน้าเว�
 3. **SQL Editor** → วางไฟล์ `schema.sql` ทั้งไฟล์ → Run
    ท้ายสุดจะแสดง 3 แถว ตรวจว่า `ปิ่น` เป็น `admin`
 
+### ถ้าไม่เห็นป้าย "แก้ไขแล้ว" หรือขึ้น HTTP 404
+
+แปลว่าตาราง `txn_edits` ยังไม่มีในฐานข้อมูล (ยังไม่ได้รัน `schema.sql` บล็อก 4b)
+404 ตัวนี้มาจาก Supabase ไม่ใช่ GitHub Pages — เช็คได้จาก:
+
+```powershell
+curl.exe "https://xhnuigcwbcycthqjgjzb.supabase.co/rest/v1/txn_edits?select=id&limit=1" -H "apikey: <publishable key>"
+```
+
+| ผลที่ได้ | แปลว่า |
+| --- | --- |
+| `401 permission denied` | ตารางมีแล้ว ถูกต้อง (anon อ่านไม่ได้ตามที่ตั้งใจ) |
+| `404 PGRST205 Could not find the table` | **ตารางยังไม่มี** → รัน `schema.sql` ใหม่ทั้งไฟล์ |
+
 ## เปิดดูแบบ local
 
 เป็นเว็บ static ล้วน ต้องเสิร์ฟผ่าน HTTP (เปิดด้วย `file://` จะไม่ทำงาน):
