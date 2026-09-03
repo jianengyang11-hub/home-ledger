@@ -283,6 +283,7 @@
           <div style="font-size:12px;color:#5d5d60">{{ t_balCardNote }}</div>
         </div>
       </div>
+      <div style="display:{{ balLaterDisp }};font-size:12px;color:#416180">{{ balLater }}</div>
     </div>
 
     <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20.4px">
@@ -412,6 +413,7 @@
         </sc-for>
       </div>
       <span style="font-size:13px;color:#5d5d60">{{ viewNote }}</span>
+      <span style="font-size:13px;color:#416180">{{ viewSkippedYear }}</span>
     </div>
 
     <div class="hl-kpi4" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20.4px">
@@ -520,6 +522,8 @@
       <div style="font-size:13px;color:var(--color-accent-700,#416180);white-space:nowrap">{{ listCount }}</div>
     </div>
 
+
+    <div style="display:{{ breakSkipDisp }};font-size:13px;color:var(--color-accent-700,#416180)">{{ breakSkip }}</div>
 
     <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-6,20.4px)">
       <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
@@ -955,7 +959,9 @@ const T = {
     t_needTo: "เลือกช่องทางปลายทางที่ไม่ใช่ช่องทางเดิม",
     t_xferNote: "ย้ายเงินระหว่างช่องทาง เช่น ถอน ATM (โอน → เงินสด) หรือจ่ายบัตร (โอน → บัตร) ไม่นับเป็นรายรับหรือรายจ่าย",
     t_openNote: "เงินตั้งต้นที่มีอยู่ก่อนเริ่มใช้สมุดนี้ ใส่ครั้งเดียวต่อช่องทาง ไม่นับเป็นรายรับของเดือนไหน",
+    t_dupOpening: "{m} · {c} มียอดยกมาอยู่แล้ว ({v}) — กดแก้ยอดเดิมแทน หรือยกเลิกแถวเก่าก่อน",
     t_viewCur: "กราฟและ % คิดเฉพาะสกุล", t_otherCur: "อีก {n} รายการเป็นสกุลอื่น ไม่รวมในหน้านี้",
+    t_breakCur: "แถบแยกหมวดคิดเฉพาะสกุล {c} — อีก {n} รายการเป็นสกุลอื่น ส่วนยอดรวมหัวการ์ดรวมทุกสกุล",
     t_catsOffline: "ยังแก้หมวดหมู่ไม่ได้ — ตาราง cats ยังไม่มีในฐานข้อมูล (ต้องรัน upgrade_v2.sql ก่อน)",
     t_catsAdminOnly: "เฉพาะบัญชีหลักที่แก้หมวดหมู่ได้ · ทุกคนเห็นชุดเดียวกัน",
     t_balTitle: "ยอดคงเหลือแยกช่องทาง",
@@ -963,6 +969,7 @@ const T = {
     t_balCardNote: "หนี้ที่ต้องจ่าย ไม่ใช่เงินคงเหลือ",
     t_balReal: "สะสมจากยอดยกมาถึงวันนี้",
     t_balNoOpening: "ยังไม่ได้ใส่ยอดยกมา — นี่คือยอดตั้งแต่วันแรกที่บันทึก ไม่ใช่เงินจริงในกระเป๋า",
+    t_balLater: "อีก {n} รายการลงวันไว้ล่วงหน้า ยังไม่นับในยอดนี้ — เงินยังไม่เข้าออกจริง",
     t_void: "ยกเลิก", t_confirmVoid: "ยืนยันยกเลิก", t_restore: "กู้คืน",
     t_notVoid: "ไม่ยกเลิก", t_voidedBy: "ยกเลิกโดย",
     t_voidTitle: "ยกเลิกรายการ", t_reasonPh: "เหตุผลที่ยกเลิก เช่น บันทึกซ้ำ / กรอกผิด / ยกเลิกการซื้อ",
@@ -987,7 +994,7 @@ const T = {
     t_addCat: "+ เพิ่มหมวดหมู่", t_addAcct: "+ เพิ่มบัญชี", t_del: "ลบ",
     t_colTh: "ชื่อภาษาไทย", t_colLo: "ชื่อภาษาลาว", t_colName: "ชื่อบัญชี", t_colRole: "คำอธิบาย", t_colCur: "สกุลหลัก", t_colPin: "PIN 6 หลัก",
     t_newCat: "หมวดหมู่ใหม่", t_newAcct: "บัญชีใหม่", t_newRole: "บัญชีส่วนตัว",
-    t_setNote: "แก้ไขได้ทันที ชื่อที่เปลี่ยนจะใช้ทุกหน้า",
+    t_setNote: "หมวดหมู่บันทึกลงฐานข้อมูลจริง ทุกคนเห็นชุดเดียวกัน · ส่วนบัญชีแก้ได้แค่การแสดงผลบนเครื่องนี้ ชื่อตัวจริงอยู่ในตาราง profiles ที่ Supabase — เปลี่ยนชื่อบัญชีตรงนี้แล้วบันทึกรายการไม่ได้",
     t_typeLabel: "ประเภท / Type", t_periodLabel: "ช่วงเวลา / Period",
     t_pMonth: "เดือนนี้", t_pYear: "ปีนี้", t_pAll: "ทั้งหมด",
     t_pMonthTitle: "กันยายน 2569", t_pYearTitle: "ปี 2569", t_pAllTitle: "ทุกช่วงเวลา",
@@ -1054,7 +1061,9 @@ const T = {
     t_needTo: "ເລືອກຊ່ອງທາງປາຍທາງທີ່ບໍ່ແມ່ນຊ່ອງທາງເດີມ",
     t_xferNote: "ຍ້າຍເງິນລະຫວ່າງຊ່ອງທາງ ເຊັ່ນ ຖອນ ATM (ໂອນ → ເງິນສົດ) ຫຼືຈ່າຍບັດ (ໂອນ → ບັດ) ບໍ່ນັບເປັນລາຍຮັບຫຼືລາຍຈ່າຍ",
     t_openNote: "ເງິນຕັ້ງຕົ້ນທີ່ມີຢູ່ກ່ອນເລີ່ມໃຊ້ປຶ້ມນີ້ ໃສ່ຄັ້ງດຽວຕໍ່ຊ່ອງທາງ ບໍ່ນັບເປັນລາຍຮັບຂອງເດືອນໃດ",
+    t_dupOpening: "{m} · {c} ມີຍອດຍົກມາຢູ່ແລ້ວ ({v}) — ກົດແກ້ຍອດເດີມແທນ ຫຼື ຍົກເລີກແຖວເກົ່າກ່ອນ",
     t_viewCur: "ກຣາຟແລະ % ຄິດສະເພາະສະກຸນ", t_otherCur: "ອີກ {n} ລາຍການເປັນສະກຸນອື່ນ ບໍ່ລວມໃນໜ້ານີ້",
+    t_breakCur: "ແຖບແຍກໝວດຄິດສະເພາະສະກຸນ {c} — ອີກ {n} ລາຍການເປັນສະກຸນອື່ນ ສ່ວນຍອດລວມຫົວກາດລວມທຸກສະກຸນ",
     t_catsOffline: "ຍັງແກ້ໝວດໝູ່ບໍ່ໄດ້ — ຕາຕະລາງ cats ຍັງບໍ່ມີໃນຖານຂໍ້ມູນ",
     t_catsAdminOnly: "ສະເພາະບັນຊີຫຼັກທີ່ແກ້ໝວດໝູ່ໄດ້ · ທຸກຄົນເຫັນຊຸດດຽວກັນ",
     t_balTitle: "ຍອດຄົງເຫຼືອແຍກຊ່ອງທາງ",
@@ -1062,6 +1071,7 @@ const T = {
     t_balCardNote: "ໜີ້ທີ່ຕ້ອງຈ່າຍ ບໍ່ແມ່ນເງິນຄົງເຫຼືອ",
     t_balReal: "ສະສົມຈາກຍອດຍົກມາເຖິງມື້ນີ້",
     t_balNoOpening: "ຍັງບໍ່ໄດ້ໃສ່ຍອດຍົກມາ — ນີ້ແມ່ນຍອດຕັ້ງແຕ່ມື້ທຳອິດທີ່ບັນທຶກ ບໍ່ແມ່ນເງິນຈິງໃນກະເປົາ",
+    t_balLater: "ອີກ {n} ລາຍການລົງວັນໄວ້ລ່ວງໜ້າ ຍັງບໍ່ນັບໃນຍອດນີ້ — ເງິນຍັງບໍ່ເຂົ້າອອກຈິງ",
     t_void: "ຍົກເລີກ", t_confirmVoid: "ຢືນຢັນຍົກເລີກ", t_restore: "ກູ້ຄືນ",
     t_notVoid: "ບໍ່ຍົກເລີກ", t_voidedBy: "ຍົກເລີກໂດຍ",
     t_voidTitle: "ຍົກເລີກລາຍການ", t_reasonPh: "ເຫດຜົນທີ່ຍົກເລີກ ເຊັ່ນ ບັນທຶກຊ້ຳ / ພິມຜິດ / ຍົກເລີກການຊື້",
@@ -1086,7 +1096,7 @@ const T = {
     t_addCat: "+ ເພີ່ມໝວດ", t_addAcct: "+ ເພີ່ມບັນຊີ", t_del: "ລຶບ",
     t_colTh: "ຊື່ພາສາໄທ", t_colLo: "ຊື່ພາສາລາວ", t_colName: "ຊື່ບັນຊີ", t_colRole: "ຄຳອະທິບາຍ", t_colCur: "ສະກຸນຫຼັກ", t_colPin: "PIN 6 ຫຼັກ",
     t_newCat: "ໝວດໃໝ່", t_newAcct: "ບັນຊີໃໝ່", t_newRole: "ບັນຊີສ່ວນຕົວ",
-    t_setNote: "ແກ້ໄຂໄດ້ທັນທີ ຊື່ທີ່ປ່ຽນຈະໃຊ້ທຸກໜ້າ",
+    t_setNote: "ໝວດໝູ່ບັນທຶກລົງຖານຂໍ້ມູນຈິງ ທຸກຄົນເຫັນຊຸດດຽວກັນ · ສ່ວນບັນຊີແກ້ໄດ້ແຕ່ການສະແດງຜົນເທິງເຄື່ອງນີ້ ຊື່ຕົວຈິງຢູ່ໃນຕາຕະລາງ profiles ທີ່ Supabase — ປ່ຽນຊື່ບັນຊີຢູ່ນີ້ແລ້ວບັນທຶກລາຍການບໍ່ໄດ້",
     t_typeLabel: "ປະເພດ / Type", t_periodLabel: "ຊ່ວງເວລາ / Period",
     t_pMonth: "ເດືອນນີ້", t_pYear: "ປີນີ້", t_pAll: "ທັງໝົດ",
     t_pMonthTitle: "ກັນຍາ 2569", t_pYearTitle: "ປີ 2569", t_pAllTitle: "ທຸກຊ່ວງເວລາ",
@@ -1234,10 +1244,16 @@ const AUTH = {
 };
 
 const dbFail = async (r, what) => {
-  let detail = "";
-  try { detail = ((await r.json()) || {}).message || ""; } catch (e) {}
+  let detail = "", code = "";
+  try { const j = (await r.json()) || {}; detail = j.message || ""; code = j.code || ""; } catch (e) {}
   if (r.status === 401) throw new Error("หมดเวลาเข้าสู่ระบบ กรุณาเข้าใหม่");
   if (r.status === 403) throw new Error("บัญชีนี้ไม่มีสิทธิ์ทำรายการนี้");
+  // ยอดยกมาซ้ำ — ฐานข้อมูลกันไว้ให้ช่องทางละ 1 แถว (fix_opening_dup.sql)
+  if (code === "23505" && detail.indexOf("txns_opening_unique") >= 0)
+    throw new Error("ช่องทางนี้มียอดยกมาที่ใช้อยู่แล้ว — ต้องเหลือช่องทางละ 1 แถว");
+  // ชื่อบัญชีไม่มีใน profiles — เช่น แก้ชื่อในหน้าตั้งค่าซึ่งเปลี่ยนแค่ที่เครื่องนี้ (fix_who_fk.sql)
+  if (code === "23503" && detail.indexOf("txns_who_fkey") >= 0)
+    throw new Error("ไม่มีบัญชีชื่อนี้ในฐานข้อมูล — ชื่อบัญชีตัวจริงอยู่ในตาราง profiles ที่ Supabase แก้จากหน้าตั้งค่าไม่ได้");
   throw new Error(what + " (HTTP " + r.status + (detail ? " · " + detail : "") + ")");
 };
 
@@ -1260,18 +1276,37 @@ const call = async (url, opts, what) => {
   return r;
 };
 
+// PostgREST ตัดผลลัพธ์เงียบ ๆ ที่เพดาน Max rows ของโปรเจกต์ (ค่าเริ่มต้น Supabase = 1,000)
+// ดึงรวดเดียวจึงใช้ไม่ได้ — พอรายการเกินเพดาน ยอดรวมจะขาดไปโดยไม่มีอะไรฟ้องสักตัว
+// วนขอทีละหน้าจนกว่าจะได้หน้าว่าง แล้วค่อยหยุด (ไม่เดาว่าเพดานจริงเท่าไหร่)
+//
+// offset นับจากจำนวนที่ได้มาแล้วจริง ไม่ใช่ขนาดหน้าที่ขอไป
+// เพดานฝั่งเซิร์ฟเวอร์จะต่ำกว่าที่ขอแค่ไหนก็ยังไล่ได้ครบ
+const PAGE = 1000;
+const MAX_PAGES = 500;   // กันวนไม่รู้จบถ้าเซิร์ฟเวอร์ตอบผิดรูป
+
+const listAll = async (path, what) => {
+  const out = [];
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const r = await call(path + "&limit=" + PAGE + "&offset=" + out.length, {}, what);
+    const chunk = await r.json();
+    if (!Array.isArray(chunk) || !chunk.length) return out;
+    out.push(...chunk);
+  }
+  throw new Error("ข้อมูลมากเกินกว่าที่หน้านี้จะโหลดไหว");
+};
+
 const DB = {
   async me() {
     const r = await call(REST("profiles") + "?select=name,role,code", {}, "โหลดโปรไฟล์ไม่สำเร็จ");
     return r.json();
   },
+  // ลำดับต้องนิ่งข้ามหน้า ไม่งั้นแถวจะซ้ำหรือหายตรงรอยต่อ — ปิดท้ายด้วย id ที่ไม่ซ้ำเสมอ
   async list() {
-    const r = await call(REST("txns") + "?select=*&order=ts.desc,id.desc", {}, "โหลดข้อมูลไม่สำเร็จ");
-    return r.json();
+    return listAll(REST("txns") + "?select=*&order=ts.desc,id.desc", "โหลดข้อมูลไม่สำเร็จ");
   },
   async edits() {
-    const r = await call(REST("txn_edits") + "?select=*&order=edited_at.desc", {}, "โหลดประวัติไม่สำเร็จ");
-    return r.json();
+    return listAll(REST("txn_edits") + "?select=*&order=edited_at.desc,id.desc", "โหลดประวัติไม่สำเร็จ");
   },
   async insert(row) {
     await call(REST("txns"), { method: "POST", body: JSON.stringify(row) }, "บันทึกไม่สำเร็จ");
@@ -1551,6 +1586,17 @@ class Component extends DCLogic {
     const to = xfer ? (s.methodTo || METHODS.find((m) => m !== s.method)) : "";
     if (xfer && to === s.method) return this.setState({ saved: this.L.t_needTo });
 
+    // ยอดยกมามีได้ช่องทางละแถวเดียวต่อบัญชีต่อสกุล — บอกก่อนยิง จะได้เห็นยอดเดิมด้วย
+    // (ฐานข้อมูลก็บังคับซ้ำอีกชั้นด้วย index txns_opening_unique เผื่ออีกคนใส่พร้อมกัน)
+    if (s.kind === "opening") {
+      const dup = s.txns.find((t) => t.kind === "opening" && !t.voidAt && t.id !== s.editId &&
+                                     t.who === who && t.method === s.method && t.code === code);
+      if (dup) return this.setState({
+        saved: this.L.t_dupOpening.replace("{m}", s.method).replace("{c}", code)
+                   .replace("{v}", dup.val.toLocaleString("en-US")),
+      });
+    }
+
     // โอนกับยอดยกมาไม่มีหมวดหมู่ ใช้ชื่อประเภทเป็นชื่อรายการตั้งต้นแทน
     const plain = s.kind === "income" || s.kind === "expense";
     const label = KIND_LABEL(this.L)[s.kind] || s.kind;
@@ -1625,7 +1671,10 @@ class Component extends DCLogic {
       });
       this.reload();
     } catch (e) {
-      this.setState({ busy: false, voidErr: e.message || String(e) });
+      // ยกเลิกมีแผงกรอกเหตุผลรองรับข้อความอยู่แล้ว · กู้คืนกดจากแถวตรง ๆ ไม่มีแผง
+      // ถ้าไม่โยนขึ้นแบนเนอร์ ข้อความจะหายเงียบ (เช่น กู้คืนยอดยกมาที่ช่องทางนั้นมีแถวใหม่แล้ว)
+      const msg = e.message || String(e);
+      this.setState(on ? { busy: false, voidErr: msg } : { busy: false, dbErr: msg });
     }
   };
 
@@ -1744,7 +1793,13 @@ class Component extends DCLogic {
     // ───── ยอดคงเหลือแยกช่องทาง ─────
     // สะสมตั้งแต่รายการแรกจนถึงวันนี้ ไม่ผูกกับเดือนที่กำลังดู เพราะเงินในกระเป๋าไม่รีเซ็ตทุกเดือน
     // เงินสด/โอน = เงินจริงที่มี · บัตร = หนี้ที่ต้องจ่าย จึงกลับเครื่องหมายตอนแสดง
-    const balTx = live(s.txns.filter((t) => inScope(t) && inView(t)));
+    //
+    // ตัดรายการที่ลงวันไว้ล่วงหน้าออก — เงินยังไม่ออกจากกระเป๋าจริง เอามาหักตอนนี้คือยอดผิด
+    // เจอง่ายมากเพราะ run_recurring() สร้างรายการประจำของเดือนนี้ให้ตั้งแต่ตอนล็อกอิน
+    // ถ้าแม่แบบเป็นวันที่ 25 แต่วันนี้วันที่ 3 เงินจะหายไปทั้งก้อนตั้งแต่ต้นเดือน
+    const balScope = live(s.txns.filter((t) => inScope(t) && inView(t)));
+    const balTx = balScope.filter((t) => t.ts <= TODAY_ISO);
+    const laterN = balScope.length - balTx.length;   // ไม่นับ แต่ต้องบอกว่ามีอยู่ ไม่ใช่เงียบไป
     const inMethod = (t, m) => (isXfer(t) ? t.method === m || t.methodTo === m : t.method === m);
     const balOf = (m) => balTx.filter((t) => inMethod(t, m)).map((t) => {
       const sign = isXfer(t) ? (t.methodTo === m ? 1 : -1)
@@ -1926,8 +1981,14 @@ class Component extends DCLogic {
         fg: c.code === V ? "#f2f2f3" : MUTED,
       })),
       viewNote: L.t_viewCur + " " + (cur(V).name || V),
+      // นับรายการสกุลอื่นที่หน้านี้ตัดทิ้ง — ตัดได้ แต่ต้องไม่ตัดเงียบ ๆ
+      // สองหน้านับคนละช่วงเวลา หน้าปีจึงใช้ตัวเลขของหน้าเดือนแทนกันไม่ได้
       viewSkipped: (() => {
         const n = live(s.txns.filter((t) => inScope(t) && inMonthOf(t, s.vMonth, s.vYear) && !inView(t))).length;
+        return n ? L.t_otherCur.replace("{n}", n) : "";
+      })(),
+      viewSkippedYear: (() => {
+        const n = live(s.txns.filter((t) => inScope(t) && t.year === s.vYear && !inView(t))).length;
         return n ? L.t_otherCur.replace("{n}", n) : "";
       })(),
       amountPh: E.dp ? "0.00" : "0",
@@ -2079,6 +2140,14 @@ class Component extends DCLogic {
       })),
       incRows: breakdown(true),
       expRows: breakdown(false),
+      // ยอดรวมหัวการ์ดแยกทุกสกุล แต่แถบ % ข้างล่างคิดได้ทีละสกุลเท่านั้น
+      // ไม่บอกไว้ก็จะเห็นยอดรวมสองสกุลอยู่เหนือแถบที่รวมกันได้แค่สกุลเดียว แล้วงงว่าส่วนต่างหายไปไหน
+      breakSkip: (() => {
+        const n = shownLive.filter((t) => (isInc(t) || isExp(t)) && !inView(t)).length;
+        return n ? L.t_breakCur.replace("{c}", (L.curNames || {})[V] || cur(V).name || V)
+                               .replace("{n}", n) : "";
+      })(),
+      breakSkipDisp: shownLive.some((t) => (isInc(t) || isExp(t)) && !inView(t)) ? "block" : "none",
       sumIncLabel: L.t_breakInc,
       sumExpLabel: L.t_breakExp,
       sumInc: sumByCode(shownLive.filter(isInc)),
@@ -2094,6 +2163,8 @@ class Component extends DCLogic {
       balCard: fmt(sumV(cardDebt)),
       balNote: hasOpening ? L.t_balReal : L.t_balNoOpening,
       balNoteFg: hasOpening ? "#5d5d60" : "#416180",
+      balLater: laterN ? L.t_balLater.replace("{n}", laterN) : "",
+      balLaterDisp: laterN ? "block" : "none",
 
       kpiIncome: fmt(incV),
       kpiExpense: fmt(expV),
