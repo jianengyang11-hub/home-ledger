@@ -572,6 +572,7 @@
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.who }}</span>
           <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ r.color }};white-space:nowrap;text-decoration:{{ r.strike }}">{{ r.amount }}</span>
           <span style="display:flex;gap:6px;align-items:center;padding-left:10px">
+            <button onClick="{{ r.openSlip }}" style="display:{{ r.slipDisp }};border:1px solid #94bce3;background:transparent;color:#416180;padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ t_slipOpen }}</button>
             <button onClick="{{ r.openHistory }}" style="display:{{ r.editedDisp }};border:1px solid #94bce3;background:{{ r.editedBg }};color:{{ r.editedFg }};padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ r.editedLabel }}</button>
             <button onClick="{{ r.edit }}" style="display:{{ r.editDisp }};border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:4px 11px;font-size:12px" style-hover="background:#eef6ff">{{ r.editLabel }}</button>
             <button onClick="{{ r.del }}" style="display:{{ r.delDisp }};border:1px solid {{ r.delBd }};background:{{ r.delBg }};color:{{ r.delFg }};padding:4px 11px;font-size:12px">{{ r.delLabel }}</button>
@@ -707,7 +708,12 @@
         <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20.4px;align-items:stretch">
           <div style="display:flex;flex-direction:column;gap:6.8px">
             <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_slip }}</label>
-            <div style="border:1px dashed #94bce3;background:#eef6ff;padding:20.4px;text-align:center;color:#416180;font-size:13px;line-height:1.6">{{ t_drop }} <a href="#">{{ t_pick }}</a><br><span style="color:#5d5d60;font-size:12px">{{ t_fileNote }}</span></div>
+            <label style="display:block;border:1px dashed {{ slipBd }};background:#eef6ff;padding:20.4px;text-align:center;color:#416180;font-size:13px;line-height:1.6;cursor:pointer">
+              <input type="file" accept="image/jpeg,image/png,application/pdf" onChange="{{ onSlip }}" style="display:none">
+              <span style="text-decoration:underline;word-break:break-all">{{ slipLabel }}</span><br>
+              <span style="color:{{ slipNoteFg }};font-size:12px">{{ slipNote }}</span>
+            </label>
+            <button onClick="{{ clearSlip }}" style="display:{{ slipClearDisp }};align-self:flex-start;border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:5px 12px;font-size:12px">{{ t_slipClear }}</button>
           </div>
           <sc-if value="{{ showRecurring }}" hint-placeholder-val="{{ true }}">
           <div style="display:flex;flex-direction:column;gap:6.8px">
@@ -818,26 +824,30 @@
     <div>
       <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_mKicker }}</div>
       <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_mTitle }}</div>
+      <div style="font-size:13px;color:#416180;max-width:62ch;line-height:1.6">{{ t_mNote }}</div>
     </div>
     <div style="display:flex;gap:34px;flex-wrap:wrap">
 
       <div class="hl-phone" style="width:320px;display:flex;flex-direction:column;gap:10.2px">
-        <div class="hl-phone" style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);background:#1d2d3d;color:#eef6ff;padding:27.2px;display:flex;flex-direction:column;justify-content:center;gap:27.2px">
+        <div class="hl-phone" style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);background:#1d2d3d;color:#eef6ff;padding:27.2px;display:flex;flex-direction:column;justify-content:center;gap:20.4px">
           <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#94bce3">{{ appName }}</div>
-          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:28px">{{ t_hello }} {{ activeAcct }}<br>{{ t_enterPin }}</div>
-          <div style="display:flex;gap:12px">
-            <span style="width:14px;height:14px;border:1px solid #94bce3;background:#94bce3"></span>
-            <span style="width:14px;height:14px;border:1px solid #94bce3;background:#94bce3"></span>
-            <span style="width:14px;height:14px;border:1px solid #94bce3;background:#94bce3"></span>
-            <span style="width:14px;height:14px;border:1px solid #94bce3"></span>
-            <span style="width:14px;height:14px;border:1px solid #94bce3"></span>
-            <span style="width:14px;height:14px;border:1px solid #94bce3"></span>
-          </div>
-          <div class="hl-3col" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(148,188,227,.3);border:1px solid rgba(148,188,227,.3)">
-            <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
-              <div style="background:#1d2d3d;padding:15px 0;text-align:center;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px;color:#eef6ff">{{ k.label }}</div>
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:28px">{{ t_enterPin }}</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ mobileAccounts }}" as="a" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid {{ a.bd }};background:{{ a.bg }}">
+                <span style="min-width:28px;height:28px;flex:none;padding:0 6px;background:{{ a.avBg }};color:{{ a.avFg }};display:flex;align-items:center;justify-content:center;font-size:12px;white-space:nowrap">{{ a.name }}</span>
+                <span style="display:flex;flex-direction:column;line-height:1.2;min-width:0">
+                  <span style="font-size:14px">{{ a.name }}</span>
+                  <span style="font-size:11px;color:#94bce3">{{ a.role }}</span>
+                </span>
+              </div>
             </sc-for>
           </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#94bce3">{{ t_password }}</div>
+            <div style="border:1px solid rgba(148,188,227,.45);background:rgba(148,188,227,.12);padding:12px 13.6px;font-size:18px;letter-spacing:.3em;color:#eef6ff">••••••••</div>
+          </div>
+          <div style="text-align:center;padding:12px 0;background:#5980a6;color:#f2f2f3;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.08em">{{ t_signinBtn }}</div>
         </div>
         <div style="font-size:13px;color:#5d5d60">{{ t_mCap1 }}</div>
       </div>
@@ -934,6 +944,7 @@ const T = {
     mFull: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
     t_recurFlag: "ประจำ", t_incomeCat: "รายรับ",
     t_saveRate: "อัตราเก็บออม", t_daysNote: "28 วันจาก 30 มีรายการ",
+    t_avgBase: "จ่ายจริงถึงวันนี้ ÷ {n} วัน",
     t_fromPrev: "จากเดือนก่อน", t_peak: "สูงสุด", t_range: "1–30 ก.ย. 2569",
     t_prevM: "‹ ส.ค.", t_thisM: "ก.ย. 2569", t_nextM: "ต.ค. ›",
     t_left: "เหลือ", t_over: "เกินงบ",
@@ -953,7 +964,7 @@ const T = {
     t_edited: "แก้ไขแล้ว", t_histTitle: "ประวัติการแก้ไข", t_editedBy: "แก้โดย",
     t_close: "ปิด", t_blank: "(ว่าง)",
     fields: { ts: "วันที่", name: "รายการ", cat: "หมวดหมู่", method: "ช่องทาง",
-              method_to: "โอนไปยัง", void: "สถานะ",
+              method_to: "โอนไปยัง", void: "สถานะ", slip: "สลิป",
               kind: "ประเภท", amt: "จำนวนเงิน", code: "สกุลเงิน", flag: "รายการประจำ", who: "บัญชี" },
     t_kindXfer: "โอนระหว่างช่องทาง", t_kindOpen: "ยอดยกมา", t_to: "ไปยัง",
     t_needTo: "เลือกช่องทางปลายทางที่ไม่ใช่ช่องทางเดิม",
@@ -978,9 +989,13 @@ const T = {
     t_edit: "แก้", t_del: "ลบ", t_confirmDel: "ยืนยัน?", t_cancel: "ยกเลิก",
     t_editing: "กำลังแก้ไขรายการ", t_saveEdit: "บันทึกการแก้ไข",
     t_lockedAcct: "บันทึกในชื่อบัญชีของคุณเท่านั้น", t_adminOnly: "เฉพาะบัญชีหลัก",
-    t_drop: "ลากไฟล์มาวาง หรือ", t_pick: "เลือกจากเครื่อง", t_fileNote: "JPG / PNG / PDF · ไม่เกิน 5 MB",
+    t_drop: "", t_pick: "เลือกไฟล์จากเครื่อง", t_fileNote: "JPG / PNG / PDF · ไม่เกิน 5 MB",
+    t_slipHas: "แนบไฟล์แล้ว · กดเพื่อเปลี่ยนไฟล์", t_slipClear: "เอาไฟล์ที่เลือกออก",
+    t_slipType: "รับเฉพาะไฟล์ JPG · PNG · PDF", t_slipBig: "ไฟล์ใหญ่เกิน 5 MB",
+    t_slipOpen: "สลิป",
     t_repeatM: "ทำซ้ำทุกเดือน", t_todayDate: "28 ก.ย. 2569",
     t_mKicker: "มือถือ / Mobile", t_mTitle: "สามหน้าหลักบนมือถือ",
+    t_mNote: "ภาพตัวอย่างการออกแบบ กดใช้งานจากหน้านี้ไม่ได้ — ใช้จริงเปิดเว็บนี้บนมือถือได้เลย ทุกหน้ารองรับจอเล็กอยู่แล้ว (เครื่องกลาง \"ภาพรวมเดือน\" ใช้ตัวเลขจริงของคุณ)",
     t_mCap1: "เข้าสู่ระบบ", t_mCap2: "ภาพรวมเดือน", t_mCap3: "บันทึกข้อมูลแบบเร็ว",
     t_sampleNote: "ซื้อของเข้าบ้าน โลตัส",
     t_keepThb: "เก็บค่าเป็นบาท", t_keepNative: "เก็บค่าเป็นสกุล", t_inThb: "บันทึกเป็นเงินบาท",
@@ -1036,6 +1051,7 @@ const T = {
     mFull: ["ມັງກອນ", "ກຸມພາ", "ມີນາ", "ເມສາ", "ພຶດສະພາ", "ມິຖຸນາ", "ກໍລະກົດ", "ສິງຫາ", "ກັນຍາ", "ຕຸລາ", "ພະຈິກ", "ທັນວາ"],
     t_recurFlag: "ປະຈຳ", t_incomeCat: "ລາຍຮັບ",
     t_saveRate: "ອັດຕາເກັບອອມ", t_daysNote: "28 ວັນ ຈາກ 30 ມີລາຍການ",
+    t_avgBase: "ຈ່າຍຈິງເຖິງມື້ນີ້ ÷ {n} ວັນ",
     t_fromPrev: "ຈາກເດືອນກ່ອນ", t_peak: "ສູງສຸດ", t_range: "1–30 ກັນຍາ 2569",
     t_prevM: "‹ ສ.ຫ.", t_thisM: "ກ.ຍ. 2569", t_nextM: "ຕ.ລ. ›",
     t_left: "ຍັງເຫຼືອ", t_over: "ເກີນງົບ",
@@ -1055,7 +1071,7 @@ const T = {
     t_edited: "ແກ້ໄຂແລ້ວ", t_histTitle: "ປະຫວັດການແກ້ໄຂ", t_editedBy: "ແກ້ໂດຍ",
     t_close: "ປິດ", t_blank: "(ຫວ່າງ)",
     fields: { ts: "ວັນທີ", name: "ລາຍການ", cat: "ໝວດໝູ່", method: "ຊ່ອງທາງ",
-              method_to: "ໂອນໄປຫາ", void: "ສະຖານະ",
+              method_to: "ໂອນໄປຫາ", void: "ສະຖານະ", slip: "ໃບບິນ",
               kind: "ປະເພດ", amt: "ຈຳນວນເງິນ", code: "ສະກຸນເງິນ", flag: "ລາຍການປະຈຳ", who: "ບັນຊີ" },
     t_kindXfer: "ໂອນລະຫວ່າງຊ່ອງທາງ", t_kindOpen: "ຍອດຍົກມາ", t_to: "ໄປຫາ",
     t_needTo: "ເລືອກຊ່ອງທາງປາຍທາງທີ່ບໍ່ແມ່ນຊ່ອງທາງເດີມ",
@@ -1080,9 +1096,13 @@ const T = {
     t_edit: "ແກ້", t_del: "ລຶບ", t_confirmDel: "ຢືນຢັນ?", t_cancel: "ຍົກເລີກ",
     t_editing: "ກຳລັງແກ້ໄຂລາຍການ", t_saveEdit: "ບັນທຶກການແກ້ໄຂ",
     t_lockedAcct: "ບັນທຶກໃນຊື່ບັນຊີຂອງທ່ານເທົ່ານັ້ນ", t_adminOnly: "ສະເພາະບັນຊີຫຼັກ",
-    t_drop: "ລາກໄຟລ໌ມາວາງ ຫຼື", t_pick: "ເລືອກຈາກເຄື່ອງ", t_fileNote: "JPG / PNG / PDF · ບໍ່ເກີນ 5 MB",
+    t_drop: "", t_pick: "ເລືອກໄຟລ໌ຈາກເຄື່ອງ", t_fileNote: "JPG / PNG / PDF · ບໍ່ເກີນ 5 MB",
+    t_slipHas: "ແນບໄຟລ໌ແລ້ວ · ກົດເພື່ອປ່ຽນໄຟລ໌", t_slipClear: "ເອົາໄຟລ໌ທີ່ເລືອກອອກ",
+    t_slipType: "ຮັບສະເພາະໄຟລ໌ JPG · PNG · PDF", t_slipBig: "ໄຟລ໌ໃຫຍ່ເກີນ 5 MB",
+    t_slipOpen: "ໃບບິນ",
     t_repeatM: "ເຮັດຄືນທຸກເດືອນ", t_todayDate: "28 ກັນຍາ 2569",
     t_mKicker: "ມືຖື / Mobile", t_mTitle: "ສາມໜ້າຫຼັກເທິງມືຖື",
+    t_mNote: "ພາບຕົວຢ່າງການອອກແບບ ກົດໃຊ້ງານຈາກໜ້ານີ້ບໍ່ໄດ້ — ໃຊ້ຈິງເປີດເວັບນີ້ເທິງມືຖືໄດ້ເລີຍ ທຸກໜ້າຮອງຮັບຈໍນ້ອຍຢູ່ແລ້ວ (ເຄື່ອງກາງ \"ພາບລວມເດືອນ\" ໃຊ້ຕົວເລກຈິງຂອງທ່ານ)",
     t_mCap1: "ເຂົ້າສູ່ລະບົບ", t_mCap2: "ພາບລວມເດືອນ", t_mCap3: "ບັນທຶກຂໍ້ມູນແບບໄວ",
     t_sampleNote: "ຊື້ເຄື່ອງເຂົ້າເຮືອນ",
     t_keepThb: "ເກັບຄ່າເປັນເງິນບາດ", t_keepNative: "ເກັບຄ່າເປັນສະກຸນ", t_inThb: "ບັນທຶກເປັນເງິນບາດ",
@@ -1209,6 +1229,8 @@ const authFail = async (r) => {
   throw new Error("เข้าสู่ระบบไม่สำเร็จ (HTTP " + r.status + (m ? " · " + m : "") + ")");
 };
 
+let refreshing = null;   // สายต่ออายุ token ที่กำลังทำงานอยู่ (ดู AUTH.refresh)
+
 const AUTH = {
   async signIn(email, password) {
     const r = await fetch(ORIGIN() + "/auth/v1/token?grant_type=password", {
@@ -1219,15 +1241,30 @@ const AUTH = {
     if (!r.ok) await authFail(r);
     saveSession(packSession(await r.json()));
   },
-  async refresh() {
-    if (!SESSION || !SESSION.refresh_token) throw new Error("หมดเวลาเข้าสู่ระบบ");
-    const r = await fetch(ORIGIN() + "/auth/v1/token?grant_type=refresh_token", {
-      method: "POST",
-      headers: { apikey: CFG.SUPABASE_ANON_KEY, "Content-Type": "application/json" },
-      body: JSON.stringify({ refresh_token: SESSION.refresh_token }),
-    });
-    if (!r.ok) { saveSession(null); throw new Error("หมดเวลาเข้าสู่ระบบ กรุณาเข้าใหม่"); }
-    saveSession(packSession(await r.json()));
+  // ต่ออายุ token ได้ทีละสายเท่านั้น — refresh_token ของ Supabase ใช้แล้วหมุนตัวใหม่ทันที
+  // load() ยิง list/edits/cats พร้อมกัน 3 สาย (แล้ว listAll ยังยิงซ้ำอีกหลายหน้า)
+  // ถ้า token หมดอายุพอดี ทุกสายจะแย่งกันต่ออายุด้วย refresh_token ตัวเดียวกัน
+  // สายที่ช้าจะถือ token ที่ถูกหมุนทิ้งไปแล้ว แล้วเด้งออกจากระบบทั้งที่เพิ่งต่ออายุสำเร็จ
+  // รวมเป็นสายเดียว ใครมาทีหลังรอผลของสายแรก — ประหยัด request ไปด้วยในตัว
+  refresh() {
+    if (refreshing) return refreshing;
+    refreshing = (async () => {
+      // finally ทำงานก่อน promise จะ settle — ปลดล็อกจากข้างนอกด้วย .then() จะช้าไปหนึ่ง microtask
+      // แล้วคนที่เรียกซ้ำทันทีหลัง await จะได้ promise เก่าที่จบไปแล้วคืนไป โดยไม่ได้ต่ออายุจริง
+      try {
+        if (!SESSION || !SESSION.refresh_token) throw new Error("หมดเวลาเข้าสู่ระบบ");
+        const r = await fetch(ORIGIN() + "/auth/v1/token?grant_type=refresh_token", {
+          method: "POST",
+          headers: { apikey: CFG.SUPABASE_ANON_KEY, "Content-Type": "application/json" },
+          body: JSON.stringify({ refresh_token: SESSION.refresh_token }),
+        });
+        if (!r.ok) { saveSession(null); throw new Error("หมดเวลาเข้าสู่ระบบ กรุณาเข้าใหม่"); }
+        saveSession(packSession(await r.json()));
+      } finally {
+        refreshing = null;
+      }
+    })();
+    return refreshing;
   },
   async signOut() {
     const s = SESSION;
@@ -1296,6 +1333,30 @@ const listAll = async (path, what) => {
   throw new Error("ข้อมูลมากเกินกว่าที่หน้านี้จะโหลดไหว");
 };
 
+// ───── สลิป — ไฟล์อยู่ใน Supabase Storage ถัง "slips" ที่ไม่เปิดสาธารณะ ─────
+// ฐานข้อมูลเก็บแค่ path ส่วนตัวไฟล์อยู่ในถัง (upgrade_v4.sql)
+// ตรวจขนาด/ชนิดที่นี่เพื่อบอกผู้ใช้เป็นภาษาคน ส่วนถังก็บังคับซ้ำอีกชั้นอยู่แล้ว
+const SLIP_MAX = 5 * 1024 * 1024;
+const SLIP_EXT = { "image/jpeg": "jpg", "image/png": "png", "application/pdf": "pdf" };
+
+// เหมือน call() แต่ไม่บังคับ Content-Type เป็น JSON — ใช้ยิง Storage ที่ส่งตัวไฟล์ดิบ
+const callRaw = async (url, opts, what) => {
+  if (!AUTH.signedIn) throw new Error("ยังไม่ได้เข้าสู่ระบบ");
+  if (SESSION.expires_at && Date.now() > SESSION.expires_at) await AUTH.refresh();
+  const go = () => fetch(url, {
+    ...opts,
+    headers: {
+      apikey: CFG.SUPABASE_ANON_KEY,
+      Authorization: "Bearer " + SESSION.access_token,
+      ...(opts && opts.headers),
+    },
+  });
+  let r = await go();
+  if (r.status === 401) { await AUTH.refresh(); r = await go(); }
+  if (!r.ok) await dbFail(r, what);
+  return r;
+};
+
 const DB = {
   async me() {
     const r = await call(REST("profiles") + "?select=name,role,code", {}, "โหลดโปรไฟล์ไม่สำเร็จ");
@@ -1341,6 +1402,38 @@ const DB = {
     await call(REST("cats") + "?id=eq." + encodeURIComponent(id), { method: "DELETE" }, "ลบหมวดหมู่ไม่สำเร็จ");
   },
 
+  // ───── สลิป ─────
+  // อัปก่อนบันทึกแถว เพราะตอนนั้นยังไม่มี id ให้ตั้งชื่อไฟล์ — ใช้ชื่อสุ่มแทน
+  // แยกโฟลเดอร์ตามเดือนไว้ให้หาง่ายเวลาเข้าไปดูใน dashboard
+  async slipUpload(file) {
+    if (!file) return "";
+    const ext = SLIP_EXT[file.type];
+    if (!ext) throw new Error("รับเฉพาะไฟล์ JPG · PNG · PDF");
+    if (file.size > SLIP_MAX) throw new Error("ไฟล์ใหญ่เกิน 5 MB");
+    const rnd = (self.crypto && self.crypto.randomUUID)
+      ? self.crypto.randomUUID()
+      : Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    const path = new Date().toISOString().slice(0, 7) + "/" + rnd + "." + ext;
+    await callRaw(ORIGIN() + "/storage/v1/object/slips/" + path, {
+      method: "POST",
+      headers: { "Content-Type": file.type, "x-upsert": "false" },
+      body: file,
+    }, "อัปโหลดสลิปไม่สำเร็จ");
+    return path;
+  },
+  // ถังไม่เปิดสาธารณะ จึงไม่มีลิงก์ถาวร ต้องขอลิงก์ชั่วคราวทุกครั้งที่จะเปิดดู
+  async slipUrl(path) {
+    const r = await callRaw(ORIGIN() + "/storage/v1/object/sign/slips/" + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ expiresIn: 3600 }),
+    }, "เปิดสลิปไม่สำเร็จ");
+    const j = await r.json();
+    const signed = j.signedURL || j.signedUrl || "";
+    if (!signed) throw new Error("เปิดสลิปไม่สำเร็จ — ไม่ได้ลิงก์กลับมา");
+    return ORIGIN() + "/storage/v1" + signed;
+  },
+
   // ยกเลิก / กู้คืน — ไม่ลบทิ้ง แถวยังอยู่ ประวัติการแก้ไขจึงไม่หาย
   // ส่งแค่ void_at ไป ฐานข้อมูลเขียน "ใครยกเลิก เมื่อไหร่" เองด้วย trigger
   async setVoid(id, on, reason) {
@@ -1375,6 +1468,7 @@ const fromDb = (r) => {
     name: r.name || "", cat: r.cat || "", method: r.method || "", who: r.who || "",
     methodTo: r.method_to || "",
     voidAt: r.void_at || null, voidBy: r.void_by || "", voidReason: r.void_reason || "",
+    slip: r.slip || "",
     kind: r.kind, val, code: r.code || "THB", flag: r.flag || "",
     amount: (SIGN_OF[r.kind] || "−") + val.toLocaleString("en-US"),
   };
@@ -1427,6 +1521,9 @@ class Component extends DCLogic {
     cats: CAT_SEED,
     catsLive: false,         // true = อ่านมาจากตาราง cats จริง แก้แล้วบันทึกได้
     accts: ACCT_SEED,
+    slipFile: null,          // ไฟล์ที่เพิ่งเลือก ยังไม่ได้อัป (อัปตอนกดบันทึก)
+    slipPath: "",            // สลิปที่แนบอยู่แล้วของรายการที่กำลังแก้
+    slipErr: "",
   };
 
   componentDidMount() {
@@ -1521,6 +1618,8 @@ class Component extends DCLogic {
     this.setState({
       screen: "login", meId: null, meRole: "member", acct: "", pw: "", pinErr: "",
       editId: null, pendingDel: null, saved: "", amount: "", note: "", txns: [],
+      // ประวัติการแก้ไขก็ต้องทิ้งด้วย ไม่งั้นข้อมูลของคนก่อนยังค้างในหน่วยความจำหลังกดออก
+      edits: [], historyId: null, slipFile: null, slipPath: "", slipErr: "",
     });
   };
 
@@ -1615,6 +1714,11 @@ class Component extends DCLogic {
 
     this.setState({ busy: true, saved: "" });
     try {
+      // อัปสลิปก่อน ถ้าอัปไม่ผ่านก็ไม่ต้องบันทึกแถว จะได้ไม่ได้รายการที่อ้างไฟล์ที่ไม่มีอยู่
+      // ไม่ได้เลือกไฟล์ใหม่ = ไม่ส่งช่อง slip ไปเลย ของเดิมที่แนบไว้จึงอยู่ครบ
+      if (s.slipFile) row.slip = await DB.slipUpload(s.slipFile);
+      else if (s.editId == null) row.slip = "";
+
       if (s.editId != null) {
         const target = s.txns.find((t) => t.id === s.editId);
         if (target && !this.canEdit(target)) throw new Error("แก้ได้เฉพาะรายการของบัญชีตัวเอง");
@@ -1625,6 +1729,7 @@ class Component extends DCLogic {
       const done = s.editId != null ? "แก้ไขแล้ว" : this.L.t_savedOk;
       this.setState({
         busy: false, editId: null, entryCode: null, amount: "", note: "", repeat: false, methodTo: "",
+        slipFile: null, slipPath: "", slipErr: "",
         saved: done + " · " + code + " → " + this.L.t_toAcct + " " + who,
       });
       this.reload();
@@ -1644,12 +1749,40 @@ class Component extends DCLogic {
       kind: t.kind, cat: t.cat || this.state.cat,
       method: t.method, methodTo: t.methodTo || "", who: t.who, amount: String(t.val),
       note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
+      slipFile: null, slipPath: t.slip || "", slipErr: "",
     });
   };
 
   cancelEdit = () => this.setState({
     editId: null, amount: "", note: "", repeat: false, entryCode: null, saved: "", methodTo: "",
+    slipFile: null, slipPath: "", slipErr: "",
   });
+
+  // ───── สลิป ─────
+  // ตรวจตั้งแต่ตอนเลือกไฟล์ จะได้รู้ทันทีว่าไฟล์ใช้ไม่ได้ ไม่ใช่ไปรู้ตอนกดบันทึก
+  onSlip = (e) => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = "";                       // เลือกไฟล์เดิมซ้ำได้ ถ้าเพิ่งเอาออกไป
+    if (!f) return;
+    if (!SLIP_EXT[f.type]) return this.setState({ slipFile: null, slipErr: this.L.t_slipType });
+    if (f.size > SLIP_MAX) return this.setState({ slipFile: null, slipErr: this.L.t_slipBig });
+    this.setState({ slipFile: f, slipErr: "" });
+  };
+
+  clearSlip = () => this.setState({ slipFile: null, slipErr: "" });
+
+  // ถังไม่เปิดสาธารณะ ต้องขอลิงก์ชั่วคราวก่อน — แต่ต้องเปิดแท็บตั้งแต่ตอนกด
+  // ไม่งั้นเบราว์เซอร์จะมองว่าเป็น popup ที่ไม่ได้มาจากการกดของผู้ใช้ แล้วบล็อกทิ้ง
+  openSlip = (path) => async () => {
+    const w = window.open("", "_blank", "noopener");
+    try {
+      const url = await DB.slipUrl(path);
+      if (w) w.location.href = url; else window.location.href = url;
+    } catch (e) {
+      if (w) w.close();
+      this.setState({ dbErr: e.message || String(e) });
+    }
+  };
 
   showHistory = (id) => () => this.setState({ historyId: this.state.historyId === id ? null : id });
   closeHistory = () => this.setState({ historyId: null });
@@ -1744,6 +1877,11 @@ class Component extends DCLogic {
     const dim = daysInMonth(s.vMonth, s.vYear);
     const isCurMonth = s.vMonth === NOW_M && s.vYear === NOW_Y;
     const elapsed = isCurMonth ? Math.max(1, TODAY.getDate()) : dim;
+    // "เฉลี่ยต่อวัน" = จ่ายไปแล้วจริง ÷ วันที่ผ่านมาแล้ว — ตัวตั้งกับตัวหารต้องเป็นช่วงเดียวกัน
+    // เดิมตัวตั้งเป็นรายจ่ายทั้งเดือน (รวมรายการที่ลงวันล่วงหน้า) แต่ตัวหารเป็นวันที่ผ่านมาแล้ว
+    // ต้นเดือนที่มีรายการประจำรออยู่ปลายเดือน ตัวเลขจึงพุ่งสูงกว่าที่จ่ายจริงหลายเท่า
+    // เดือนที่ผ่านไปแล้วไม่มีรายการล่วงหน้าอยู่แล้ว ค่าจึงเท่าเดิมทุกประการ
+    const expToDate = sumV(monthExp.filter((t) => t.ts <= TODAY_ISO));
 
     const pm = s.vMonth === 1 ? 12 : s.vMonth - 1;
     const py = s.vMonth === 1 ? s.vYear - 1 : s.vYear;
@@ -1832,6 +1970,8 @@ class Component extends DCLogic {
       if (f === "kind") return KIND_LABEL(L)[v] || v;
       if (f === "cat") return catLabel(v);
       if (f === "method" || f === "method_to") { const i = METHODS.indexOf(v); return i >= 0 ? L.methods[i] : v; }
+      // ประวัติเก็บ path จริงไว้ แต่ path ไม่มีความหมายกับคนอ่าน บอกแค่ว่ามีไฟล์หรือไม่มี
+      if (f === "slip") return L.t_slipHas;
       if (f === "ts") { const p = String(v).slice(0, 10).split("-");
         return pad2(Number(p[2])) + " " + M_ABBR[Number(p[1]) - 1] + " " + (Number(p[0]) + 543); }
       return String(v);
@@ -1965,8 +2105,9 @@ class Component extends DCLogic {
           ...t, cat: catLabel(t.cat),
           method: mi >= 0 ? L.methods[mi] : t.method,
           flag: t.flag ? L.t_recurFlag : "",
-          amount: (inc ? "+" : "−") + raw(valOf(t), codeOfTx(t)),
-          color: inc ? DARK : INK,
+          // เครื่องหมายเดียวกับที่อื่นทั้งไฟล์ — โอนกับยอดยกมาไม่ใช่รายจ่าย
+          amount: (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+          color: inc || isOpen(t) ? DARK : INK,
         };
       }),
 
@@ -2059,6 +2200,10 @@ class Component extends DCLogic {
               ? L.t_voidedBy + " " + t.voidBy + " · " + fmtWhen(t.voidAt)
                 + (t.voidReason ? " · " + t.voidReason : "")
               : "",
+
+            // ปุ่มเปิดสลิป — โผล่เฉพาะแถวที่แนบไว้จริง
+            slipDisp: t.slip ? "inline-flex" : "none",
+            openSlip: t.slip ? this.openSlip(t.slip) : () => {},
 
             // ป้าย "แก้ไขแล้ว" กดดูประวัติได้
             editedDisp: nEdits ? "inline-flex" : "none",
@@ -2171,8 +2316,10 @@ class Component extends DCLogic {
       kpiIncome: fmt(incV),
       kpiExpense: fmt(expV),
       kpiBalance: fmt(incV - expV),
-      kpiAvg: fmt(elapsed ? expV / elapsed : 0),
-      kpiIncomeAlt: "", kpiExpenseAlt: "", kpiBalanceAlt: "", kpiAvgAlt: "",
+      kpiAvg: fmt(elapsed ? expToDate / elapsed : 0),
+      kpiIncomeAlt: "", kpiExpenseAlt: "", kpiBalanceAlt: "",
+      // บอกฐานที่ใช้หารไว้ด้วย เดือนที่ผ่านไปแล้วหารด้วยทั้งเดือนอยู่แล้วจึงไม่ต้องบอก
+      kpiAvgAlt: isCurMonth ? L.t_avgBase.replace("{n}", elapsed) : "",
       kpiScope: s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ" ? L.t_scopeAll : L.t_scopeOne + " " + s.filter,
       kpiRate: incV ? Math.round(((incV - expV) / incV) * 100) + "%" : "—",
       kpiExpNote: prevExpV
@@ -2233,8 +2380,17 @@ class Component extends DCLogic {
       kindNote: s.kind === "transfer" ? L.t_xferNote : s.kind === "opening" ? L.t_openNote : "",
       kindNoteDisp: s.kind === "transfer" || s.kind === "opening" ? "block" : "none",
 
-      // แป้นตัวเลขในหน้าตัวอย่างมือถือ (เดิมไม่เคยผูกค่า ช่องเลยว่างเปล่า)
-      keys: ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "←"].map((label) => ({ label })),
+      // ภาพตัวอย่างหน้าล็อกอินบนมือถือ — ต้องสะท้อนวิธีล็อกอินจริง (อีเมล + รหัสผ่าน)
+      // เดิมวาดเป็นแป้น PIN 6 หลัก ซึ่งเป็นของเหลือจากเวอร์ชันก่อนเปลี่ยนมาใช้ Supabase Auth
+      // กดไม่ได้อยู่แล้วเพราะเป็นภาพ แต่ที่แย่กว่าคือมันบอกวิธีเข้าระบบผิดไปเลย
+      mobileAccounts: s.accts.map((a, i) => ({
+        name: a.name,
+        role: lang === "lo" ? a.roleLo : a.roleTh,
+        bd:   i === 0 ? "#94bce3" : "rgba(148,188,227,.3)",
+        bg:   i === 0 ? "rgba(148,188,227,.18)" : "transparent",
+        avBg: i === 0 ? "#94bce3" : "rgba(148,188,227,.25)",
+        avFg: i === 0 ? "#1d2d3d" : "#eef6ff",
+      })),
 
       mobileChips: s.cats.slice(0, 5).map((c, i) => ({
         name: catName(c),
@@ -2268,8 +2424,23 @@ class Component extends DCLogic {
       repMark: s.repeat ? ACC : "transparent",
       repNote: s.repeat ? L.t_repOn : L.t_repOff,
 
+      // ───── สลิป ─────
+      onSlip: this.onSlip,
+      clearSlip: this.clearSlip,
+      slipLabel: s.slipFile ? s.slipFile.name
+        : s.slipPath ? L.t_slipHas
+        : L.t_pick,
+      slipNote: s.slipErr || L.t_fileNote,
+      slipNoteFg: s.slipErr ? "#8a2020" : "#5d5d60",
+      slipBd: (s.slipFile || s.slipPath) ? ACC : "#94bce3",
+      // ปุ่มเอาออกโผล่เฉพาะตอนเพิ่งเลือกไฟล์ — สลิปที่อัปไปแล้วลบไม่ได้ (ถังไม่มี policy delete)
+      // เปลี่ยนได้อย่างเดียวคืออัปไฟล์ใหม่ทับการอ้างอิง แล้วประวัติจะบันทึกไว้ว่าเปลี่ยน
+      slipClearDisp: s.slipFile ? "inline-flex" : "none",
+      t_slipClear: L.t_slipClear,
+
       save: this.save,
-      reset: () => this.setState({ amount: "", note: "", repeat: false, saved: "", date: TODAY_ISO }),
+      reset: () => this.setState({ amount: "", note: "", repeat: false, saved: "", date: TODAY_ISO,
+                                   slipFile: null, slipErr: "" }),
       saveMsg: s.busy ? L.t_loading : s.saved,
       saveLabel: s.editId != null ? L.t_saveEdit : L.t_save,
       editingDisp: s.editId != null ? "flex" : "none",
