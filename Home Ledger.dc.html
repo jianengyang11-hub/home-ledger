@@ -708,8 +708,8 @@
         <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20.4px;align-items:stretch">
           <div style="display:flex;flex-direction:column;gap:6.8px">
             <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_slip }}</label>
-            <label style="display:block;border:1px dashed {{ slipBd }};background:#eef6ff;padding:20.4px;text-align:center;color:#416180;font-size:13px;line-height:1.6;cursor:pointer">
-              <input type="file" accept="image/jpeg,image/png,application/pdf" onChange="{{ onSlip }}" style="display:none">
+            <label style="display:block;border:1px dashed {{ slipBd }};background:#eef6ff;padding:20.4px;text-align:center;color:#416180;font-size:13px;line-height:1.6;cursor:{{ slipCursor }}">
+              <input type="file" accept="image/jpeg,image/png,application/pdf" onChange="{{ onSlip }}" disabled="{{ slipDisabled }}" style="display:none">
               <span style="text-decoration:underline;word-break:break-all">{{ slipLabel }}</span><br>
               <span style="color:{{ slipNoteFg }};font-size:12px">{{ slipNote }}</span>
             </label>
@@ -993,6 +993,10 @@ const T = {
     t_slipHas: "แนบไฟล์แล้ว · กดเพื่อเปลี่ยนไฟล์", t_slipClear: "เอาไฟล์ที่เลือกออก",
     t_slipType: "รับเฉพาะไฟล์ JPG · PNG · PDF", t_slipBig: "ไฟล์ใหญ่เกิน 5 MB",
     t_slipOpen: "สลิป",
+    t_slipOffline: "ยังแนบสลิปไม่ได้",
+    t_slipOfflineNote: "ต้องรัน upgrade_v4.sql ใน Supabase ก่อน (ส่วนอื่นใช้ได้ตามปกติ)",
+    t_slipNoBucket: "ยังไม่มีถังเก็บไฟล์ — รัน upgrade_v4.sql ให้ผ่านข้อ 2 กับ 3 ก่อน (รายการยังไม่ถูกบันทึก)",
+    t_slipDenied: "ไม่มีสิทธิ์อัปไฟล์ — รัน upgrade_v4.sql ให้ผ่านข้อ 3 ก่อน (รายการยังไม่ถูกบันทึก)",
     t_repeatM: "ทำซ้ำทุกเดือน", t_todayDate: "28 ก.ย. 2569",
     t_mKicker: "มือถือ / Mobile", t_mTitle: "สามหน้าหลักบนมือถือ",
     t_mNote: "ภาพตัวอย่างการออกแบบ กดใช้งานจากหน้านี้ไม่ได้ — ใช้จริงเปิดเว็บนี้บนมือถือได้เลย ทุกหน้ารองรับจอเล็กอยู่แล้ว (เครื่องกลาง \"ภาพรวมเดือน\" ใช้ตัวเลขจริงของคุณ)",
@@ -1100,6 +1104,10 @@ const T = {
     t_slipHas: "ແນບໄຟລ໌ແລ້ວ · ກົດເພື່ອປ່ຽນໄຟລ໌", t_slipClear: "ເອົາໄຟລ໌ທີ່ເລືອກອອກ",
     t_slipType: "ຮັບສະເພາະໄຟລ໌ JPG · PNG · PDF", t_slipBig: "ໄຟລ໌ໃຫຍ່ເກີນ 5 MB",
     t_slipOpen: "ໃບບິນ",
+    t_slipOffline: "ຍັງແນບໃບບິນບໍ່ໄດ້",
+    t_slipOfflineNote: "ຕ້ອງແລ່ນ upgrade_v4.sql ໃນ Supabase ກ່ອນ (ສ່ວນອື່ນໃຊ້ໄດ້ຕາມປົກກະຕິ)",
+    t_slipNoBucket: "ຍັງບໍ່ມີບ່ອນເກັບໄຟລ໌ — ແລ່ນ upgrade_v4.sql ໃຫ້ຜ່ານຂໍ້ 2 ແລະ 3 ກ່ອນ (ລາຍການຍັງບໍ່ຖືກບັນທຶກ)",
+    t_slipDenied: "ບໍ່ມີສິດອັບໄຟລ໌ — ແລ່ນ upgrade_v4.sql ໃຫ້ຜ່ານຂໍ້ 3 ກ່ອນ (ລາຍການຍັງບໍ່ຖືກບັນທຶກ)",
     t_repeatM: "ເຮັດຄືນທຸກເດືອນ", t_todayDate: "28 ກັນຍາ 2569",
     t_mKicker: "ມືຖື / Mobile", t_mTitle: "ສາມໜ້າຫຼັກເທິງມືຖື",
     t_mNote: "ພາບຕົວຢ່າງການອອກແບບ ກົດໃຊ້ງານຈາກໜ້ານີ້ບໍ່ໄດ້ — ໃຊ້ຈິງເປີດເວັບນີ້ເທິງມືຖືໄດ້ເລີຍ ທຸກໜ້າຮອງຮັບຈໍນ້ອຍຢູ່ແລ້ວ (ເຄື່ອງກາງ \"ພາບລວມເດືອນ\" ໃຊ້ຕົວເລກຈິງຂອງທ່ານ)",
@@ -1131,6 +1139,11 @@ const T = {
     pinOwn: "ເລືອກບັນຊີແລ້ວໃສ່ລະຫັດຜ່ານ",
   },
 };
+
+// ภาษาที่กำลังใช้ — ชั้นต่อฐานข้อมูลอยู่นอกคอมโพเนนต์ จึงหยิบ this.L ไม่ได้
+// คอมโพเนนต์ตั้งค่านี้ให้ทุกครั้งที่อ่าน L (ดู get L()) ข้อความ error จึงตามภาษาที่เลือกได้
+let LANG = "th";
+const STR = (k) => ((T[LANG] || T.th)[k] || k);
 
 const ACC = "#5980a6", DARK = "#1d2d3d", INK = "#1d1f20", MUTED = "#5d5d60";
 
@@ -1353,8 +1366,19 @@ const callRaw = async (url, opts, what) => {
   });
   let r = await go();
   if (r.status === 401) { await AUTH.refresh(); r = await go(); }
-  if (!r.ok) await dbFail(r, what);
+  if (!r.ok) await storageFail(r, what);
   return r;
+};
+
+// Storage ตอบคนละรูปแบบกับ PostgREST และข้อความดิบอ่านไม่รู้เรื่อง
+// สองเคสที่เจอจริงคือ "ยังไม่ได้สร้างถัง" กับ "ยังไม่ได้ตั้ง policy" — บอกให้ตรงว่าต้องไปทำอะไร
+const storageFail = async (r, what) => {
+  let detail = "", code = "";
+  try { const j = (await r.json()) || {}; detail = j.message || j.error || ""; code = j.code || ""; } catch (e) {}
+  if (r.status === 401 && !detail) throw new Error("หมดเวลาเข้าสู่ระบบ กรุณาเข้าใหม่");
+  if (code === "NoSuchBucket" || /bucket not found/i.test(detail)) throw new Error(STR("t_slipNoBucket"));
+  if (r.status === 403 || /row-level security|unauthorized|permission/i.test(detail)) throw new Error(STR("t_slipDenied"));
+  throw new Error(what + " (HTTP " + r.status + (detail ? " · " + detail : "") + ")");
 };
 
 const DB = {
@@ -1403,6 +1427,12 @@ const DB = {
   },
 
   // ───── สลิป ─────
+  // ตรวจว่ารัน upgrade_v4.sql แล้วหรือยัง — ถ้ายังไม่มีคอลัมน์ slip จะได้ 400 กลับมา
+  // ต้องรู้ก่อน ไม่งั้นจะเผลอส่งช่องที่ฐานข้อมูลไม่รู้จักไปพร้อมทุกการบันทึก แล้วพังทั้งระบบ
+  async slipReady() {
+    await call(REST("txns") + "?select=slip&limit=1", {}, "ตรวจคอลัมน์สลิปไม่สำเร็จ");
+    return true;
+  },
   // อัปก่อนบันทึกแถว เพราะตอนนั้นยังไม่มี id ให้ตั้งชื่อไฟล์ — ใช้ชื่อสุ่มแทน
   // แยกโฟลเดอร์ตามเดือนไว้ให้หาง่ายเวลาเข้าไปดูใน dashboard
   async slipUpload(file) {
@@ -1410,6 +1440,7 @@ const DB = {
     const ext = SLIP_EXT[file.type];
     if (!ext) throw new Error("รับเฉพาะไฟล์ JPG · PNG · PDF");
     if (file.size > SLIP_MAX) throw new Error("ไฟล์ใหญ่เกิน 5 MB");
+    if (!file) return "";
     const rnd = (self.crypto && self.crypto.randomUUID)
       ? self.crypto.randomUUID()
       : Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
@@ -1524,6 +1555,7 @@ class Component extends DCLogic {
     slipFile: null,          // ไฟล์ที่เพิ่งเลือก ยังไม่ได้อัป (อัปตอนกดบันทึก)
     slipPath: "",            // สลิปที่แนบอยู่แล้วของรายการที่กำลังแก้
     slipErr: "",
+    slipLive: false,         // true = รัน upgrade_v4.sql แล้ว แนบสลิปได้จริง
   };
 
   componentDidMount() {
@@ -1567,14 +1599,17 @@ class Component extends DCLogic {
       // ประวัติการแก้ไขกับหมวดหมู่เป็นของเสริม — ถ้าตารางยังไม่มี (ยังไม่ได้รัน SQL)
       // รายการหลักต้องยังขึ้นได้ตามปกติ ไม่ใช่พังทั้งหน้า
       const soft = (what) => (e) => { console.warn(what + ":", e.message || e); return null; };
-      const [rows, edits, cats] = await Promise.all([
+      const [rows, edits, cats, slipOk] = await Promise.all([
         DB.list(),
         DB.edits().catch(soft("ประวัติการแก้ไขใช้ไม่ได้")),
         DB.cats().catch(soft("หมวดหมู่ใช้ไม่ได้ ใช้ชุดเริ่มต้นไปก่อน")),
+        DB.slipReady().catch(soft("แนบสลิปยังใช้ไม่ได้ ยังไม่ได้รัน upgrade_v4.sql")),
       ]);
       this.setState({
         txns: rows.map(fromDb),
         edits: edits || [],
+        // ยังไม่ได้รัน upgrade_v4.sql ก็ใช้ทุกอย่างที่เหลือได้ตามปกติ แค่แนบสลิปไม่ได้
+        slipLive: !!slipOk,
         // ถ้าตาราง cats ยังไม่มี ก็ยังใช้งานต่อได้ด้วยชุดเริ่มต้น (แต่แก้แล้วไม่ถูกบันทึก)
         cats: cats && cats.length ? cats : CAT_SEED,
         catsLive: !!(cats && cats.length),
@@ -1664,7 +1699,10 @@ class Component extends DCLogic {
     this.setState({ accts });
   };
 
-  get L() { return T[this.state.lang || (this.props.language === "ລາວ" ? "lo" : "th")] || T.th; }
+  get L() {
+    LANG = this.state.lang || (this.props.language === "ລາວ" ? "lo" : "th");
+    return T[LANG] || T.th;
+  }
 
   // ใครล็อกอิน ก็บันทึกได้ในชื่อบัญชีตัวเองเท่านั้น — ยกเว้นบัญชีหลัก
   get targetWho() { return this.isAdmin ? this.state.who : this.state.acct; }
@@ -1715,9 +1753,12 @@ class Component extends DCLogic {
     this.setState({ busy: true, saved: "" });
     try {
       // อัปสลิปก่อน ถ้าอัปไม่ผ่านก็ไม่ต้องบันทึกแถว จะได้ไม่ได้รายการที่อ้างไฟล์ที่ไม่มีอยู่
-      // ไม่ได้เลือกไฟล์ใหม่ = ไม่ส่งช่อง slip ไปเลย ของเดิมที่แนบไว้จึงอยู่ครบ
+      //
+      // ส่งช่อง slip **เฉพาะตอนมีไฟล์ใหม่จริง ๆ** เท่านั้น
+      // เดิมใส่ slip: "" ไปกับทุกการบันทึก ซึ่งแปลว่าถ้ายังไม่ได้รัน upgrade_v4.sql
+      // ฐานข้อมูลจะไม่รู้จักช่องนี้แล้วตีกลับ 400 — บันทึกไม่ได้เลยแม้แต่รายการที่ไม่มีสลิป
+      // หลักเดียวกับตาราง cats: ของเสริมใช้ไม่ได้ ก็ต้องไม่ลากของหลักพังไปด้วย
       if (s.slipFile) row.slip = await DB.slipUpload(s.slipFile);
-      else if (s.editId == null) row.slip = "";
 
       if (s.editId != null) {
         const target = s.txns.find((t) => t.id === s.editId);
@@ -2425,14 +2466,20 @@ class Component extends DCLogic {
       repNote: s.repeat ? L.t_repOn : L.t_repOff,
 
       // ───── สลิป ─────
-      onSlip: this.onSlip,
+      // ยังไม่ได้รัน upgrade_v4.sql = บอกตรง ๆ ว่าทำไมยังใช้ไม่ได้ และกดเลือกไฟล์ไม่ได้
+      // ดีกว่าให้กดได้แล้วไปล้มตอนกดบันทึก ซึ่งจะดูเหมือนทั้งระบบพัง
+      onSlip: s.slipLive ? this.onSlip : () => {},
       clearSlip: this.clearSlip,
-      slipLabel: s.slipFile ? s.slipFile.name
+      slipDisabled: s.slipLive ? undefined : true,
+      slipCursor: s.slipLive ? "pointer" : "not-allowed",
+      slipLabel: !s.slipLive ? L.t_slipOffline
+        : s.slipFile ? s.slipFile.name
         : s.slipPath ? L.t_slipHas
         : L.t_pick,
-      slipNote: s.slipErr || L.t_fileNote,
-      slipNoteFg: s.slipErr ? "#8a2020" : "#5d5d60",
-      slipBd: (s.slipFile || s.slipPath) ? ACC : "#94bce3",
+      slipNote: s.slipErr || (s.slipLive ? L.t_fileNote : L.t_slipOfflineNote),
+      slipNoteFg: s.slipErr || !s.slipLive ? "#8a2020" : "#5d5d60",
+      slipBd: !s.slipLive ? "rgba(29,31,32,0.16)"
+        : (s.slipFile || s.slipPath) ? ACC : "#94bce3",
       // ปุ่มเอาออกโผล่เฉพาะตอนเพิ่งเลือกไฟล์ — สลิปที่อัปไปแล้วลบไม่ได้ (ถังไม่มี policy delete)
       // เปลี่ยนได้อย่างเดียวคืออัปไฟล์ใหม่ทับการอ้างอิง แล้วประวัติจะบันทึกไว้ว่าเปลี่ยน
       slipClearDisp: s.slipFile ? "inline-flex" : "none",
