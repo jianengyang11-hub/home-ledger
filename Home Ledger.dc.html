@@ -2020,8 +2020,10 @@ class Component extends DCLogic {
         name: t.name, cat: catLabel(t.cat),
         method: (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method),
         who: t.who,
-        amount: (isInc(t) ? "+" : "−") + raw(valOf(t), codeOfTx(t)),
-        color: isInc(t) ? DARK : INK,
+        // ใช้ SIGN_OF ชุดเดียวกับที่อื่น — เดิมเขียน isInc ? "+" : "−" ทำให้ยอดยกมาติดลบ
+        // และรายการโอนกลายเป็นรายจ่าย ทั้งที่ยอดรวมข้างล่างนับสองอย่างนี้เป็น 0 แถวเลยบวกไม่ได้เท่าที่สรุป
+        amount: (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+        color: isInc(t) || isOpen(t) ? DARK : INK,
       })),
       todayTotal: sumByCode(signed(live(s.txns.filter(isToday)))),
       t_todayDate: TODAY.getDate() + " " + L.mAbbr[TODAY.getMonth()] + " " + NOW_Y,
@@ -2241,7 +2243,13 @@ class Component extends DCLogic {
         fg: i === 0 ? "#f2f2f3" : INK,
       })),
       chips: s.cats.map((c) => ({ name: catName(c), pick: () => this.setState({ cat: c.th }), ...sel(s.cat === c.th) })),
-      methods: L.methods.map((name) => ({ name, pick: () => this.setState({ method: name }), ...sel(s.method === name) })),
+      // เก็บค่าเป็น METHODS (ไทย) เสมอ ส่วน L.methods เป็นแค่ป้ายที่แสดง — เหมือน toMethods ข้างบน
+      // ถ้าเก็บป้ายที่แสดงลงฐานข้อมูล พอบันทึกด้วยภาษาลาวจะได้ "ເງິນສົດ" ซึ่งไม่ตรงกับ METHODS[0]
+      // แถวนั้นจะหลุดจากการ์ดยอดคงเหลือทุกใบเงียบ ๆ และนับเป็นคนละช่องทางกับที่บันทึกเป็นไทย
+      methods: L.methods.map((name, i) => {
+        const id = METHODS[i];
+        return { name, pick: () => this.setState({ method: id }), ...sel(s.method === id) };
+      }),
       // ใครล็อกอิน ก็เลือกได้แค่บัญชีตัวเอง — บัญชีหลักเลือกได้ทุกบัญชี
       members: (admin ? s.accts.map((a) => a.name) : [s.acct])
         .map((name) => ({ name, pick: () => this.setState({ who: name }), ...sel(this.targetWho === name) })),
