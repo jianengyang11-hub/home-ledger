@@ -993,6 +993,7 @@ const T = {
     t_slipHas: "แนบไฟล์แล้ว · กดเพื่อเปลี่ยนไฟล์", t_slipClear: "เอาไฟล์ที่เลือกออก",
     t_slipType: "รับเฉพาะไฟล์ JPG · PNG · PDF", t_slipBig: "ไฟล์ใหญ่เกิน 5 MB",
     t_slipOpen: "สลิป",
+    t_slipWait: "กำลังเปิดสลิป…",
     t_slipOffline: "ยังแนบสลิปไม่ได้",
     t_slipOfflineNote: "ต้องรัน upgrade_v4.sql ใน Supabase ก่อน (ส่วนอื่นใช้ได้ตามปกติ)",
     t_slipNoBucket: "ยังไม่มีถังเก็บไฟล์ — รัน upgrade_v4.sql ให้ผ่านข้อ 2 กับ 3 ก่อน (รายการยังไม่ถูกบันทึก)",
@@ -1104,6 +1105,7 @@ const T = {
     t_slipHas: "ແນບໄຟລ໌ແລ້ວ · ກົດເພື່ອປ່ຽນໄຟລ໌", t_slipClear: "ເອົາໄຟລ໌ທີ່ເລືອກອອກ",
     t_slipType: "ຮັບສະເພາະໄຟລ໌ JPG · PNG · PDF", t_slipBig: "ໄຟລ໌ໃຫຍ່ເກີນ 5 MB",
     t_slipOpen: "ໃບບິນ",
+    t_slipWait: "ກຳລັງເປີດໃບບິນ…",
     t_slipOffline: "ຍັງແນບໃບບິນບໍ່ໄດ້",
     t_slipOfflineNote: "ຕ້ອງແລ່ນ upgrade_v4.sql ໃນ Supabase ກ່ອນ (ສ່ວນອື່ນໃຊ້ໄດ້ຕາມປົກກະຕິ)",
     t_slipNoBucket: "ຍັງບໍ່ມີບ່ອນເກັບໄຟລ໌ — ແລ່ນ upgrade_v4.sql ໃຫ້ຜ່ານຂໍ້ 2 ແລະ 3 ກ່ອນ (ລາຍການຍັງບໍ່ຖືກບັນທຶກ)",
@@ -1351,6 +1353,13 @@ const listAll = async (path, what) => {
 // ตรวจขนาด/ชนิดที่นี่เพื่อบอกผู้ใช้เป็นภาษาคน ส่วนถังก็บังคับซ้ำอีกชั้นอยู่แล้ว
 const SLIP_MAX = 5 * 1024 * 1024;
 const SLIP_EXT = { "image/jpeg": "jpg", "image/png": "png", "application/pdf": "pdf" };
+
+// หน้ารอในแท็บใหม่ ระหว่างที่ยังขอลิงก์ชั่วคราวไม่เสร็จ — แท็บว่างเปล่าทำให้คนเข้าใจว่าพัง
+const SLIP_WAIT_DOC = (msg) =>
+  '<!doctype html><meta charset="utf-8"><title>' + msg + '</title>' +
+  '<body style="margin:0;min-height:100vh;display:grid;place-items:center;' +
+  'background:#f2f2f3;color:#5d5d60;font:14px \'Noto Serif Thai\',\'Noto Serif Lao\',serif">' +
+  '<p>' + msg + '</p>';
 
 // เหมือน call() แต่ไม่บังคับ Content-Type เป็น JSON — ใช้ยิง Storage ที่ส่งตัวไฟล์ดิบ
 const callRaw = async (url, opts, what) => {
@@ -1814,11 +1823,21 @@ class Component extends DCLogic {
 
   // ถังไม่เปิดสาธารณะ ต้องขอลิงก์ชั่วคราวก่อน — แต่ต้องเปิดแท็บตั้งแต่ตอนกด
   // ไม่งั้นเบราว์เซอร์จะมองว่าเป็น popup ที่ไม่ได้มาจากการกดของผู้ใช้ แล้วบล็อกทิ้ง
+  //
+  // ห้ามใส่ "noopener" ในช่องคุณสมบัติ — ตามสเปก window.open จะคืน null ทันที
+  // เราเลยจับแท็บที่เพิ่งเปิดไม่ได้ กลายเป็นแท็บ about:blank ว่าง ๆ ค้างอยู่ตลอด
+  // แล้วรูปดันไปเปิดทับแท็บเดิม เด้งผู้ใช้ออกจากหน้าที่ทำงานค้างไว้
+  // ตัด opener ทิ้งเองหลังเปิดแทน ได้ผลด้านความปลอดภัยเท่ากัน
   openSlip = (path) => async () => {
-    const w = window.open("", "_blank", "noopener");
+    const w = window.open("", "_blank");
+    if (w) {
+      try { w.opener = null; } catch (e) {}
+      // ระหว่างรอลิงก์ชั่วคราว แท็บใหม่จะว่างอยู่ครู่หนึ่ง บอกไว้หน่อยว่ากำลังทำอะไร
+      try { w.document.write(SLIP_WAIT_DOC(STR("t_slipWait"))); w.document.close(); } catch (e) {}
+    }
     try {
       const url = await DB.slipUrl(path);
-      if (w) w.location.href = url; else window.location.href = url;
+      if (w) w.location.replace(url); else window.location.href = url;
     } catch (e) {
       if (w) w.close();
       this.setState({ dbErr: e.message || String(e) });
