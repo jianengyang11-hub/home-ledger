@@ -572,7 +572,7 @@
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.who }}</span>
           <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ r.color }};white-space:nowrap;text-decoration:{{ r.strike }}">{{ r.amount }}</span>
           <span style="display:flex;gap:6px;align-items:center;padding-left:10px">
-            <button onClick="{{ r.openSlip }}" style="display:{{ r.slipDisp }};border:1px solid #94bce3;background:transparent;color:#416180;padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ t_slipOpen }}</button>
+            <button onClick="{{ r.openSlip }}" style="display:{{ r.slipDisp }};border:1px solid #94bce3;background:{{ r.slipBg }};color:{{ r.slipFg }};padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ t_slipOpen }}</button>
             <button onClick="{{ r.openHistory }}" style="display:{{ r.editedDisp }};border:1px solid #94bce3;background:{{ r.editedBg }};color:{{ r.editedFg }};padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ r.editedLabel }}</button>
             <button onClick="{{ r.edit }}" style="display:{{ r.editDisp }};border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:4px 11px;font-size:12px" style-hover="background:#eef6ff">{{ r.editLabel }}</button>
             <button onClick="{{ r.del }}" style="display:{{ r.delDisp }};border:1px solid {{ r.delBd }};background:{{ r.delBg }};color:{{ r.delFg }};padding:4px 11px;font-size:12px">{{ r.delLabel }}</button>
@@ -580,6 +580,20 @@
         </div>
       </sc-for>
       <div style="display:{{ emptyDisp }};padding:34px 0;text-align:center;color:#98989b;font-size:14px">{{ emptyText }}</div>
+    </div>
+
+    <div class="hl-hist" style="display:{{ slipViewDisp }};flex-direction:column;gap:13.6px;border:1px solid #94bce3;background:#f7fbff;padding:20.4px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:13.6px">
+        <div style="display:flex;align-items:baseline;gap:10px;min-width:0">
+          <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px;flex:none;white-space:nowrap">{{ slipViewTitle }}</span>
+          <span style="font-size:13px;color:#5d5d60;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ slipViewName }}</span>
+        </div>
+        <button onClick="{{ slipViewClose }}" style="border:1px solid #94bce3;background:transparent;color:#416180;padding:5px 13px;font-size:13px;flex:none">{{ t_close }}</button>
+      </div>
+      <div style="display:{{ slipWaitDisp }};padding:34px 0;text-align:center;color:#98989b;font-size:14px">{{ t_slipWait }}</div>
+      <div style="display:{{ slipViewErrDisp }};padding:20.4px 0;text-align:center;color:#8a2020;font-size:14px">{{ slipViewErr }}</div>
+      <img src="{{ slipImgSrc }}" alt="{{ slipViewName }}" style="display:{{ slipImgDisp }};max-width:100%;max-height:70vh;margin:0 auto;border:1px solid rgba(29,31,32,0.16);background:#f2f2f3">
+      <iframe src="{{ slipPdfSrc }}" title="{{ slipViewName }}" style="display:{{ slipPdfDisp }};width:100%;height:70vh;border:1px solid rgba(29,31,32,0.16);background:#f2f2f3"></iframe>
     </div>
 
     <div class="hl-hist" style="display:{{ askDisp }};flex-direction:column;gap:13.6px;border:1px solid #1d2d3d;background:#f7fbff;padding:20.4px">
@@ -994,6 +1008,7 @@ const T = {
     t_slipType: "รับเฉพาะไฟล์ JPG · PNG · PDF", t_slipBig: "ไฟล์ใหญ่เกิน 5 MB",
     t_slipOpen: "สลิป",
     t_slipWait: "กำลังเปิดสลิป…",
+    t_slipTitle: "สลิปที่แนบไว้",
     t_slipOffline: "ยังแนบสลิปไม่ได้",
     t_slipOfflineNote: "ต้องรัน upgrade_v4.sql ใน Supabase ก่อน (ส่วนอื่นใช้ได้ตามปกติ)",
     t_slipNoBucket: "ยังไม่มีถังเก็บไฟล์ — รัน upgrade_v4.sql ให้ผ่านข้อ 2 กับ 3 ก่อน (รายการยังไม่ถูกบันทึก)",
@@ -1106,6 +1121,7 @@ const T = {
     t_slipType: "ຮັບສະເພາະໄຟລ໌ JPG · PNG · PDF", t_slipBig: "ໄຟລ໌ໃຫຍ່ເກີນ 5 MB",
     t_slipOpen: "ໃບບິນ",
     t_slipWait: "ກຳລັງເປີດໃບບິນ…",
+    t_slipTitle: "ໃບບິນທີ່ແນບໄວ້",
     t_slipOffline: "ຍັງແນບໃບບິນບໍ່ໄດ້",
     t_slipOfflineNote: "ຕ້ອງແລ່ນ upgrade_v4.sql ໃນ Supabase ກ່ອນ (ສ່ວນອື່ນໃຊ້ໄດ້ຕາມປົກກະຕິ)",
     t_slipNoBucket: "ຍັງບໍ່ມີບ່ອນເກັບໄຟລ໌ — ແລ່ນ upgrade_v4.sql ໃຫ້ຜ່ານຂໍ້ 2 ແລະ 3 ກ່ອນ (ລາຍການຍັງບໍ່ຖືກບັນທຶກ)",
@@ -1354,12 +1370,8 @@ const listAll = async (path, what) => {
 const SLIP_MAX = 5 * 1024 * 1024;
 const SLIP_EXT = { "image/jpeg": "jpg", "image/png": "png", "application/pdf": "pdf" };
 
-// หน้ารอในแท็บใหม่ ระหว่างที่ยังขอลิงก์ชั่วคราวไม่เสร็จ — แท็บว่างเปล่าทำให้คนเข้าใจว่าพัง
-const SLIP_WAIT_DOC = (msg) =>
-  '<!doctype html><meta charset="utf-8"><title>' + msg + '</title>' +
-  '<body style="margin:0;min-height:100vh;display:grid;place-items:center;' +
-  'background:#f2f2f3;color:#5d5d60;font:14px \'Noto Serif Thai\',\'Noto Serif Lao\',serif">' +
-  '<p>' + msg + '</p>';
+// ภาพเปล่า 1×1 — ใส่ให้ <img> ตอนยังไม่มีลิงก์ ถ้าปล่อย src ว่างเบราว์เซอร์จะยิงโหลดหน้าตัวเองซ้ำ
+const BLANK_PX = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 
 // เหมือน call() แต่ไม่บังคับ Content-Type เป็น JSON — ใช้ยิง Storage ที่ส่งตัวไฟล์ดิบ
 const callRaw = async (url, opts, what) => {
@@ -1552,6 +1564,12 @@ class Component extends DCLogic {
     pendingDel: null,
     edits: [],
     historyId: null,
+    slipViewId: null,        // รายการที่กำลังเปิดดูสลิปอยู่ (null = ไม่ได้เปิด)
+    slipViewName: "",
+    slipViewUrl: "",         // ลิงก์ชั่วคราวของใบที่เปิดอยู่ ปิดแผงแล้วทิ้งทันที
+    slipViewErr: "",
+    slipViewBusy: false,
+    slipViewPdf: false,
     busy: false,
     loading: true,
     dbErr: "",
@@ -1664,6 +1682,9 @@ class Component extends DCLogic {
       editId: null, pendingDel: null, saved: "", amount: "", note: "", txns: [],
       // ประวัติการแก้ไขก็ต้องทิ้งด้วย ไม่งั้นข้อมูลของคนก่อนยังค้างในหน่วยความจำหลังกดออก
       edits: [], historyId: null, slipFile: null, slipPath: "", slipErr: "",
+      // ลิงก์ชั่วคราวของสลิปที่เปิดค้างไว้ก็ต้องทิ้ง มันเปิดไฟล์ได้โดยไม่ต้องล็อกอิน
+      slipViewId: null, slipViewName: "", slipViewUrl: "", slipViewErr: "",
+      slipViewBusy: false, slipViewPdf: false,
     });
   };
 
@@ -1796,6 +1817,7 @@ class Component extends DCLogic {
     if (!this.canEdit(t)) return;
     this.setState({
       screen: "add", editId: t.id, pendingDel: null, saved: "", historyId: null,
+      slipViewId: null, slipViewUrl: "", slipViewName: "", slipViewErr: "", slipViewBusy: false,
       kind: t.kind, cat: t.cat || this.state.cat,
       method: t.method, methodTo: t.methodTo || "", who: t.who, amount: String(t.val),
       note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
@@ -1821,28 +1843,37 @@ class Component extends DCLogic {
 
   clearSlip = () => this.setState({ slipFile: null, slipErr: "" });
 
-  // ถังไม่เปิดสาธารณะ ต้องขอลิงก์ชั่วคราวก่อน — แต่ต้องเปิดแท็บตั้งแต่ตอนกด
-  // ไม่งั้นเบราว์เซอร์จะมองว่าเป็น popup ที่ไม่ได้มาจากการกดของผู้ใช้ แล้วบล็อกทิ้ง
+  // เปิดสลิป**ในหน้าเดิม** ไม่เด้งแท็บใหม่ — กดปุ่มเดิมซ้ำหรือกด "ปิด" ก็กลับมาที่รายการทันที
+  // แผงจะโผล่ใต้ตารางเหมือนแผงประวัติการแก้ไข ปุ่มย้อนกลับของเบราว์เซอร์จึงไม่เกี่ยวข้อง
   //
-  // ห้ามใส่ "noopener" ในช่องคุณสมบัติ — ตามสเปก window.open จะคืน null ทันที
-  // เราเลยจับแท็บที่เพิ่งเปิดไม่ได้ กลายเป็นแท็บ about:blank ว่าง ๆ ค้างอยู่ตลอด
-  // แล้วรูปดันไปเปิดทับแท็บเดิม เด้งผู้ใช้ออกจากหน้าที่ทำงานค้างไว้
-  // ตัด opener ทิ้งเองหลังเปิดแทน ได้ผลด้านความปลอดภัยเท่ากัน
-  openSlip = (path) => async () => {
-    const w = window.open("", "_blank");
-    if (w) {
-      try { w.opener = null; } catch (e) {}
-      // ระหว่างรอลิงก์ชั่วคราว แท็บใหม่จะว่างอยู่ครู่หนึ่ง บอกไว้หน่อยว่ากำลังทำอะไร
-      try { w.document.write(SLIP_WAIT_DOC(STR("t_slipWait"))); w.document.close(); } catch (e) {}
-    }
+  // ถังไม่เปิดสาธารณะ จึงไม่มีลิงก์ถาวร ต้องขอลิงก์ชั่วคราว (1 ชม.) ใหม่ทุกครั้งที่กดเปิด
+  // ไม่เก็บลิงก์ค้างไว้ในหน่วยความจำข้ามใบ เพราะมันคือกุญแจเปิดไฟล์โดยไม่ต้องล็อกอิน
+  // ชื่อที่โชว์บนหัวแผงส่งมาจากตอน render เพราะชื่อหมวดต้องแปลตามภาษา
+  // (ตัวแปลชื่อหมวดเป็นของภายใน renderVals ตรงนี้เรียกไม่ถึง)
+  openSlip = (t, label) => async () => {
+    if (this.state.slipViewId === t.id) return this.closeSlipView();
+    this.setState({
+      slipViewId: t.id,
+      slipViewName: label || "",
+      slipViewUrl: "", slipViewErr: "", slipViewBusy: true,
+      slipViewPdf: /\.pdf$/i.test(t.slip),
+      historyId: null,                       // เปิดทีละแผง ไม่ให้สองแผงชนกันใต้ตาราง
+    });
     try {
-      const url = await DB.slipUrl(path);
-      if (w) w.location.replace(url); else window.location.href = url;
+      const url = await DB.slipUrl(t.slip);
+      // ระหว่างรอลิงก์ ผู้ใช้อาจกดปิดหรือกดดูใบอื่นไปแล้ว — ของที่มาช้าต้องไม่แย่งจอคืน
+      if (this.state.slipViewId !== t.id) return;
+      this.setState({ slipViewUrl: url, slipViewBusy: false });
     } catch (e) {
-      if (w) w.close();
-      this.setState({ dbErr: e.message || String(e) });
+      if (this.state.slipViewId !== t.id) return;
+      this.setState({ slipViewBusy: false, slipViewErr: e.message || String(e) });
     }
   };
+
+  closeSlipView = () => this.setState({
+    slipViewId: null, slipViewName: "", slipViewUrl: "", slipViewErr: "",
+    slipViewBusy: false, slipViewPdf: false,
+  });
 
   showHistory = (id) => () => this.setState({ historyId: this.state.historyId === id ? null : id });
   closeHistory = () => this.setState({ historyId: null });
@@ -2261,9 +2292,13 @@ class Component extends DCLogic {
                 + (t.voidReason ? " · " + t.voidReason : "")
               : "",
 
-            // ปุ่มเปิดสลิป — โผล่เฉพาะแถวที่แนบไว้จริง
+            // ปุ่มเปิดสลิป — โผล่เฉพาะแถวที่แนบไว้จริง กดซ้ำคือปิด
             slipDisp: t.slip ? "inline-flex" : "none",
-            openSlip: t.slip ? this.openSlip(t.slip) : () => {},
+            slipBg: s.slipViewId === t.id ? DARK : "transparent",
+            slipFg: s.slipViewId === t.id ? "#eef6ff" : "#416180",
+            openSlip: t.slip
+              ? this.openSlip(t, (t.name || catLabel(t.cat)) + " · " + t.date)
+              : () => {},
 
             // ป้าย "แก้ไขแล้ว" กดดูประวัติได้
             editedDisp: nEdits ? "inline-flex" : "none",
@@ -2316,6 +2351,20 @@ class Component extends DCLogic {
           to: fieldVal(c.field, c.to) || L.t_blank,
         })),
       })) : [],
+      // แผงดูสลิป — อยู่ในหน้าเดียวกับตาราง ปิดแล้วกลับมาที่รายการเดิม ไม่ต้องย้อนแท็บ
+      slipViewDisp: s.slipViewId != null ? "flex" : "none",
+      slipViewTitle: L.t_slipTitle,
+      slipViewName: s.slipViewName || "",
+      slipViewClose: this.closeSlipView,
+      slipWaitDisp: s.slipViewBusy ? "block" : "none",
+      t_slipWait: L.t_slipWait,
+      slipViewErr: s.slipViewErr || "",
+      slipViewErrDisp: s.slipViewErr ? "block" : "none",
+      // รูปกับ PDF คนละแท็ก แต่โผล่ทีละอย่างตามชนิดไฟล์ที่แนบไว้
+      slipImgDisp: s.slipViewUrl && !s.slipViewPdf ? "block" : "none",
+      slipImgSrc: s.slipViewUrl && !s.slipViewPdf ? s.slipViewUrl : BLANK_PX,
+      slipPdfDisp: s.slipViewUrl && s.slipViewPdf ? "block" : "none",
+      slipPdfSrc: s.slipViewUrl && s.slipViewPdf ? s.slipViewUrl : "about:blank",
       filters: [L.t_all, ...s.accts.map((a) => a.name)].map((name) => ({
         name, pick: () => this.setState({ filter: name }), ...sel(s.filter === name),
       })),
