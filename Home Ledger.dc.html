@@ -563,7 +563,8 @@
         <span></span><span>{{ t_hDate }}</span><span>{{ t_hItem }}</span><span>{{ t_hCat }}</span><span>{{ t_hMethod }}</span><span>{{ t_hAcct }}</span><span style="text-align:right">{{ t_hAmount }}</span><span></span>
       </div>
       <sc-for list="{{ listRows }}" as="r" hint-placeholder-count="6">
-        <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content max-content;gap:var(--space-3,10.2px);padding:11px 0;border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08));align-items:center" style-hover="background:var(--color-accent-100,#eef6ff)">
+        <div style="display:flex;flex-direction:column;border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
+        <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content max-content;gap:var(--space-3,10.2px);padding:11px 0;align-items:center" style-hover="background:var(--color-accent-100,#eef6ff)">
           <span style="width:4px;height:20px;background:{{ r.mark }}"></span>
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.date }}</span>
           <span style="display:flex;align-items:center;gap:8px;min-width:0;opacity:{{ r.fade }}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:{{ r.strike }}">{{ r.name }}</span><span style="font-size:11px;letter-spacing:.1em;color:var(--color-accent-700,#416180);flex:none">{{ r.flag }}</span><span style="display:{{ r.voidDisp }};font-size:11px;letter-spacing:.04em;color:#98989b;flex:none;white-space:nowrap">{{ r.voidLabel }}</span></span>
@@ -578,22 +579,19 @@
             <button onClick="{{ r.del }}" style="display:{{ r.delDisp }};border:1px solid {{ r.delBd }};background:{{ r.delBg }};color:{{ r.delFg }};padding:4px 11px;font-size:12px">{{ r.delLabel }}</button>
           </span>
         </div>
+        <div style="display:{{ r.slipPanelDisp }};flex-direction:column;gap:10.2px;border:1px solid #94bce3;background:#f7fbff;padding:16px;margin:0 0 13.6px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:13.6px">
+            <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_slipTitle }}</span>
+            <button onClick="{{ r.slipClose }}" style="border:1px solid #94bce3;background:transparent;color:#416180;padding:4px 11px;font-size:12px;flex:none">{{ t_close }}</button>
+          </div>
+          <div style="display:{{ r.slipWaitDisp }};padding:27.2px 0;text-align:center;color:#98989b;font-size:14px">{{ t_slipWait }}</div>
+          <div style="display:{{ r.slipErrDisp }};padding:16px 0;text-align:center;color:#8a2020;font-size:14px">{{ r.slipErrText }}</div>
+          <img src="{{ r.slipImgSrc }}" alt="{{ t_slipTitle }}" style="display:{{ r.slipImgDisp }};max-width:100%;max-height:70vh;margin:0 auto;border:1px solid rgba(29,31,32,0.16);background:#f2f2f3">
+          <iframe src="{{ r.slipPdfSrc }}" title="{{ t_slipTitle }}" style="display:{{ r.slipPdfDisp }};width:100%;height:70vh;border:1px solid rgba(29,31,32,0.16);background:#f2f2f3"></iframe>
+        </div>
+        </div>
       </sc-for>
       <div style="display:{{ emptyDisp }};padding:34px 0;text-align:center;color:#98989b;font-size:14px">{{ emptyText }}</div>
-    </div>
-
-    <div class="hl-hist" style="display:{{ slipViewDisp }};flex-direction:column;gap:13.6px;border:1px solid #94bce3;background:#f7fbff;padding:20.4px">
-      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:13.6px">
-        <div style="display:flex;align-items:baseline;gap:10px;min-width:0">
-          <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px;flex:none;white-space:nowrap">{{ slipViewTitle }}</span>
-          <span style="font-size:13px;color:#5d5d60;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ slipViewName }}</span>
-        </div>
-        <button onClick="{{ slipViewClose }}" style="border:1px solid #94bce3;background:transparent;color:#416180;padding:5px 13px;font-size:13px;flex:none">{{ t_close }}</button>
-      </div>
-      <div style="display:{{ slipWaitDisp }};padding:34px 0;text-align:center;color:#98989b;font-size:14px">{{ t_slipWait }}</div>
-      <div style="display:{{ slipViewErrDisp }};padding:20.4px 0;text-align:center;color:#8a2020;font-size:14px">{{ slipViewErr }}</div>
-      <img src="{{ slipImgSrc }}" alt="{{ slipViewName }}" style="display:{{ slipImgDisp }};max-width:100%;max-height:70vh;margin:0 auto;border:1px solid rgba(29,31,32,0.16);background:#f2f2f3">
-      <iframe src="{{ slipPdfSrc }}" title="{{ slipViewName }}" style="display:{{ slipPdfDisp }};width:100%;height:70vh;border:1px solid rgba(29,31,32,0.16);background:#f2f2f3"></iframe>
     </div>
 
     <div class="hl-hist" style="display:{{ askDisp }};flex-direction:column;gap:13.6px;border:1px solid #1d2d3d;background:#f7fbff;padding:20.4px">
@@ -1565,7 +1563,6 @@ class Component extends DCLogic {
     edits: [],
     historyId: null,
     slipViewId: null,        // รายการที่กำลังเปิดดูสลิปอยู่ (null = ไม่ได้เปิด)
-    slipViewName: "",
     slipViewUrl: "",         // ลิงก์ชั่วคราวของใบที่เปิดอยู่ ปิดแผงแล้วทิ้งทันที
     slipViewErr: "",
     slipViewBusy: false,
@@ -1683,8 +1680,7 @@ class Component extends DCLogic {
       // ประวัติการแก้ไขก็ต้องทิ้งด้วย ไม่งั้นข้อมูลของคนก่อนยังค้างในหน่วยความจำหลังกดออก
       edits: [], historyId: null, slipFile: null, slipPath: "", slipErr: "",
       // ลิงก์ชั่วคราวของสลิปที่เปิดค้างไว้ก็ต้องทิ้ง มันเปิดไฟล์ได้โดยไม่ต้องล็อกอิน
-      slipViewId: null, slipViewName: "", slipViewUrl: "", slipViewErr: "",
-      slipViewBusy: false, slipViewPdf: false,
+      slipViewId: null, slipViewUrl: "", slipViewErr: "", slipViewBusy: false, slipViewPdf: false,
     });
   };
 
@@ -1817,7 +1813,7 @@ class Component extends DCLogic {
     if (!this.canEdit(t)) return;
     this.setState({
       screen: "add", editId: t.id, pendingDel: null, saved: "", historyId: null,
-      slipViewId: null, slipViewUrl: "", slipViewName: "", slipViewErr: "", slipViewBusy: false,
+      slipViewId: null, slipViewUrl: "", slipViewErr: "", slipViewBusy: false,
       kind: t.kind, cat: t.cat || this.state.cat,
       method: t.method, methodTo: t.methodTo || "", who: t.who, amount: String(t.val),
       note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
@@ -1848,13 +1844,10 @@ class Component extends DCLogic {
   //
   // ถังไม่เปิดสาธารณะ จึงไม่มีลิงก์ถาวร ต้องขอลิงก์ชั่วคราว (1 ชม.) ใหม่ทุกครั้งที่กดเปิด
   // ไม่เก็บลิงก์ค้างไว้ในหน่วยความจำข้ามใบ เพราะมันคือกุญแจเปิดไฟล์โดยไม่ต้องล็อกอิน
-  // ชื่อที่โชว์บนหัวแผงส่งมาจากตอน render เพราะชื่อหมวดต้องแปลตามภาษา
-  // (ตัวแปลชื่อหมวดเป็นของภายใน renderVals ตรงนี้เรียกไม่ถึง)
-  openSlip = (t, label) => async () => {
+  openSlip = (t) => async () => {
     if (this.state.slipViewId === t.id) return this.closeSlipView();
     this.setState({
       slipViewId: t.id,
-      slipViewName: label || "",
       slipViewUrl: "", slipViewErr: "", slipViewBusy: true,
       slipViewPdf: /\.pdf$/i.test(t.slip),
       historyId: null,                       // เปิดทีละแผง ไม่ให้สองแผงชนกันใต้ตาราง
@@ -1871,8 +1864,7 @@ class Component extends DCLogic {
   };
 
   closeSlipView = () => this.setState({
-    slipViewId: null, slipViewName: "", slipViewUrl: "", slipViewErr: "",
-    slipViewBusy: false, slipViewPdf: false,
+    slipViewId: null, slipViewUrl: "", slipViewErr: "", slipViewBusy: false, slipViewPdf: false,
   });
 
   showHistory = (id) => () => this.setState({ historyId: this.state.historyId === id ? null : id });
@@ -2273,6 +2265,10 @@ class Component extends DCLogic {
           const nEdits = editsOf(t.id).length;
           const open = s.historyId === t.id;
           const dead = isVoid(t);
+          // สลิปกางอยู่ใต้แถวของตัวเอง จึงต้องคิดทีละแถวว่าแถวนี้ใช่ใบที่เปิดอยู่ไหม
+          const slipOn = s.slipViewId === t.id;
+          const slipPic = slipOn && s.slipViewUrl && !s.slipViewPdf;
+          const slipPdf = slipOn && s.slipViewUrl && s.slipViewPdf;
           const mLabel = mi >= 0 ? L.methods[mi] : t.method;
           return {
             date: t.date, name: t.name, who: t.who,
@@ -2294,11 +2290,20 @@ class Component extends DCLogic {
 
             // ปุ่มเปิดสลิป — โผล่เฉพาะแถวที่แนบไว้จริง กดซ้ำคือปิด
             slipDisp: t.slip ? "inline-flex" : "none",
-            slipBg: s.slipViewId === t.id ? DARK : "transparent",
-            slipFg: s.slipViewId === t.id ? "#eef6ff" : "#416180",
-            openSlip: t.slip
-              ? this.openSlip(t, (t.name || catLabel(t.cat)) + " · " + t.date)
-              : () => {},
+            slipBg: slipOn ? DARK : "transparent",
+            slipFg: slipOn ? "#eef6ff" : "#416180",
+            openSlip: t.slip ? this.openSlip(t) : () => {},
+
+            // แผงรูปที่กางใต้แถวนี้ — ปิดแล้วแถวก็หุบกลับที่เดิม ไม่ต้องเลื่อนหาที่ท้ายตาราง
+            slipPanelDisp: slipOn ? "flex" : "none",
+            slipWaitDisp: slipOn && s.slipViewBusy ? "block" : "none",
+            slipErrDisp: slipOn && s.slipViewErr ? "block" : "none",
+            slipErrText: slipOn ? s.slipViewErr : "",
+            slipImgDisp: slipPic ? "block" : "none",
+            slipImgSrc: slipPic ? s.slipViewUrl : BLANK_PX,
+            slipPdfDisp: slipPdf ? "block" : "none",
+            slipPdfSrc: slipPdf ? s.slipViewUrl : "about:blank",
+            slipClose: this.closeSlipView,
 
             // ป้าย "แก้ไขแล้ว" กดดูประวัติได้
             editedDisp: nEdits ? "inline-flex" : "none",
@@ -2351,20 +2356,9 @@ class Component extends DCLogic {
           to: fieldVal(c.field, c.to) || L.t_blank,
         })),
       })) : [],
-      // แผงดูสลิป — อยู่ในหน้าเดียวกับตาราง ปิดแล้วกลับมาที่รายการเดิม ไม่ต้องย้อนแท็บ
-      slipViewDisp: s.slipViewId != null ? "flex" : "none",
-      slipViewTitle: L.t_slipTitle,
-      slipViewName: s.slipViewName || "",
-      slipViewClose: this.closeSlipView,
-      slipWaitDisp: s.slipViewBusy ? "block" : "none",
+      // หัวแผงสลิปกับข้อความรอ — แผงตัวจริงอยู่ในแต่ละแถว (ดู listRows)
+      t_slipTitle: L.t_slipTitle,
       t_slipWait: L.t_slipWait,
-      slipViewErr: s.slipViewErr || "",
-      slipViewErrDisp: s.slipViewErr ? "block" : "none",
-      // รูปกับ PDF คนละแท็ก แต่โผล่ทีละอย่างตามชนิดไฟล์ที่แนบไว้
-      slipImgDisp: s.slipViewUrl && !s.slipViewPdf ? "block" : "none",
-      slipImgSrc: s.slipViewUrl && !s.slipViewPdf ? s.slipViewUrl : BLANK_PX,
-      slipPdfDisp: s.slipViewUrl && s.slipViewPdf ? "block" : "none",
-      slipPdfSrc: s.slipViewUrl && s.slipViewPdf ? s.slipViewUrl : "about:blank",
       filters: [L.t_all, ...s.accts.map((a) => a.name)].map((name) => ({
         name, pick: () => this.setState({ filter: name }), ...sel(s.filter === name),
       })),
