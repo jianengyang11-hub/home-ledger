@@ -4,7 +4,7 @@
 -- วิธีใช้: Supabase → SQL Editor → วางทั้งไฟล์นี้ → กด Run
 -- รันซ้ำได้ ไม่พัง (idempotent)
 --
--- หลังรันเสร็จต้องไปสร้างผู้ใช้ 3 คนใน Authentication → Users
+-- หลังรันเสร็จต้องไปสร้างผู้ใช้ 2 คนใน Authentication → Users
 -- แล้วกลับมารันบล็อกสุดท้าย (ผูกผู้ใช้กับชื่อบัญชี)
 -- ─────────────────────────────────────────────────────────────
 
@@ -32,7 +32,7 @@ create index if not exists txns_ts_idx on public.txns (ts desc, id desc);
 
 create table if not exists public.profiles (
   id    uuid primary key references auth.users(id) on delete cascade,
-  name  text not null unique,                                  -- ปิ่น / ต้น / บ้านเรา
+  name  text not null unique,                                  -- jia / asnas
   role  text not null default 'member' check (role in ('admin','member')),
   code  text not null default 'KIP'                            -- สกุลเงินหลักของบัญชี
 );
@@ -170,20 +170,14 @@ revoke all on public.txn_edits from anon;
 -- ทำหลังจากสร้างผู้ใช้ใน Authentication → Users แล้ว
 -- แก้อีเมลให้ตรงกับที่สร้างไว้จริง แล้วรันเฉพาะบล็อกนี้ซ้ำได้
 --
--- ปิ่น = admin (แก้/ลบได้)   ต้น กับ บ้านเรา = member (เพิ่มได้อย่างเดียว)
+-- jia = admin (แก้/ลบได้)   asnas = member (เพิ่มได้อย่างเดียว)
 
 insert into public.profiles (id, name, role, code)
 select u.id, v.name, v.role, v.code
 from auth.users u
 join (values
-<<<<<<< HEAD
-  ('jia11@gmail.com', 'jia',     'admin',  'KIP'),
-  ('asnas11@gmail.com',           'asnas',      'member', 'KIP')
-=======
-  ('jianengyang11@gmail.com', 'ปิ่น',     'admin',  'KIP'),
-  ('jia@gmail.com',           'ต้น',      'member', 'KIP'),
-  ('yang11@gmail.com',        'บ้านเรา',  'member', 'KIP')
->>>>>>> 9990dd3514994e0a66bdc6ead9e7c3e6c4e3ebe8
+  ('jia11@gmail.com',   'jia',   'admin',  'KIP'),
+  ('asnas11@gmail.com', 'asnas', 'member', 'KIP')
 ) as v(email, name, role, code) on lower(u.email) = v.email
 on conflict (id) do update
   set name = excluded.name,
@@ -192,7 +186,7 @@ on conflict (id) do update
 
 
 -- ═══ ตรวจผล ═══════════════════════════════════════════════════
--- ควรเห็น 3 แถว และ ปิ่น ต้องเป็น admin
+-- ควรเห็น 2 แถว และ jia ต้องเป็น admin
 select p.name, p.role, p.code, u.email
 from public.profiles p join auth.users u on u.id = p.id
 order by p.role, p.name;

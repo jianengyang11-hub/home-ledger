@@ -9,14 +9,8 @@
 // ─────────────────────────────────────────────────────────────
 
 window.LEDGER_CONFIG = {
-<<<<<<< HEAD
   SUPABASE_URL: "https://eebaehbmaljjmafrrcro.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_qK_lgHLyp0h8UPtzn5Ji2g_mbGF1sXu",
-=======
-  SUPABASE_URL: "https://xhnuigcwbcycthqjgjzb.supabase.co",
-  SUPABASE_ANON_KEY: "sb_publishable_SWNfPO3Wn-GA3MzsILMltw__VbaGLf4",
->>>>>>> 9990dd3514994e0a66bdc6ead9e7c3e6c4e3ebe8
-
   // ชื่อที่แสดงบนแถบหัว หน้าล็อกอิน และชื่อแท็บเบราว์เซอร์
   APP_NAME: "บ้านเรา · Home Ledger",
 
@@ -50,14 +44,7 @@ window.LEDGER_CONFIG = {
   // ชื่อกับสิทธิ์ admin/member ตัวจริงอ่านจากตาราง profiles ในฐานข้อมูล
   // ตรงนี้เป็นแค่รายชื่อให้หน้า login แสดงเป็นปุ่มเลือกเท่านั้น
   ACCOUNTS: [
-<<<<<<< HEAD
     { id: "່jia",  name: "jia",    role: "บัญชีส่วนตัว",      email: "jia11@gmail.com" },
     { id: "asnas",  name: "asnas",     role: "บัญชีส่วนตัว",      email: "asnas11@gmail.com" },
-    
-=======
-    { id: "pin",  name: "ปิ่น",    role: "บัญชีส่วนตัว",      email: "jianengyang11@gmail.com" },
-    { id: "ton",  name: "ต้น",     role: "บัญชีส่วนตัว",      email: "jia@gmail.com" },
-    { id: "home", name: "บ้านเรา", role: "บัญชีกลางของบ้าน", email: "yang11@gmail.com" },
->>>>>>> 9990dd3514994e0a66bdc6ead9e7c3e6c4e3ebe8
   ],
 };

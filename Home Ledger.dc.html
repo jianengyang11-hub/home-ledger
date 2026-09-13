@@ -646,7 +646,7 @@
 
         <div>
           <div class="hl-kinds" style="display:flex;border:1px solid rgba(29,31,32,0.16);width:fit-content;flex-wrap:wrap">
-            <sc-for list="{{ kindBtns }}" as="k" hint-placeholder-count="4">
+            <sc-for list="{{ kindBtns }}" as="k" hint-placeholder-count="5">
               <button onClick="{{ k.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 20px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.06em;background:{{ k.bg }};color:{{ k.fg }}">{{ k.label }}</button>
             </sc-for>
           </div>
@@ -689,6 +689,15 @@
           <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
             <sc-for list="{{ toMethods }}" as="m" hint-placeholder-count="3">
               <button onClick="{{ m.pick }}" style="flex:1;border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 0;font-size:14px;background:{{ m.bg }};color:{{ m.fg }}">{{ m.name }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:{{ giveDisp }};flex-direction:column;gap:10.2px">
+          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_sendTo }}</label>
+          <div style="display:flex;flex-wrap:wrap;border:1px solid rgba(29,31,32,0.16);width:fit-content">
+            <sc-for list="{{ toPeople }}" as="p" hint-placeholder-count="3">
+              <button onClick="{{ p.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 20px;font-size:14px;background:{{ p.bg }};color:{{ p.fg }}">{{ p.name }}</button>
             </sc-for>
           </div>
         </div>
@@ -976,12 +985,14 @@ const T = {
     t_edited: "แก้ไขแล้ว", t_histTitle: "ประวัติการแก้ไข", t_editedBy: "แก้โดย",
     t_close: "ปิด", t_blank: "(ว่าง)",
     fields: { ts: "วันที่", name: "รายการ", cat: "หมวดหมู่", method: "ช่องทาง",
-              method_to: "โอนไปยัง", void: "สถานะ", slip: "สลิป",
+              method_to: "โอนไปยัง", to_who: "ส่งให้", void: "สถานะ", slip: "สลิป",
               kind: "ประเภท", amt: "จำนวนเงิน", code: "สกุลเงิน", flag: "รายการประจำ", who: "บัญชี" },
-    t_kindXfer: "โอนระหว่างช่องทาง", t_kindOpen: "ยอดยกมา", t_to: "ไปยัง",
+    t_kindXfer: "โอนระหว่างช่องทาง", t_kindOpen: "ยอดยกมา", t_kindGive: "ส่งเงินให้คน", t_to: "ไปยัง",
     t_needTo: "เลือกช่องทางปลายทางที่ไม่ใช่ช่องทางเดิม",
     t_xferNote: "ย้ายเงินระหว่างช่องทาง เช่น ถอน ATM (โอน → เงินสด) หรือจ่ายบัตร (โอน → บัตร) ไม่นับเป็นรายรับหรือรายจ่าย",
     t_openNote: "เงินตั้งต้นที่มีอยู่ก่อนเริ่มใช้สมุดนี้ ใส่ครั้งเดียวต่อช่องทาง ไม่นับเป็นรายรับของเดือนไหน",
+    t_sendTo: "ส่งให้", t_needToWho: "เลือกคนที่จะส่งให้ ต้องไม่ใช่ตัวเอง",
+    t_giveNote: "ส่งเงินให้อีกคนตรง ๆ เลือกได้ว่าจะส่งให้ใคร ไม่ใช่รายรับหรือรายจ่ายของบ้าน แค่เงินเปลี่ยนมือ",
     t_dupOpening: "{m} · {c} มียอดยกมาอยู่แล้ว ({v}) — กดแก้ยอดเดิมแทน หรือยกเลิกแถวเก่าก่อน",
     t_viewCur: "กราฟและ % คิดเฉพาะสกุล", t_otherCur: "อีก {n} รายการเป็นสกุลอื่น ไม่รวมในหน้านี้",
     t_breakCur: "แถบแยกหมวดคิดเฉพาะสกุล {c} — อีก {n} รายการเป็นสกุลอื่น ส่วนยอดรวมหัวการ์ดรวมทุกสกุล",
@@ -1089,12 +1100,14 @@ const T = {
     t_edited: "ແກ້ໄຂແລ້ວ", t_histTitle: "ປະຫວັດການແກ້ໄຂ", t_editedBy: "ແກ້ໂດຍ",
     t_close: "ປິດ", t_blank: "(ຫວ່າງ)",
     fields: { ts: "ວັນທີ", name: "ລາຍການ", cat: "ໝວດໝູ່", method: "ຊ່ອງທາງ",
-              method_to: "ໂອນໄປຫາ", void: "ສະຖານະ", slip: "ໃບບິນ",
+              method_to: "ໂອນໄປຫາ", to_who: "ສົ່ງໃຫ້", void: "ສະຖານະ", slip: "ໃບບິນ",
               kind: "ປະເພດ", amt: "ຈຳນວນເງິນ", code: "ສະກຸນເງິນ", flag: "ລາຍການປະຈຳ", who: "ບັນຊີ" },
-    t_kindXfer: "ໂອນລະຫວ່າງຊ່ອງທາງ", t_kindOpen: "ຍອດຍົກມາ", t_to: "ໄປຫາ",
+    t_kindXfer: "ໂອນລະຫວ່າງຊ່ອງທາງ", t_kindOpen: "ຍອດຍົກມາ", t_kindGive: "ສົ່ງເງິນໃຫ້ຄົນ", t_to: "ໄປຫາ",
     t_needTo: "ເລືອກຊ່ອງທາງປາຍທາງທີ່ບໍ່ແມ່ນຊ່ອງທາງເດີມ",
     t_xferNote: "ຍ້າຍເງິນລະຫວ່າງຊ່ອງທາງ ເຊັ່ນ ຖອນ ATM (ໂອນ → ເງິນສົດ) ຫຼືຈ່າຍບັດ (ໂອນ → ບັດ) ບໍ່ນັບເປັນລາຍຮັບຫຼືລາຍຈ່າຍ",
     t_openNote: "ເງິນຕັ້ງຕົ້ນທີ່ມີຢູ່ກ່ອນເລີ່ມໃຊ້ປຶ້ມນີ້ ໃສ່ຄັ້ງດຽວຕໍ່ຊ່ອງທາງ ບໍ່ນັບເປັນລາຍຮັບຂອງເດືອນໃດ",
+    t_sendTo: "ສົ່ງໃຫ້", t_needToWho: "ເລືອກຄົນທີ່ຈະສົ່ງໃຫ້ ຕ້ອງບໍ່ແມ່ນຕົນເອງ",
+    t_giveNote: "ສົ່ງເງິນໃຫ້ອີກຄົນຕົງໆ ເລືອກໄດ້ວ່າຈະສົ່ງໃຫ້ໃຜ ບໍ່ແມ່ນລາຍຮັບຫຼືລາຍຈ່າຍຂອງບ້ານ ພຽງແຕ່ເງິນປ່ຽນມື",
     t_dupOpening: "{m} · {c} ມີຍອດຍົກມາຢູ່ແລ້ວ ({v}) — ກົດແກ້ຍອດເດີມແທນ ຫຼື ຍົກເລີກແຖວເກົ່າກ່ອນ",
     t_viewCur: "ກຣາຟແລະ % ຄິດສະເພາະສະກຸນ", t_otherCur: "ອີກ {n} ລາຍການເປັນສະກຸນອື່ນ ບໍ່ລວມໃນໜ້ານີ້",
     t_breakCur: "ແຖບແຍກໝວດຄິດສະເພາະສະກຸນ {c} — ອີກ {n} ລາຍການເປັນສະກຸນອື່ນ ສ່ວນຍອດລວມຫົວກາດລວມທຸກສະກຸນ",
@@ -1167,9 +1180,9 @@ const CFG = window.LEDGER_CONFIG || {};
 
 const CHIPS = ["อาหาร", "ที่อยู่อาศัย", "เดินทาง", "ลูก", "ของใช้ในบ้าน", "สุขภาพ", "บันเทิง", "อื่น ๆ"];
 const METHODS = ["เงินสด", "โอน", "บัตร"];
-const KINDS = ["expense", "income", "transfer", "opening"];
+const KINDS = ["expense", "income", "transfer", "opening", "give"];
 const KIND_LABEL = (L) => ({
-  expense: L.t_kindExp, income: L.t_kindInc, transfer: L.t_kindXfer, opening: L.t_kindOpen,
+  expense: L.t_kindExp, income: L.t_kindInc, transfer: L.t_kindXfer, opening: L.t_kindOpen, give: L.t_kindGive,
 });
 // ไม่มีช่อง rate โดยตั้งใจ — ระบบนี้ไม่แปลงค่าเงินข้ามสกุลเลย
 // เงินคนละสกุลคือคนละก้อน บวกกันไม่ได้ ยอดรวมจึงแยกตามสกุลเสมอ
@@ -1516,7 +1529,7 @@ const fromDb = (r) => {
     month: mo, year: yAD + 543, day,
     date: pad2(day) + " " + M_ABBR[mo - 1] + " " + String(yAD + 543).slice(-2),
     name: r.name || "", cat: r.cat || "", method: r.method || "", who: r.who || "",
-    methodTo: r.method_to || "",
+    methodTo: r.method_to || "", toWho: r.to_who || "",
     voidAt: r.void_at || null, voidBy: r.void_by || "", voidReason: r.void_reason || "",
     slip: r.slip || "",
     kind: r.kind, val, code: r.code || "THB", flag: r.flag || "",
@@ -1524,8 +1537,8 @@ const fromDb = (r) => {
   };
 };
 
-// income/opening เข้ากระเป๋า · expense ออก · transfer ย้ายที่ ไม่เข้าไม่ออก
-const SIGN_OF = { income: "+", opening: "+", expense: "−", transfer: "→" };
+// income/opening เข้ากระเป๋า · expense/give ออก · transfer ย้ายที่ ไม่เข้าไม่ออก
+const SIGN_OF = { income: "+", opening: "+", expense: "−", transfer: "→", give: "−" };
 
 const acctCode = (name) => (ACCOUNTS.find((a) => a.name === name) || {}).code || CODES[0];
 
@@ -1549,6 +1562,7 @@ class Component extends DCLogic {
     cat: CAT_SEED[0] ? CAT_SEED[0].th : "",
     method: METHODS[0],
     methodTo: "",
+    toWho: "",
     voidReason: "",
     voidErr: "",
     viewCode: null,          // สกุลเงินที่หน้าเดือน/หน้าปีกำลังวิเคราะห์ (null = ใช้ของบัญชีตัวเอง)
@@ -1749,6 +1763,11 @@ class Component extends DCLogic {
     const to = xfer ? (s.methodTo || METHODS.find((m) => m !== s.method)) : "";
     if (xfer && to === s.method) return this.setState({ saved: this.L.t_needTo });
 
+    // ส่งเงินให้คนต้องมีคนรับ และต้องไม่ใช่ตัวเอง (ฐานข้อมูลก็บังคับซ้ำอีกชั้น)
+    const give = s.kind === "give";
+    const toWho = give ? (s.toWho || s.accts.map((a) => a.name).find((n) => n !== who)) : "";
+    if (give && (!toWho || toWho === who)) return this.setState({ saved: this.L.t_needToWho });
+
     // ยอดยกมามีได้ช่องทางละแถวเดียวต่อบัญชีต่อสกุล — บอกก่อนยิง จะได้เห็นยอดเดิมด้วย
     // (ฐานข้อมูลก็บังคับซ้ำอีกชั้นด้วย index txns_opening_unique เผื่ออีกคนใส่พร้อมกัน)
     if (s.kind === "opening") {
@@ -1769,6 +1788,7 @@ class Component extends DCLogic {
       cat: plain ? (s.kind === "income" ? "รายรับ" : s.cat) : "",
       method: s.method,
       method_to: to,
+      to_who: give ? toWho : null,
       who,
       kind: s.kind,
       amt: n,
@@ -1796,7 +1816,7 @@ class Component extends DCLogic {
       const done = s.editId != null ? "แก้ไขแล้ว" : this.L.t_savedOk;
       this.setState({
         busy: false, editId: null, entryCode: null, amount: "", note: "", repeat: false, methodTo: "",
-        slipFile: null, slipPath: "", slipErr: "",
+        toWho: "", slipFile: null, slipPath: "", slipErr: "",
         saved: done + " · " + code + " → " + this.L.t_toAcct + " " + who,
       });
       this.reload();
@@ -1815,14 +1835,14 @@ class Component extends DCLogic {
       screen: "add", editId: t.id, pendingDel: null, saved: "", historyId: null,
       slipViewId: null, slipViewUrl: "", slipViewErr: "", slipViewBusy: false,
       kind: t.kind, cat: t.cat || this.state.cat,
-      method: t.method, methodTo: t.methodTo || "", who: t.who, amount: String(t.val),
+      method: t.method, methodTo: t.methodTo || "", toWho: t.toWho || "", who: t.who, amount: String(t.val),
       note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
       slipFile: null, slipPath: t.slip || "", slipErr: "",
     });
   };
 
   cancelEdit = () => this.setState({
-    editId: null, amount: "", note: "", repeat: false, entryCode: null, saved: "", methodTo: "",
+    editId: null, amount: "", note: "", repeat: false, entryCode: null, saved: "", methodTo: "", toWho: "",
     slipFile: null, slipPath: "", slipErr: "",
   });
 
@@ -1925,6 +1945,7 @@ class Component extends DCLogic {
     const isExp   = (t) => t.kind === "expense";
     const isXfer  = (t) => t.kind === "transfer";   // ย้ายเงินระหว่างช่องทาง ไม่ใช่รับ ไม่ใช่จ่าย
     const isOpen  = (t) => t.kind === "opening";    // ยอดยกมา ไม่ใช่รายรับของงวดไหน
+    const isGive  = (t) => t.kind === "give";       // ส่งเงินให้คนตรง ๆ ไม่ใช่รับ ไม่ใช่จ่าย
     const isVoid  = (t) => !!t.voidAt;              // ยกเลิกแล้ว — ยังอยู่ในตาราง แต่ไม่นับในยอดใด ๆ
     const live    = (list) => list.filter((t) => !isVoid(t));
 
@@ -2025,7 +2046,7 @@ class Component extends DCLogic {
     const balOf = (m) => balTx.filter((t) => inMethod(t, m)).map((t) => {
       const sign = isXfer(t) ? (t.methodTo === m ? 1 : -1)
         : isInc(t) || isOpen(t) ? 1
-        : isExp(t) ? -1 : 0;
+        : isExp(t) || isGive(t) ? -1 : 0;
       return { ...t, val: sign * valOf(t) };
     });
     const cardDebt = balOf(METHODS[2]).map((t) => ({ ...t, val: -valOf(t) }));
@@ -2253,7 +2274,7 @@ class Component extends DCLogic {
       t_todayDate: TODAY.getDate() + " " + L.mAbbr[TODAY.getMonth()] + " " + NOW_Y,
       loginInc: fmt(yIncTot), loginExp: fmt(yExpTot), loginNet: fmt(yIncTot - yExpTot),
       kindOpts: [["all", L.t_typeAll], ["income", L.t_kindInc], ["expense", L.t_kindExp],
-                 ["transfer", L.t_kindXfer], ["opening", L.t_kindOpen]].map(([id, label]) => ({
+                 ["transfer", L.t_kindXfer], ["opening", L.t_kindOpen], ["give", L.t_kindGive]].map(([id, label]) => ({
         label, pick: () => this.setState({ kindFilter: id }), ...sel(s.kindFilter === id),
       })),
       listRows: shown.map((t) => {
@@ -2272,12 +2293,13 @@ class Component extends DCLogic {
           const mLabel = mi >= 0 ? L.methods[mi] : t.method;
           return {
             date: t.date, name: t.name, who: t.who,
-            cat: isXfer(t) || isOpen(t) ? KIND_LABEL(L)[t.kind] : catLabel(t.cat),
-            method: isXfer(t) ? mLabel + " → " + (ti >= 0 ? L.methods[ti] : t.methodTo) : mLabel,
+            cat: isXfer(t) || isOpen(t) || isGive(t) ? KIND_LABEL(L)[t.kind] : catLabel(t.cat),
+            method: isXfer(t) ? mLabel + " → " + (ti >= 0 ? L.methods[ti] : t.methodTo)
+              : isGive(t) ? mLabel + " → " + t.toWho : mLabel,
             flag: t.flag ? L.t_recurFlag : "",
             amount: (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
             color: dead ? "#98989b" : inc || isOpen(t) ? DARK : INK,
-            mark: dead ? "#d4d4d7" : isXfer(t) || isOpen(t) ? "#94bce3" : inc ? DARK : ACC,
+            mark: dead ? "#d4d4d7" : isXfer(t) || isOpen(t) ? "#94bce3" : isGive(t) ? "#c98a5e" : inc ? DARK : ACC,
 
             // รายการที่ยกเลิกแล้ว — ขีดฆ่า จางลง แต่ยังอยู่ให้กู้คืนได้
             strike: dead ? "line-through" : "none",
@@ -2480,8 +2502,18 @@ class Component extends DCLogic {
           fg: same ? "#c4c4c8" : on ? "#f2f2f3" : MUTED,
         };
       }),
-      kindNote: s.kind === "transfer" ? L.t_xferNote : s.kind === "opening" ? L.t_openNote : "",
-      kindNoteDisp: s.kind === "transfer" || s.kind === "opening" ? "block" : "none",
+      // คนรับเงิน โผล่เฉพาะตอนส่งเงินให้คน — เลือกได้ทุกบัญชียกเว้นคนที่กำลังบันทึกอยู่
+      giveDisp: s.kind === "give" ? "flex" : "none",
+      toPeople: s.accts.filter((a) => a.name !== this.targetWho).map((a) => {
+        const on = (s.toWho || s.accts.map((x) => x.name).find((n) => n !== this.targetWho)) === a.name;
+        return {
+          name: a.name, pick: () => this.setState({ toWho: a.name }),
+          bg: on ? ACC : "transparent", fg: on ? "#f2f2f3" : MUTED,
+        };
+      }),
+      kindNote: s.kind === "transfer" ? L.t_xferNote : s.kind === "opening" ? L.t_openNote
+        : s.kind === "give" ? L.t_giveNote : "",
+      kindNoteDisp: s.kind === "transfer" || s.kind === "opening" || s.kind === "give" ? "block" : "none",
 
       // ภาพตัวอย่างหน้าล็อกอินบนมือถือ — ต้องสะท้อนวิธีล็อกอินจริง (อีเมล + รหัสผ่าน)
       // เดิมวาดเป็นแป้น PIN 6 หลัก ซึ่งเป็นของเหลือจากเวอร์ชันก่อนเปลี่ยนมาใช้ Supabase Auth
