@@ -1048,6 +1048,7 @@ const T = {
     t_catsAdminOnly: "เฉพาะบัญชีหลักที่แก้หมวดหมู่ได้ · ทุกคนเห็นชุดเดียวกัน",
     t_budgetsOffline: "ยังแก้เป้างบประมาณไม่ได้ — ตาราง budgets ยังไม่มีในฐานข้อมูล (ต้องรัน upgrade_v6.sql ก่อน)",
     t_budgetsAdminOnly: "เฉพาะบัญชีหลักที่แก้เป้างบประมาณได้ · ทุกคนเห็นชุดเดียวกัน",
+    t_budgetsMemberNote: "เพิ่ม/แก้เป้าส่วนตัวของตัวเองได้ · เป้ากลางของบ้านแก้ได้เฉพาะบัญชีหลัก",
     t_yearGoalOffline: "ยังแก้เป้าเงินเก็บทั้งปีไม่ได้ — ตาราง year_goal ยังไม่มีในฐานข้อมูล (ต้องรัน upgrade_v7.sql ก่อน)",
     t_balTitle: "ยอดคงเหลือแยกช่องทาง",
     t_balCash: "เงินสดคงเหลือ", t_balBank: "เงินในบัญชี", t_balCard: "ยอดค้างบัตร",
@@ -1168,6 +1169,7 @@ const T = {
     t_catsAdminOnly: "ສະເພາະບັນຊີຫຼັກທີ່ແກ້ໝວດໝູ່ໄດ້ · ທຸກຄົນເຫັນຊຸດດຽວກັນ",
     t_budgetsOffline: "ຍັງແກ້ເປົ້າງົບປະມານບໍ່ໄດ້ — ຕາຕະລາງ budgets ຍັງບໍ່ມີໃນຖານຂໍ້ມູນ",
     t_budgetsAdminOnly: "ສະເພາະບັນຊີຫຼັກທີ່ແກ້ເປົ້າງົບປະມານໄດ້ · ທຸກຄົນເຫັນຊຸດດຽວກັນ",
+    t_budgetsMemberNote: "ເພີ່ມ/ແກ້ເປົ້າສ່ວນຕົວຂອງຕົນເອງໄດ້ · ເປົ້າກາງຂອງບ້ານແກ້ໄດ້ສະເພາະບັນຊີຫຼັກ",
     t_yearGoalOffline: "ຍັງແກ້ເປົ້າເງິນເກັບອອມທັງປີບໍ່ໄດ້ — ຕາຕະລາງ year_goal ຍັງບໍ່ມີໃນຖານຂໍ້ມູນ",
     t_balTitle: "ຍອດຄົງເຫຼືອແຍກຊ່ອງທາງ",
     t_balCash: "ເງິນສົດຄົງເຫຼືອ", t_balBank: "ເງິນໃນບັນຊີ", t_balCard: "ຍອດຄ້າງບັດ",
@@ -1867,8 +1869,11 @@ class Component extends DCLogic {
     if (!this.state.budgetsLive) return this.setState({ dbErr: L.t_budgetsOffline });
     const sort = this.state.budgets.reduce((n, b) => Math.max(n, Number(b.sort) || 0), 0) + 1;
     const cat = (this.state.cats[0] || {}).th || SAVE_GOAL;
+    const row = { cat, amt: 0, code: acctCode(this.state.acct), sort };
+    // สมาชิกทั่วไปเพิ่มได้แค่เป้าส่วนตัวของตัวเอง — บัญชีหลักเท่านั้นที่ตั้งเป้ากลางของบ้าน (for_who ว่าง) ได้
+    if (!this.isAdmin) row.for_who = this.state.acct;
     try {
-      const made = await DB.budgetAdd({ cat, amt: 0, code: acctCode(this.state.acct), sort });
+      const made = await DB.budgetAdd(row);
       this.setState({ budgets: [...this.state.budgets, ...(made || [])] });
     } catch (e) { this.budgetFail(e); }
   };
@@ -2373,8 +2378,10 @@ class Component extends DCLogic {
         };
 
         const rows = s.budgets.filter((t) => t.code === V);
-        const sharedCards = rows.filter((t) => !t.for_who)
-          .map((b) => card(b.cat, Number(b.amt) || 0, usedOf(null, b.cat)));
+        // เป้ากลางของบ้านโชว์เฉพาะตอนดู "ทุกบัญชี" — เลือกดูบัญชีเดียวแล้วต้องเห็นแต่เป้าส่วนตัวของคนนั้น
+        const sharedCards = allAcc
+          ? rows.filter((t) => !t.for_who).map((b) => card(b.cat, Number(b.amt) || 0, usedOf(null, b.cat)))
+          : [];
 
         const personal = rows.filter((t) => t.for_who);
         let personalCards;
@@ -2613,9 +2620,10 @@ class Component extends DCLogic {
         del: this.delBudget(i),
       })),
       addBudget: this.addBudget,
-      budgetPanelNote: !s.budgetsLive ? L.t_budgetsOffline : L.t_budgetsAdminOnly,
+      // ทุกคนเพิ่ม/แก้เป้าส่วนตัวของตัวเองได้ — เป้ากลางของบ้าน (for_who ว่าง) แก้ได้เฉพาะบัญชีหลัก
+      budgetPanelNote: !s.budgetsLive ? L.t_budgetsOffline : admin ? L.t_budgetsAdminOnly : L.t_budgetsMemberNote,
       budgetPanelNoteFg: !s.budgetsLive ? "#1d2d3d" : "#5d5d60",
-      addBudgetDisp: s.budgetsLive && admin ? "inline-flex" : "none",
+      addBudgetDisp: s.budgetsLive ? "inline-flex" : "none",
 
       // เป้าเงินเก็บทั้งปี — แถวเดียว ไม่มีเพิ่ม/ลบ
       yearGoalAmt: String(s.yearGoal.amount || ""), yearGoalCode: s.yearGoal.code,
