@@ -1096,7 +1096,7 @@ const T = {
     t_entered: "ใส่แล้ว", t_of6: "/ 6 หลัก",
     t_peakWhy: "สงกรานต์ + ค่าเทอม",
     curNames: { THB: "บาท", USD: "ดอลลาร์สหรัฐ", KIP: "กีบลาว" },
-    t_hello: "สวัสดี", t_saveShort: "บันทึก", t_family: "ปิ่น + ต้น",
+    t_hello: "สวัสดี", t_saveShort: "บันทึก", t_family: "สมาชิกบ้าน",
     pinOwn: "เลือกบัญชีแล้วใส่รหัสผ่าน",
   },
   lo: {
@@ -1215,7 +1215,7 @@ const T = {
     t_entered: "ໃສ່ແລ້ວ", t_of6: "/ 6 ຫຼັກ",
     t_peakWhy: "ບຸນປີໃໝ່ + ຄ່າຮຽນ",
     curNames: { THB: "ບາດ", USD: "ໂດລາສະຫະລັດ", KIP: "ກີບລາວ" },
-    t_hello: "ສະບາຍດີ", t_saveShort: "ບັນທຶກ", t_family: "ປິ່ນ + ຕົ້ນ",
+    t_hello: "ສະບາຍດີ", t_saveShort: "ບັນທຶກ", t_family: "ສະມາຊິກບ້ານ",
     pinOwn: "ເລືອກບັນຊີແລ້ວໃສ່ລະຫັດຜ່ານ",
   },
 };
@@ -1255,9 +1255,8 @@ const raw = (n, code) => {
 // รายชื่อบัญชีสำหรับหน้า login — ไม่มีรหัสผ่านในโค้ดอีกต่อไป
 // ชื่อจริงกับสิทธิ์ admin/member อ่านจากตาราง profiles หลังล็อกอินสำเร็จ
 const ACCOUNTS = (CFG.ACCOUNTS && CFG.ACCOUNTS.length ? CFG.ACCOUNTS : [
-  { id: "pin", name: "ปิ่น", role: "บัญชีส่วนตัว", email: "pin@homeledger.local" },
-  { id: "ton", name: "ต้น", role: "บัญชีส่วนตัว", email: "ton@homeledger.local" },
-  { id: "home", name: "บ้านเรา", role: "บัญชีกลางของบ้าน", email: "home@homeledger.local" },
+  { id: "a1", name: "สมาชิก 1", role: "บัญชีส่วนตัว", email: "member1@homeledger.local" },
+  { id: "a2", name: "สมาชิก 2", role: "บัญชีส่วนตัว", email: "member2@homeledger.local" },
 ]).map((a) => ({ code: CODES[0], ...a }));
 const MEMBERS = ACCOUNTS.map((a) => a.name);
 
@@ -2483,7 +2482,7 @@ class Component extends DCLogic {
             editLabel: L.t_edit,
             edit: mine ? this.beginEdit(t) : () => {},
 
-            // ปิ่นเท่านั้น — ยกเลิก (ไม่ลบทิ้ง) และกู้คืนได้ทีหลัง
+            // บัญชีหลักเท่านั้น — ยกเลิก (ไม่ลบทิ้ง) และกู้คืนได้ทีหลัง
             delDisp: admin ? "inline-flex" : "none",
             // ปุ่มในแถวแค่เปิด/ปิดแผงกรอกเหตุผล ตัวยืนยันจริงอยู่ในแผง
             delLabel: dead ? L.t_restore : asking ? L.t_notVoid : L.t_void,

@@ -45,7 +45,7 @@ window.LEDGER_CONFIG = {
   // ชื่อกับสิทธิ์ admin/member ตัวจริงอ่านจากตาราง profiles ในฐานข้อมูล
   // ตรงนี้เป็นแค่รายชื่อให้หน้า login แสดงเป็นปุ่มเลือกเท่านั้น
   ACCOUNTS: [
-    { id: "່jia",  name: "jia",    role: "บัญชีส่วนตัว",      email: "jia11@gmail.com" },
-    { id: "asnas",  name: "asnas",     role: "บัญชีส่วนตัว",      email: "asnas11@gmail.com" },
+    { id: "jia",   name: "jia",   role: "บัญชีส่วนตัว", email: "jia11@gmail.com" },
+    { id: "asnas", name: "asnas", role: "บัญชีส่วนตัว", email: "asnas11@gmail.com" },
   ],
 };
