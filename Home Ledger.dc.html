@@ -837,6 +837,34 @@
       </div>
 
     </div>
+
+    <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
+      <div>
+        <div style="font-weight:600;font-size:22px">{{ t_budgetPanel }}</div>
+        <div style="font-size:12px;color:{{ budgetPanelNoteFg }};line-height:1.5">{{ budgetPanelNote }}</div>
+      </div>
+      <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,0.8fr) minmax(0,0.6fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
+        <span>{{ t_colBudgetCat }}</span><span>{{ t_colBudgetAmt }}</span><span>{{ t_colBudgetCur }}</span><span></span>
+      </div>
+      <sc-for list="{{ budgetRows }}" as="b" hint-placeholder-count="4">
+        <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,0.8fr) minmax(0,0.6fr) max-content;gap:var(--space-3,10.2px);align-items:center;padding-bottom:var(--space-3,10.2px);border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
+          <select value="{{ b.cat }}" onChange="{{ b.onCat }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
+            <sc-for list="{{ budgetCatOpts }}" as="o" hint-placeholder-count="6">
+              <option value="{{ o.value }}">{{ o.label }}</option>
+            </sc-for>
+          </select>
+          <input value="{{ b.amt }}" onChange="{{ b.onAmt }}" inputmode="decimal" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%;text-align:right">
+          <select value="{{ b.code }}" onChange="{{ b.onCode }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
+            <sc-for list="{{ curCodes }}" as="c" hint-placeholder-count="3">
+              <option value="{{ c.code }}">{{ c.label }}</option>
+            </sc-for>
+          </select>
+          <button onClick="{{ b.del }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:transparent;color:var(--color-neutral-600,#5d5d60);padding:7px 12px;font-size:13px" style-hover="background:var(--color-accent-100,#eef6ff)">{{ t_del }}</button>
+        </div>
+      </sc-for>
+      <button onClick="{{ addBudget }}" style="display:{{ addBudgetDisp }};border:1px solid var(--color-accent,#5980a6);background:transparent;color:var(--color-accent-700,#416180);padding:9px 18px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;letter-spacing:.06em;align-self:flex-start" style-hover="background:var(--color-accent-100,#eef6ff)">{{ t_addBudget }}</button>
+    </div>
+
   </div>
   </sc-if>
 
@@ -998,6 +1026,8 @@ const T = {
     t_breakCur: "แถบแยกหมวดคิดเฉพาะสกุล {c} — อีก {n} รายการเป็นสกุลอื่น ส่วนยอดรวมหัวการ์ดรวมทุกสกุล",
     t_catsOffline: "ยังแก้หมวดหมู่ไม่ได้ — ตาราง cats ยังไม่มีในฐานข้อมูล (ต้องรัน upgrade_v2.sql ก่อน)",
     t_catsAdminOnly: "เฉพาะบัญชีหลักที่แก้หมวดหมู่ได้ · ทุกคนเห็นชุดเดียวกัน",
+    t_budgetsOffline: "ยังแก้เป้างบประมาณไม่ได้ — ตาราง budgets ยังไม่มีในฐานข้อมูล (ต้องรัน upgrade_v6.sql ก่อน)",
+    t_budgetsAdminOnly: "เฉพาะบัญชีหลักที่แก้เป้างบประมาณได้ · ทุกคนเห็นชุดเดียวกัน",
     t_balTitle: "ยอดคงเหลือแยกช่องทาง",
     t_balCash: "เงินสดคงเหลือ", t_balBank: "เงินในบัญชี", t_balCard: "ยอดค้างบัตร",
     t_balCardNote: "หนี้ที่ต้องจ่าย ไม่ใช่เงินคงเหลือ",
@@ -1034,9 +1064,10 @@ const T = {
     t_needAmount: "ใส่จำนวนเงินก่อนบันทึก", t_needAcct: "เลือกบัญชีก่อนบันทึก",
     t_savedOk: "บันทึกแล้ว", t_toAcct: "บัญชี", t_goalYear: "เป้าทั้งปี",
     t_settings: "ตั้งค่า", t_setKicker: "ตั้งค่า / Settings", t_setTitle: "หมวดหมู่และบัญชี",
-    t_catPanel: "หมวดหมู่", t_acctPanel: "บัญชี",
-    t_addCat: "+ เพิ่มหมวดหมู่", t_addAcct: "+ เพิ่มบัญชี", t_del: "ลบ",
+    t_catPanel: "หมวดหมู่", t_acctPanel: "บัญชี", t_budgetPanel: "เป้างบประมาณ",
+    t_addCat: "+ เพิ่มหมวดหมู่", t_addAcct: "+ เพิ่มบัญชี", t_addBudget: "+ เพิ่มเป้างบประมาณ", t_del: "ลบ",
     t_colTh: "ชื่อภาษาไทย", t_colLo: "ชื่อภาษาลาว", t_colName: "ชื่อบัญชี", t_colRole: "คำอธิบาย", t_colCur: "สกุลหลัก", t_colPin: "PIN 6 หลัก",
+    t_colBudgetCat: "หมวด / เป้าหมาย", t_colBudgetAmt: "วงเงิน", t_colBudgetCur: "สกุลเงิน",
     t_newCat: "หมวดหมู่ใหม่", t_newAcct: "บัญชีใหม่", t_newRole: "บัญชีส่วนตัว",
     t_setNote: "หมวดหมู่บันทึกลงฐานข้อมูลจริง ทุกคนเห็นชุดเดียวกัน · ส่วนบัญชีแก้ได้แค่การแสดงผลบนเครื่องนี้ ชื่อตัวจริงอยู่ในตาราง profiles ที่ Supabase — เปลี่ยนชื่อบัญชีตรงนี้แล้วบันทึกรายการไม่ได้",
     t_typeLabel: "ประเภท / Type", t_periodLabel: "ช่วงเวลา / Period",
@@ -1113,6 +1144,8 @@ const T = {
     t_breakCur: "ແຖບແຍກໝວດຄິດສະເພາະສະກຸນ {c} — ອີກ {n} ລາຍການເປັນສະກຸນອື່ນ ສ່ວນຍອດລວມຫົວກາດລວມທຸກສະກຸນ",
     t_catsOffline: "ຍັງແກ້ໝວດໝູ່ບໍ່ໄດ້ — ຕາຕະລາງ cats ຍັງບໍ່ມີໃນຖານຂໍ້ມູນ",
     t_catsAdminOnly: "ສະເພາະບັນຊີຫຼັກທີ່ແກ້ໝວດໝູ່ໄດ້ · ທຸກຄົນເຫັນຊຸດດຽວກັນ",
+    t_budgetsOffline: "ຍັງແກ້ເປົ້າງົບປະມານບໍ່ໄດ້ — ຕາຕະລາງ budgets ຍັງບໍ່ມີໃນຖານຂໍ້ມູນ",
+    t_budgetsAdminOnly: "ສະເພາະບັນຊີຫຼັກທີ່ແກ້ເປົ້າງົບປະມານໄດ້ · ທຸກຄົນເຫັນຊຸດດຽວກັນ",
     t_balTitle: "ຍອດຄົງເຫຼືອແຍກຊ່ອງທາງ",
     t_balCash: "ເງິນສົດຄົງເຫຼືອ", t_balBank: "ເງິນໃນບັນຊີ", t_balCard: "ຍອດຄ້າງບັດ",
     t_balCardNote: "ໜີ້ທີ່ຕ້ອງຈ່າຍ ບໍ່ແມ່ນເງິນຄົງເຫຼືອ",
@@ -1149,9 +1182,10 @@ const T = {
     t_needAmount: "ໃສ່ຈຳນວນເງິນກ່ອນບັນທຶກ", t_needAcct: "ເລືອກບັນຊີກ່ອນບັນທຶກ",
     t_savedOk: "ບັນທຶກແລ້ວ", t_toAcct: "ບັນຊີ", t_goalYear: "ເປົ້າໝາຍທັງປີ",
     t_settings: "ຕັ້ງຄ່າ", t_setKicker: "ຕັ້ງຄ່າ / Settings", t_setTitle: "ໝວດ ແລະ ບັນຊີ",
-    t_catPanel: "ໝວດ", t_acctPanel: "ບັນຊີ",
-    t_addCat: "+ ເພີ່ມໝວດ", t_addAcct: "+ ເພີ່ມບັນຊີ", t_del: "ລຶບ",
+    t_catPanel: "ໝວດ", t_acctPanel: "ບັນຊີ", t_budgetPanel: "ເປົ້າງົບປະມານ",
+    t_addCat: "+ ເພີ່ມໝວດ", t_addAcct: "+ ເພີ່ມບັນຊີ", t_addBudget: "+ ເພີ່ມເປົ້າງົບປະມານ", t_del: "ລຶບ",
     t_colTh: "ຊື່ພາສາໄທ", t_colLo: "ຊື່ພາສາລາວ", t_colName: "ຊື່ບັນຊີ", t_colRole: "ຄຳອະທິບາຍ", t_colCur: "ສະກຸນຫຼັກ", t_colPin: "PIN 6 ຫຼັກ",
+    t_colBudgetCat: "ໝວດ / ເປົ້າໝາຍ", t_colBudgetAmt: "ວົງເງິນ", t_colBudgetCur: "ສະກຸນເງິນ",
     t_newCat: "ໝວດໃໝ່", t_newAcct: "ບັນຊີໃໝ່", t_newRole: "ບັນຊີສ່ວນຕົວ",
     t_setNote: "ໝວດໝູ່ບັນທຶກລົງຖານຂໍ້ມູນຈິງ ທຸກຄົນເຫັນຊຸດດຽວກັນ · ສ່ວນບັນຊີແກ້ໄດ້ແຕ່ການສະແດງຜົນເທິງເຄື່ອງນີ້ ຊື່ຕົວຈິງຢູ່ໃນຕາຕະລາງ profiles ທີ່ Supabase — ປ່ຽນຊື່ບັນຊີຢູ່ນີ້ແລ້ວບັນທຶກລາຍການບໍ່ໄດ້",
     t_typeLabel: "ປະເພດ / Type", t_periodLabel: "ຊ່ວງເວລາ / Period",
@@ -1227,13 +1261,14 @@ const ACCT_SEED = ACCOUNTS.map((a) => ({
 
 const APP_NAME = CFG.APP_NAME || "บ้านเรา · Home Ledger";
 
-// เป้างบประมาณต่อเดือน (หน่วยเป็นบาท) — ยอดที่ใช้จริงคำนวณจากรายการใน DB
-// แก้ได้ที่ config.js · รับทั้งรูปแบบใหม่ {cat,limit} และแบบเก่า ["ชื่อ", จำนวน]
+// เป้างบประมาณต่อเดือน — เก็บในตาราง budgets จริง ทุกคนเห็นชุดเดียวกัน แก้ได้เฉพาะบัญชีหลัก
+// (หน้าตั้งค่า) เหมือนหลักการเดียวกับตาราง cats — ตัวนี้เป็นแค่ชุดสำรองก่อนโหลดจาก DB สำเร็จ
+// หรือกรณียังไม่ได้รัน upgrade_v6.sql · รับทั้งรูปแบบใหม่ {cat,limit} และแบบเก่า ["ชื่อ", จำนวน]
 const SAVE_GOAL = "เป้าหมายออม";
-const BUDGET_TARGETS = (Array.isArray(CFG.BUDGETS) ? CFG.BUDGETS : [])
+const BUDGET_SEED = (Array.isArray(CFG.BUDGETS) ? CFG.BUDGETS : [])
   .map((b) => (Array.isArray(b) ? { cat: b[0], limit: b[1] } : b))
   .filter((b) => b && b.cat)
-  .map((b) => ({ ...b, code: b.code || CODES[0] }));
+  .map((b) => ({ cat: b.cat, amt: Number(b.limit ?? b.amt) || 0, code: b.code || CODES[0] }));
 
 // เป้าเงินเก็บทั้งปี — ผูกกับสกุลเงินตรง ๆ ไม่แปลงค่า
 const YG = CFG.YEAR_GOAL;
@@ -1458,6 +1493,25 @@ const DB = {
     await call(REST("cats") + "?id=eq." + encodeURIComponent(id), { method: "DELETE" }, "ลบหมวดหมู่ไม่สำเร็จ");
   },
 
+  // ───── เป้างบประมาณ — เก็บในฐานข้อมูล ทุกคนเห็นชุดเดียวกัน ─────
+  async budgets() {
+    const r = await call(REST("budgets") + "?select=*&order=sort.asc,id.asc", {}, "โหลดเป้างบประมาณไม่สำเร็จ");
+    return r.json();
+  },
+  async budgetAdd(row) {
+    const r = await call(REST("budgets"), {
+      method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(row),
+    }, "เพิ่มเป้างบประมาณไม่สำเร็จ");
+    return r.json();
+  },
+  async budgetSave(id, patch) {
+    await call(REST("budgets") + "?id=eq." + encodeURIComponent(id),
+      { method: "PATCH", body: JSON.stringify(patch) }, "แก้เป้างบประมาณไม่สำเร็จ");
+  },
+  async budgetDel(id) {
+    await call(REST("budgets") + "?id=eq." + encodeURIComponent(id), { method: "DELETE" }, "ลบเป้างบประมาณไม่สำเร็จ");
+  },
+
   // ───── สลิป ─────
   // ตรวจว่ารัน upgrade_v4.sql แล้วหรือยัง — ถ้ายังไม่มีคอลัมน์ slip จะได้ 400 กลับมา
   // ต้องรู้ก่อน ไม่งั้นจะเผลอส่งช่องที่ฐานข้อมูลไม่รู้จักไปพร้อมทุกการบันทึก แล้วพังทั้งระบบ
@@ -1589,6 +1643,8 @@ class Component extends DCLogic {
     txns: [],
     cats: CAT_SEED,
     catsLive: false,         // true = อ่านมาจากตาราง cats จริง แก้แล้วบันทึกได้
+    budgets: BUDGET_SEED,
+    budgetsLive: false,      // true = อ่านมาจากตาราง budgets จริง แก้แล้วบันทึกได้
     accts: ACCT_SEED,
     slipFile: null,          // ไฟล์ที่เพิ่งเลือก ยังไม่ได้อัป (อัปตอนกดบันทึก)
     slipPath: "",            // สลิปที่แนบอยู่แล้วของรายการที่กำลังแก้
@@ -1637,12 +1693,16 @@ class Component extends DCLogic {
       // ประวัติการแก้ไขกับหมวดหมู่เป็นของเสริม — ถ้าตารางยังไม่มี (ยังไม่ได้รัน SQL)
       // รายการหลักต้องยังขึ้นได้ตามปกติ ไม่ใช่พังทั้งหน้า
       const soft = (what) => (e) => { console.warn(what + ":", e.message || e); return null; };
-      const [rows, edits, cats, slipOk] = await Promise.all([
+      const [rows, edits, cats, budgets, slipOk] = await Promise.all([
         DB.list(),
         DB.edits().catch(soft("ประวัติการแก้ไขใช้ไม่ได้")),
         DB.cats().catch(soft("หมวดหมู่ใช้ไม่ได้ ใช้ชุดเริ่มต้นไปก่อน")),
+        DB.budgets().catch(soft("เป้างบประมาณใช้ไม่ได้ ใช้ชุดเริ่มต้นไปก่อน")),
         DB.slipReady().catch(soft("แนบสลิปยังใช้ไม่ได้ ยังไม่ได้รัน upgrade_v4.sql")),
       ]);
+      // budgets เป็น [] ตามจริงได้ (ลบจนหมด) ต่างจากโหลดไม่สำเร็จซึ่งได้ null — แยกสองกรณีนี้
+      // ไม่งั้นลบเป้าอันสุดท้ายแล้วปุ่มเพิ่มจะหายไปด้วย ทั้งที่ตารางยังใช้ได้ปกติ
+      const budgetsOk = Array.isArray(budgets);
       this.setState({
         txns: rows.map(fromDb),
         edits: edits || [],
@@ -1651,6 +1711,8 @@ class Component extends DCLogic {
         // ถ้าตาราง cats ยังไม่มี ก็ยังใช้งานต่อได้ด้วยชุดเริ่มต้น (แต่แก้แล้วไม่ถูกบันทึก)
         cats: cats && cats.length ? cats : CAT_SEED,
         catsLive: !!(cats && cats.length),
+        budgets: budgetsOk ? budgets : BUDGET_SEED,
+        budgetsLive: budgetsOk,
         loading: false, dbErr: "",
       });
     } catch (e) {
@@ -1730,6 +1792,39 @@ class Component extends DCLogic {
     if (!this.state.catsLive || !row) return this.setState({ dbErr: this.L.t_catsOffline });
     this.setState({ cats: this.state.cats.filter((_, j) => j !== i) });
     try { await DB.catDel(row.id); } catch (e) { this.catFail(e); }
+  };
+
+  // ───── เป้างบประมาณ — เหมือนหมวดหมู่ทุกประการ พิมพ์แล้วเห็นทันที แล้วค่อยบันทึกลงฐานข้อมูล ─────
+  budgetFail = (e) => { this.setState({ dbErr: e.message || String(e) }); this.reload(); };
+
+  setBudget = (i, k) => (e) => {
+    const val = k === "amt" ? (Number((e.target.value || "").replace(/[^0-9.]/g, "")) || 0) : e.target.value;
+    const budgets = this.state.budgets.map((b, j) => (j === i ? { ...b, [k]: val } : b));
+    this.setState({ budgets });
+    const row = budgets[i];
+    if (!this.state.budgetsLive || !row || row.id == null) return;
+    clearTimeout(this._budgetT);
+    this._budgetT = setTimeout(() => {
+      DB.budgetSave(row.id, { [k]: val }).catch(this.budgetFail);
+    }, 600);   // หน่วงไว้ไม่ให้ยิงทุกตัวอักษรที่พิมพ์
+  };
+
+  addBudget = async () => {
+    const L = this.L;
+    if (!this.state.budgetsLive) return this.setState({ dbErr: L.t_budgetsOffline });
+    const sort = this.state.budgets.reduce((n, b) => Math.max(n, Number(b.sort) || 0), 0) + 1;
+    const cat = (this.state.cats[0] || {}).th || SAVE_GOAL;
+    try {
+      const made = await DB.budgetAdd({ cat, amt: 0, code: this.state.entryCode || CODES[0], sort });
+      this.setState({ budgets: [...this.state.budgets, ...(made || [])] });
+    } catch (e) { this.budgetFail(e); }
+  };
+
+  delBudget = (i) => async () => {
+    const row = this.state.budgets[i];
+    if (!this.state.budgetsLive || !row) return this.setState({ dbErr: this.L.t_budgetsOffline });
+    this.setState({ budgets: this.state.budgets.filter((_, j) => j !== i) });
+    try { await DB.budgetDel(row.id); } catch (e) { this.budgetFail(e); }
   };
 
   // ชื่อ/คำอธิบาย/สกุลเงิน ปรับได้แค่การแสดงผลในเครื่องนี้
@@ -2181,10 +2276,10 @@ class Component extends DCLogic {
       }),
 
       // งบประมาณผูกกับสกุลเงินตรง ๆ — แสดงเฉพาะอันที่ตรงกับสกุลที่กำลังดู ไม่มีการแปลงค่า
-      budgets: BUDGET_TARGETS.filter((t) => t.code === V).map(({ cat: name, limit }) => {
+      budgets: s.budgets.filter((t) => t.code === V).map(({ cat: name, amt }) => {
         const goal = name === SAVE_GOAL;
-        const total = Number(limit) || 0;
-        // ชื่อแปลผ่าน catLabel เหมือนหมวดหมู่ทั่วไป จึงเพิ่มบรรทัดใน config.js ได้เลย
+        const total = Number(amt) || 0;
+        // ชื่อแปลผ่าน catLabel เหมือนหมวดหมู่ทั่วไป จึงเพิ่มบรรทัดในหน้าตั้งค่าได้เลย
         // ไม่ต้องมาแก้รายการคำแปลในไฟล์นี้ให้ตรงลำดับกันอีก
         const used = goal
           ? Math.max(0, incV - expV)
@@ -2406,6 +2501,20 @@ class Component extends DCLogic {
       catNote: !s.catsLive ? L.t_catsOffline : L.t_catsAdminOnly,
       catNoteFg: !s.catsLive ? "#1d2d3d" : "#5d5d60",
       addCatDisp: s.catsLive && admin ? "inline-flex" : "none",
+
+      // เป้างบประมาณ — เลือกหมวดจาก dropdown แทนพิมพ์เอง กันสะกดไม่ตรงกับหมวดจริงแล้วนับได้ 0
+      // ("เป้าหมายออม" เป็นตัวเลือกพิเศษเพิ่มเข้ามา ไม่ใช่หมวดหมู่รายจ่ายจริง)
+      budgetCatOpts: [...s.cats.map((c) => ({ value: c.th, label: catName(c) })),
+                      { value: SAVE_GOAL, label: L.t_saveGoal }],
+      budgetRows: s.budgets.map((b, i) => ({
+        cat: b.cat, amt: String(b.amt || ""), code: b.code,
+        onCat: this.setBudget(i, "cat"), onAmt: this.setBudget(i, "amt"), onCode: this.setBudget(i, "code"),
+        del: this.delBudget(i),
+      })),
+      addBudget: this.addBudget,
+      budgetPanelNote: !s.budgetsLive ? L.t_budgetsOffline : L.t_budgetsAdminOnly,
+      budgetPanelNoteFg: !s.budgetsLive ? "#1d2d3d" : "#5d5d60",
+      addBudgetDisp: s.budgetsLive && admin ? "inline-flex" : "none",
       listTitle: s.period === "month" ? L.t_pMonthTitle : s.period === "year" ? L.t_pYearTitle : L.t_pAllTitle,
       periodOpts: [["month", L.t_pMonth], ["year", L.t_pYear], ["all", L.t_pAll]].map(([id, label]) => ({
         label, pick: () => this.setState({ period: id }), ...sel(s.period === id),
