@@ -2248,9 +2248,12 @@ class Component extends DCLogic {
       return String(v);
     };
 
-    const tabDefs = [[L.t_month, "month"], [L.t_year, "year"], [L.t_list, "list"], [L.t_add, "add"]]
-      .concat(admin ? [[L.t_settings, "settings"]] : [])
-      .concat([[L.t_mobile, "mobile"]]);
+    // เดิมแท็บ "ตั้งค่า" โผล่เฉพาะบัญชีหลัก แต่ตอนนี้สมาชิกทั่วไปก็ต้องเข้าไปตั้งเป้างบประมาณ
+    // ส่วนตัวของตัวเองได้แล้ว (ดู budgets_write RLS) จึงเปิดให้ทุกคนเข้าหน้านี้ได้เสมอ —
+    // ปุ่ม/ช่องที่ยังจำกัดแค่บัญชีหลัก (เพิ่มหมวดหมู่, เป้ากลางของบ้าน, เป้าเงินเก็บทั้งปี)
+    // ก็ยังกันไว้แยกเป็นจุด ๆ อยู่แล้วด้วย RLS ไม่ได้อาศัยการซ่อนทั้งแท็บอีกต่อไป
+    const tabDefs = [[L.t_month, "month"], [L.t_year, "year"], [L.t_list, "list"], [L.t_add, "add"],
+                      [L.t_settings, "settings"], [L.t_mobile, "mobile"]];
 
     return {
       ...L,
