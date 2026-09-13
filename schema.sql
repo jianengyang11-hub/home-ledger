@@ -176,8 +176,14 @@ insert into public.profiles (id, name, role, code)
 select u.id, v.name, v.role, v.code
 from auth.users u
 join (values
+<<<<<<< HEAD
   ('jia11@gmail.com', 'jia',     'admin',  'KIP'),
   ('asnas11@gmail.com',           'asnas',      'member', 'KIP')
+=======
+  ('jianengyang11@gmail.com', 'ปิ่น',     'admin',  'KIP'),
+  ('jia@gmail.com',           'ต้น',      'member', 'KIP'),
+  ('yang11@gmail.com',        'บ้านเรา',  'member', 'KIP')
+>>>>>>> 9990dd3514994e0a66bdc6ead9e7c3e6c4e3ebe8
 ) as v(email, name, role, code) on lower(u.email) = v.email
 on conflict (id) do update
   set name = excluded.name,
