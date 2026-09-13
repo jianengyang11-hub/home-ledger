@@ -2343,31 +2343,56 @@ class Component extends DCLogic {
       }),
 
       // งบประมาณผูกกับสกุลเงินตรง ๆ — แสดงเฉพาะอันที่ตรงกับสกุลที่กำลังดู ไม่มีการแปลงค่า
-      // เป้าส่วนตัว (for_who) คิดยอดใช้จากรายการของคนนั้นเสมอ ไม่ผูกกับตัวกรองบัญชีบนหน้าจอ
-      // เพราะเป้าของ jia กับของ asnas ต้องไม่ไปนับรวมกันหรือเปลี่ยนไปตามใครกำลังดูหน้านี้อยู่
-      budgets: s.budgets.filter((t) => t.code === V).map(({ cat: name, amt, for_who }) => {
-        const goal = name === SAVE_GOAL;
-        const total = Number(amt) || 0;
-        const scopeTx = for_who ? monthTxOf(for_who) : monthTx;
-        const scopeInc = scopeTx.filter(isInc), scopeExp = scopeTx.filter(isExp);
+      // เป้าส่วนตัว (for_who) เข้ากับตัวกรองบัญชีบนหน้าจอแบบเดียวกับการ์ด/กราฟอื่นทั้งหน้า:
+      //   - ดูบัญชีเดียว (เช่น jia) → เห็นแต่เป้าส่วนตัวของ jia เท่านั้น (ไม่เห็นของ asnas)
+      //   - ดู "ทุกบัญชี" → เป้าส่วนตัวหมวดเดียวกันของทุกคนรวมเป็นการ์ดเดียว (เป้ารวม + ยอดใช้รวม)
+      // ส่วนเป้ากลางของบ้าน (for_who ว่าง) โชว์เสมอ และยังคิดยอดใช้ตามตัวกรองบนหน้าจอเหมือนเดิม
+      budgets: (() => {
+        const allAcc = s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ";
         // ชื่อแปลผ่าน catLabel เหมือนหมวดหมู่ทั่วไป จึงเพิ่มบรรทัดในหน้าตั้งค่าได้เลย
         // ไม่ต้องมาแก้รายการคำแปลในไฟล์นี้ให้ตรงลำดับกันอีก
-        const used = goal
-          ? Math.max(0, sumV(scopeInc) - sumV(scopeExp))
-          : sumV(scopeExp.filter((t) => t.cat === name));
-        const over = goal ? used < total : used > total;
-        const diff = Math.abs(total - used);
-        return {
-          name: (goal ? L.t_saveGoal : catLabel(name)) + (for_who ? " · " + for_who : ""),
-          used: fmt(used), total: fmt(total),
-          w: Math.min(100, total ? (used / total) * 100 : 0) + "%",
-          bg: over ? DARK : ACC,
-          color: over ? DARK : MUTED,
-          note: (goal
-            ? (used >= total ? L.t_over + " " : L.t_left + " ")
-            : (over ? L.t_over + " " : L.t_left + " ")) + fmt(diff),
+        const usedOf = (forWho, cat) => {
+          const scopeTx = forWho ? monthTxOf(forWho) : monthTx;
+          return cat === SAVE_GOAL
+            ? Math.max(0, sumV(scopeTx.filter(isInc)) - sumV(scopeTx.filter(isExp)))
+            : sumV(scopeTx.filter(isExp).filter((t) => t.cat === cat));
         };
-      }),
+        const card = (cat, total, used) => {
+          const goal = cat === SAVE_GOAL;
+          const over = goal ? used < total : used > total;
+          const diff = Math.abs(total - used);
+          return {
+            name: goal ? L.t_saveGoal : catLabel(cat), used: fmt(used), total: fmt(total),
+            w: Math.min(100, total ? (used / total) * 100 : 0) + "%",
+            bg: over ? DARK : ACC,
+            color: over ? DARK : MUTED,
+            note: (goal
+              ? (used >= total ? L.t_over + " " : L.t_left + " ")
+              : (over ? L.t_over + " " : L.t_left + " ")) + fmt(diff),
+          };
+        };
+
+        const rows = s.budgets.filter((t) => t.code === V);
+        const sharedCards = rows.filter((t) => !t.for_who)
+          .map((b) => card(b.cat, Number(b.amt) || 0, usedOf(null, b.cat)));
+
+        const personal = rows.filter((t) => t.for_who);
+        let personalCards;
+        if (allAcc) {
+          const byCat = {};
+          personal.forEach((b) => {
+            const g = byCat[b.cat] || (byCat[b.cat] = { cat: b.cat, total: 0, used: 0 });
+            g.total += Number(b.amt) || 0;
+            g.used += usedOf(b.for_who, b.cat);
+          });
+          personalCards = Object.values(byCat).map((g) => card(g.cat, g.total, g.used));
+        } else {
+          personalCards = personal.filter((b) => b.for_who === s.filter)
+            .map((b) => card(b.cat, Number(b.amt) || 0, usedOf(b.for_who, b.cat)));
+        }
+
+        return [...sharedCards, ...personalCards];
+      })(),
 
       txns: monthTx.slice(0, 6).map((t) => {
         const inc = isInc(t);
