@@ -1,0 +1,2588 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./config.js"></script>
+<script>document.title = (window.LEDGER_CONFIG || {}).APP_NAME || "บ้านเรา · Home Ledger";</script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/industry-55dadeaa-b421-4d7d-b1ba-95f481dd9565/styles.css">
+<script src="_ds/industry-55dadeaa-b421-4d7d-b1ba-95f481dd9565/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;500;600;700&family=Noto+Serif+Lao:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11'%3E%3Cpath d='M0 0h11M0 0v11' fill='none' stroke='%235980a6' stroke-width='1.5'/%3E%3C/svg%3E");
+    --c2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11'%3E%3Cpath d='M11 0h-11M11 0v11' fill='none' stroke='%235980a6' stroke-width='1.5'/%3E%3C/svg%3E");
+    --c3: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11'%3E%3Cpath d='M0 11h11M0 11v-11' fill='none' stroke='%235980a6' stroke-width='1.5'/%3E%3C/svg%3E");
+    --c4: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11'%3E%3Cpath d='M11 11h-11M11 11v-11' fill='none' stroke='%235980a6' stroke-width='1.5'/%3E%3C/svg%3E");
+    --w1: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11'%3E%3Cpath d='M0 0h11M0 0v11' fill='none' stroke='%23eef6ff' stroke-width='1.5'/%3E%3C/svg%3E");
+    --w2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11'%3E%3Cpath d='M11 0h-11M11 0v11' fill='none' stroke='%23eef6ff' stroke-width='1.5'/%3E%3C/svg%3E");
+    --w3: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11'%3E%3Cpath d='M0 11h11M0 11v-11' fill='none' stroke='%23eef6ff' stroke-width='1.5'/%3E%3C/svg%3E");
+    --w4: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11'%3E%3Cpath d='M11 11h-11M11 11v-11' fill='none' stroke='%23eef6ff' stroke-width='1.5'/%3E%3C/svg%3E");
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--color-bg, #f2f2f3); font-family: 'Times New Roman', 'Noto Serif Thai', 'Noto Serif Lao', serif; }
+  a { color: #416180; text-decoration: none; }
+  a:hover { color: #1d2d3d; }
+  button { font: inherit; cursor: pointer; white-space: nowrap; }
+  input, select, textarea { font: inherit; }
+  ::selection { background: #d6ebff; }
+  :focus-visible { outline: 2px solid #5980a6; outline-offset: 2px; }
+
+  /* ───────── มือถือ / แท็บเล็ต ─────────
+     สไตล์ในหน้านี้เป็น inline ทั้งหมด จึงต้องใช้ !important เพื่อทับ */
+
+  /* ตารางกว้าง ๆ ให้เลื่อนแนวนอนในกรอบตัวเอง ไม่ดันทั้งหน้าให้เลื่อน */
+  @media (max-width: 1000px) {
+    div:has(> .hl-tr) { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+    .hl-tr { min-width: 660px; }
+  }
+
+  @media (max-width: 900px) {
+    .hl-2col  { grid-template-columns: minmax(0,1fr) !important; }
+    .hl-kpi4  { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    .hl-page  { padding: 16px !important; gap: 14px !important; }
+    /* การ์ดยอดคงเหลือแยกช่องทาง + ปุ่มเลือกประเภท 4 แบบ */
+    .hl-kpi3  { gap: 14px !important; }
+    .hl-kinds { width: 100% !important; }
+    .hl-kinds > button { flex: 1 1 50% !important; padding: 9px 8px !important; font-size: 15px !important; }
+    .hl-hd    { padding: 0 16px !important; }
+  }
+
+  @media (max-width: 620px) {
+    /* หน้า login: ซ้อนบน-ล่าง ไม่ต้องแบ่งซ้ายขวา */
+    .hl-login { grid-template-columns: minmax(0,1fr) !important; min-height: 0 !important; }
+    .hl-hero  { padding: 28px 20px !important; gap: 20px !important; min-height: 0 !important; }
+    .hl-hero > div:nth-child(2) { max-width: none !important; }
+    .hl-pad   { padding: 28px 20px !important; align-items: flex-start !important; }
+
+    /* แถบหัว: ซ่อนโลโก้ แล้วให้แท็บเลื่อนแนวนอนแทนการตัดบรรทัด */
+    .hl-hd       { min-height: 0 !important; padding: 6px 12px !important; gap: 8px !important; }
+    .hl-brand    { display: none !important; }
+    .hl-brandbar { flex: 1 1 100% !important; min-width: 0 !important; gap: 0 !important;
+                   flex-wrap: nowrap !important; }
+    .hl-tabs     { flex: 1 1 auto !important; min-width: 0 !important; flex-wrap: nowrap !important;
+                   overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .hl-tabs::-webkit-scrollbar { display: none; }
+    .hl-tabs button { height: 42px !important; padding: 0 11px !important; font-size: 15px !important; flex: none; }
+    .hl-tools    { flex: 1 1 100% !important; min-width: 0 !important;
+                   flex-wrap: wrap !important; gap: 6px !important; padding-bottom: 6px !important; }
+    /* บีบให้พอดีบรรทัดเดียว — ป้ายชื่อซ้ำกับชิปอยู่แล้ว ซ่อนได้ */
+    .hl-tools button { padding: 7px 10px !important; font-size: 14px !important; }
+    .hl-tools > div:first-child { padding-right: 6px !important; gap: 6px !important; }
+    .hl-tools > div:first-child > span:nth-child(2) { display: none !important; }
+
+    /* หัวข้อหน้ากับปุ่มเลือกเดือน: ซ้อนกัน */
+    .hl-head  { flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
+    .hl-head > div:last-child { align-self: flex-start; }
+
+    .hl-kpi4  { gap: 10px !important; }
+    .hl-page  { padding: 14px !important; }
+    /* ยอดแยกช่องทางเรียงเดี่ยว — ยอดหลายสกุลยาวเกินกว่าจะบีบ 3 ช่อง */
+    .hl-kpi3  { grid-template-columns: minmax(0,1fr) !important; gap: 12px !important; }
+
+    /* การ์ดบัญชีเรียงเดี่ยว — ยอดหลายสกุลยาวเกินกว่าจะบีบ 3 ช่อง
+       ยกเว้นสถิติในหน้า login ที่สั้น ให้คง 3 ช่องไว้ */
+    .hl-3col { grid-template-columns: minmax(0,1fr) !important; gap: 10px !important; }
+    .hl-hero .hl-3col { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+
+    /* ยอดสรุปหัวหน้ารายการ: ให้ตัดบรรทัดแทนการดันหน้า */
+    .hl-sums { flex-wrap: wrap !important; white-space: normal !important;
+               gap: 4px 14px !important; }
+
+    /* กราฟ 12 เดือน: ชื่อเดือน 12 อันดันหน้าให้กว้าง ต้องบีบช่องไฟกับตัวอักษร */
+    .hl-chart, .hl-chartx { gap: 3px !important; }
+    .hl-chart  > div { min-width: 0 !important; }
+    .hl-chartx > div { min-width: 0 !important; font-size: 10px !important;
+                       letter-spacing: 0 !important; overflow: hidden; }
+
+    /* ช่องกรอก โดยเฉพาะ input[type=date] มีความกว้างขั้นต่ำในตัว ต้องบังคับให้หด */
+    input, select, textarea { max-width: 100% !important; min-width: 0 !important; }
+    input[type="date"] { width: 100% !important; }
+  }
+
+  /* จอเล็กมาก: KPI เรียงเดี่ยว อ่านง่ายกว่าบีบ 2 ช่อง */
+  @media (max-width: 400px) {
+    .hl-kpi4 { grid-template-columns: minmax(0,1fr) !important; }
+  }
+
+  /* จอแคบสุด (iPhone SE ~320px): ปุ่มยาว ๆ ต้องยอมตัดบรรทัด */
+  @media (max-width: 380px) {
+    .hl-actions { flex-wrap: wrap !important; }
+    .hl-actions button { flex: 1 1 auto !important; padding-left: 16px !important; padding-right: 16px !important; }
+    .hl-sums { font-size: 12px !important; }
+
+    /* แถบตัวกรองหน้ารายการ: บีบปุ่มให้พอดีจอแคบ */
+    .hl-filters { gap: 10px !important; }
+    .hl-filters > div { gap: 8px !important; flex-wrap: wrap; min-width: 0; }
+    .hl-filters button { padding: 7px 11px !important; font-size: 13px !important; }
+
+    /* หน้า "มือถือ" เป็นภาพตัวอย่างจอโทรศัพท์กว้างตายตัว 320px ให้ย่อตามจอ */
+    .hl-phone { width: 100% !important; max-width: 320px; }
+  }
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--color-bg,#f2f2f3);color:var(--color-text,#1d1f20);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:14px">
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+  <div class="hl-login" style="min-height:100vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)">
+    <div class="hl-hero" style="background:#1d2d3d;color:#eef6ff;padding:54px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px;letter-spacing:.18em;text-transform:uppercase">{{ appName }}</div>
+      <div style="display:flex;flex-direction:column;gap:20.4px;max-width:540px">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(32px,4.2vw,52px);line-height:1.1"><span style="white-space:nowrap">{{ t_hero1 }}</span><br>{{ t_hero2 }}</div>
+        <div style="color:#b5d9fd;line-height:1.6">{{ t_heroSub }}</div>
+      </div>
+      <div class="hl-3col" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13.6px;border-top:1px solid rgba(181,217,253,.28);padding-top:20.4px">
+        <div><div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:24px;white-space:nowrap">{{ loginInc }}</div><div style="font-size:12px;color:#94bce3;letter-spacing:.08em">{{ t_incYear }}</div></div>
+        <div><div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:24px;white-space:nowrap">{{ loginExp }}</div><div style="font-size:12px;color:#94bce3;letter-spacing:.08em">{{ t_expYear }}</div></div>
+        <div><div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:24px;white-space:nowrap">{{ loginNet }}</div><div style="font-size:12px;color:#94bce3;letter-spacing:.08em">{{ t_balance }}</div></div>
+      </div>
+    </div>
+
+    <div class="hl-pad" style="display:flex;align-items:center;justify-content:center;padding:54px">
+      <div style="width:100%;max-width:378px;display:flex;flex-direction:column;gap:27.2px">
+        <div style="display:flex;flex-direction:column;gap:6.8px">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_signin }}</div>
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:34px;line-height:1.1">{{ t_enterPin }}</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ loginAccounts }}" as="a" hint-placeholder-count="3">
+            <button onClick="{{ a.pick }}" style="display:flex;align-items:center;gap:12px;padding:10.2px;border:1px solid {{ a.bd }};background:{{ a.bg }};text-align:left;width:100%">
+              <span style="min-width:32px;height:32px;flex:none;padding:0 7px;background:{{ a.avBg }};color:{{ a.avFg }};display:flex;align-items:center;justify-content:center;font-size:13px;white-space:nowrap">{{ a.name }}</span>
+              <span style="display:flex;flex-direction:column"><span style="font-weight:500">{{ a.name }}</span><span style="font-size:12px;color:#5d5d60">{{ a.role }}</span></span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:6.8px">
+          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_password }}</label>
+          <input type="password" value="{{ pw }}" onChange="{{ onPw }}" onKeyDown="{{ onPwKey }}" autoComplete="current-password" placeholder="{{ t_pwPh }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:13px 13.6px;font:inherit;font-size:17px;letter-spacing:.08em;color:#1d1f20;outline:none;width:100%">
+        </div>
+
+        <button onClick="{{ signIn }}" style="border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:13px 0;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;letter-spacing:.1em;width:100%;background-image:var(--w1),var(--w2),var(--w3),var(--w4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%" style-hover="background-color:#416180">{{ signInLabel }}</button>
+
+        <div style="font-size:13px;min-height:19px;color:{{ pinHintColor }}">{{ pinHint }}</div>
+        <div style="font-size:12px;color:#98989b;border-top:1px solid rgba(29,31,32,0.16);padding-top:13.6px;line-height:1.6">{{ pinDemo }}</div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+<div>
+  <div class="hl-hd" style="position:sticky;top:0;z-index:5;background:#f2f2f3;border-bottom:1px solid rgba(29,31,32,0.16);display:flex;align-items:center;justify-content:space-between;gap:13.6px;flex-wrap:wrap;padding:0 27.2px;min-height:60px">
+    <div class="hl-brandbar" style="display:flex;align-items:center;gap:20.4px;flex-wrap:wrap">
+      <div class="hl-brand" style="flex:none;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap">{{ appName }}</div>
+      <div class="hl-tabs" style="display:flex;gap:0;flex-wrap:wrap">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+          <button onClick="{{ t.go }}" style="border:0;background:transparent;padding:0 14px;height:52px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.06em;color:{{ t.fg }};border-bottom:2px solid {{ t.bd }}" style-hover="color:#416180">{{ t.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div class="hl-tools" style="display:flex;align-items:center;gap:10.2px;flex:none">
+      <div style="display:flex;align-items:center;gap:8px;flex:none;padding-right:8px;border-right:1px solid rgba(29,31,32,0.16)">
+        <span style="min-width:28px;height:28px;flex:none;padding:0 6px;background:#1d2d3d;color:#eef6ff;display:flex;align-items:center;justify-content:center;font-size:12px;white-space:nowrap">{{ activeAcct }}</span>
+        <span style="display:flex;flex-direction:column;line-height:1.15;white-space:nowrap"><span style="font-size:13px">{{ activeAcct }}</span><span style="font-size:11px;color:#5d5d60">{{ t_loggedIn }}</span></span>
+      </div>
+      <div style="display:flex;border:1px solid rgba(29,31,32,0.16);flex:none">
+        <sc-for list="{{ langOpts }}" as="l" hint-placeholder-count="2">
+          <button onClick="{{ l.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);background:{{ l.bg }};color:{{ l.fg }};padding:7px 12px;font-size:13px">{{ l.label }}</button>
+        </sc-for>
+      </div>
+      <button onClick="{{ goAdd }}" style="border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:8px 16px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;letter-spacing:.08em;background-image:var(--w1),var(--w2),var(--w3),var(--w4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%" style-hover="background-color:#416180">{{ t_addBtn }}</button>
+      <button onClick="{{ logout }}" style="border:1px solid rgba(29,31,32,0.16);background:transparent;padding:8px 12px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;color:#5d5d60" style-hover="background:#eef6ff">{{ t_out }}</button>
+    </div>
+    <div style="display:{{ bannerDisp }};padding:9px 27.2px;border-top:1px solid {{ bannerBd }};background:{{ bannerBg }};color:{{ bannerFg }};font-size:13px">{{ bannerText }}</div>
+  </div>
+
+  <sc-if value="{{ isMonth }}" hint-placeholder-val="{{ true }}">
+  <div class="hl-page" style="padding:27.2px;display:flex;flex-direction:column;gap:20.4px;max-width:1440px;margin:0 auto">
+    <div class="hl-head" style="display:flex;align-items:flex-end;justify-content:space-between">
+      <div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_monthKicker }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_monthTitle }}</div>
+      </div>
+      <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+        <button onClick="{{ prevMonth }}" style="border:0;border-right:1px solid rgba(29,31,32,0.16);background:transparent;padding:8px 14px;color:#5d5d60" style-hover="background:#eef6ff">{{ t_prevM }}</button>
+        <button onClick="{{ thisMonth }}" style="border:0;border-right:1px solid rgba(29,31,32,0.16);background:#eef6ff;padding:8px 18px;font-weight:500">{{ t_thisM }}</button>
+        <button onClick="{{ nextMonth }}" style="border:0;background:transparent;padding:8px 14px;color:#5d5d60" style-hover="background:#eef6ff">{{ t_nextM }}</button>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:13.6px;flex-wrap:wrap">
+      <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_acctLabel }}</span>
+      <div style="display:flex;gap:8px">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+          <button onClick="{{ f.pick }}" style="border:1px solid {{ f.bd }};background:{{ f.bg }};color:{{ f.fg }};padding:7px 16px;font-size:14px">{{ f.name }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div class="hl-curbar" style="display:flex;align-items:center;gap:13.6px;flex-wrap:wrap">
+      <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+        <sc-for list="{{ viewOpts }}" as="c" hint-placeholder-count="3">
+          <button onClick="{{ c.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);background:{{ c.bg }};color:{{ c.fg }};padding:7px 15px;font-size:14px;letter-spacing:.04em">{{ c.label }}</button>
+        </sc-for>
+      </div>
+      <span style="font-size:13px;color:#5d5d60">{{ viewNote }}</span>
+      <span style="font-size:13px;color:#416180">{{ viewSkipped }}</span>
+    </div>
+
+    <div class="hl-kpi4" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20.4px">
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_income }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25;color:#1d2d3d">{{ kpiIncome }}</div>
+        <div style="font-size:13px;color:#416180;white-space:nowrap">{{ kpiIncomeAlt }}</div>
+        <div style="font-size:13px;color:#5d5d60">{{ kpiScope }}</div>
+      </div>
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_expense }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25;color:#5980a6">{{ kpiExpense }}</div>
+        <div style="font-size:13px;color:#416180;white-space:nowrap">{{ kpiExpenseAlt }}</div>
+        <div style="font-size:13px;color:#5d5d60">{{ kpiExpNote }}</div>
+      </div>
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_bal }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25">{{ kpiBalance }}</div>
+        <div style="font-size:13px;color:#416180;white-space:nowrap">{{ kpiBalanceAlt }}</div>
+        <div style="font-size:13px;color:#5d5d60">{{ t_saveRate }} {{ kpiRate }}</div>
+      </div>
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_perday }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25">{{ kpiAvg }}</div>
+        <div style="font-size:13px;color:#416180;white-space:nowrap">{{ kpiAvgAlt }}</div>
+        <div style="font-size:13px;color:#5d5d60">{{ t_daysNote }}</div>
+      </div>
+    </div>
+
+    <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:13.6px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:13.6px;flex-wrap:wrap">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_balTitle }}</div>
+        <div style="font-size:12px;color:{{ balNoteFg }}">{{ balNote }}</div>
+      </div>
+      <div class="hl-kpi3" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20.4px">
+        <div style="border-left:3px solid #1d2d3d;padding-left:13.6px;min-width:0">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_balCash }}</div>
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(19px,1.7vw,27px);line-height:1.25">{{ balCash }}</div>
+        </div>
+        <div style="border-left:3px solid #5980a6;padding-left:13.6px;min-width:0">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_balBank }}</div>
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(19px,1.7vw,27px);line-height:1.25">{{ balBank }}</div>
+        </div>
+        <div style="border-left:3px solid #94bce3;padding-left:13.6px;min-width:0">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_balCard }}</div>
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(19px,1.7vw,27px);line-height:1.25;color:#416180">{{ balCard }}</div>
+          <div style="font-size:12px;color:#5d5d60">{{ t_balCardNote }}</div>
+        </div>
+      </div>
+      <div style="display:{{ balLaterDisp }};font-size:12px;color:#416180">{{ balLater }}</div>
+    </div>
+
+    <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20.4px">
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:20.4px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_daily }}</div>
+          <div style="font-size:12px;letter-spacing:.1em;color:#5d5d60">{{ dayMax }}</div>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:5px;height:170px;border-bottom:1px solid rgba(29,31,32,0.16);padding-bottom:0">
+          <sc-for list="{{ days }}" as="d" hint-placeholder-count="30">
+            <div style="flex:1;height:{{ d.h }};background:{{ d.bg }}"></div>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#98989b;letter-spacing:.08em">
+          <span>1</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span>
+        </div>
+      </div>
+
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:13.6px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_byCat }}</div>
+          <div style="font-size:12px;color:#5d5d60">By category</div>
+        </div>
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="8">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;justify-content:space-between;font-size:13px">
+              <span>{{ c.name }}</span>
+              <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;letter-spacing:.02em;white-space:nowrap;flex:none;padding-left:10px">{{ c.amount }} · {{ c.pct }}%</span>
+            </div>
+            <div style="height:8px;background:#e7e7ea"><div style="height:8px;width:{{ c.w }};background:{{ c.bg }}"></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20.4px;align-items:start">
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:13.6px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_recent }}</div>
+          <a href="#" style="font-size:13px">{{ t_seeAll }}</a>
+        </div>
+        <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) max-content;gap:10.2px;padding-bottom:8px;border-bottom:1px solid rgba(29,31,32,0.16);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">
+          <span>{{ t_hDate }}</span><span>{{ t_hItem }}</span><span>{{ t_hCat }}</span><span>{{ t_hMethod }}</span><span>{{ t_hAcct }}</span><span style="text-align:right">{{ t_hAmount }}</span>
+        </div>
+        <sc-for list="{{ txns }}" as="t" hint-placeholder-count="6">
+          <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) max-content;gap:10.2px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08);align-items:center">
+            <span style="font-size:13px;color:#5d5d60">{{ t.date }}</span>
+            <span style="display:flex;align-items:center;gap:8px">{{ t.name }}<span style="font-size:11px;letter-spacing:.1em;color:#416180">{{ t.flag }}</span></span>
+            <span style="font-size:13px;color:#5d5d60">{{ t.cat }}</span>
+            <span style="font-size:13px;color:#5d5d60">{{ t.method }}</span>
+            <span style="font-size:13px;color:#5d5d60">{{ t.who }}</span>
+            <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ t.color }};white-space:nowrap">{{ t.amount }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ showBudget }}" hint-placeholder-val="{{ true }}">
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_budget }}</div>
+          <div style="font-size:12px;color:#5d5d60">Budget</div>
+        </div>
+        <sc-for list="{{ budgets }}" as="b" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:13px">
+              <span>{{ b.name }}</span>
+              <span style="color:{{ b.color }};white-space:nowrap;flex:none;padding-left:10px">{{ b.note }}</span>
+            </div>
+            <div style="height:10px;background:#e7e7ea;position:relative">
+              <div style="height:10px;width:{{ b.w }};background:{{ b.bg }}"></div>
+            </div>
+            <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:14px;color:#5d5d60;letter-spacing:.04em;white-space:nowrap">{{ b.used }} / {{ b.total }}</div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+    </div>
+
+    <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <div style="font-weight:600;font-size:22px">{{ t_byAcct }}</div>
+        <div style="font-size:12px;color:#5d5d60">{{ t_acctCaption }}</div>
+      </div>
+      <div class="hl-3col" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20.4px">
+        <sc-for list="{{ acctRows }}" as="a" hint-placeholder-count="3">
+          <div style="border:1px solid rgba(29,31,32,0.16);padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between">
+              <span style="font-size:19px">{{ a.name }}</span>
+              <span style="font-size:11px;letter-spacing:.1em;color:#416180">{{ a.badge }}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#5d5d60"><span style="border:1px solid rgba(29,31,32,0.16);padding:1px 7px;color:#416180">{{ a.curNote }}</span><span>{{ a.role }}</span></div>
+            <div style="height:8px;background:#e7e7ea"><div style="height:8px;width:{{ a.w }};background:{{ a.bg }}"></div></div>
+            <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(29,31,32,0.08);padding-top:8px">
+              <sc-for list="{{ a.wallets }}" as="w" hint-placeholder-count="3">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13px;color:{{ w.fg }};font-weight:{{ w.weight }}">
+                  <span style="letter-spacing:.06em">{{ w.code }}</span>
+                  <span style="display:flex;gap:10px;white-space:nowrap"><span style="color:#98989b;font-weight:400">{{ w.flow }}</span><span>{{ w.bal }}</span></span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;border-top:1px solid rgba(29,31,32,0.08);padding-top:8px"><span>{{ t_totalBal }}</span><span>{{ a.net }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isYear }}" hint-placeholder-val="{{ true }}">
+  <div class="hl-page" style="padding:27.2px;display:flex;flex-direction:column;gap:20.4px;max-width:1440px;margin:0 auto">
+    <div class="hl-head" style="display:flex;align-items:flex-end;justify-content:space-between">
+      <div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_yearKicker }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_yearTitle }}</div>
+      </div>
+      <div style="display:flex;gap:13.6px;align-items:center">
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#5d5d60"><span style="width:12px;height:12px;background:#1d2d3d"></span>{{ t_legendInc }}</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#5d5d60"><span style="width:12px;height:12px;background:#5980a6"></span>{{ t_legendExp }}</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#98989b"><span style="width:12px;height:12px;background:#d4d4d7"></span>{{ t_legendEst }}</div>
+      </div>
+    </div>
+
+    <div class="hl-curbar" style="display:flex;align-items:center;gap:13.6px;flex-wrap:wrap">
+      <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+        <sc-for list="{{ viewOpts }}" as="c" hint-placeholder-count="3">
+          <button onClick="{{ c.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);background:{{ c.bg }};color:{{ c.fg }};padding:7px 15px;font-size:14px;letter-spacing:.04em">{{ c.label }}</button>
+        </sc-for>
+      </div>
+      <span style="font-size:13px;color:#5d5d60">{{ viewNote }}</span>
+      <span style="font-size:13px;color:#416180">{{ viewSkippedYear }}</span>
+    </div>
+
+    <div class="hl-kpi4" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20.4px">
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_yInc }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25;color:#1d2d3d">{{ yIncome }}</div>
+        <div style="font-size:13px;color:#5d5d60">{{ t_yRange }}</div>
+      </div>
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_yExp }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25;color:#5980a6">{{ yExpense }}</div>
+        <div style="font-size:13px;color:#5d5d60">เฉลี่ย {{ yAvg }} / เดือน</div>
+      </div>
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_yNet }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25">{{ yNet }}</div>
+        <div style="font-size:13px;color:#416180">{{ yGoalNote }}</div>
+      </div>
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;min-width:0">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_yPeakM }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:clamp(20px,1.9vw,30px);line-height:1.25">{{ t_yPeakName }}</div>
+        <div style="font-size:13px;color:#5d5d60">{{ yPeakNote }}</div>
+      </div>
+    </div>
+
+    <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:16px">
+      <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_chart12 }}</div>
+      <div class="hl-chart" style="display:flex;align-items:flex-end;gap:13.6px;height:190px;border-bottom:1px solid rgba(29,31,32,0.16)">
+        <sc-for list="{{ months }}" as="m" hint-placeholder-count="12">
+          <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:190px">
+            <div style="width:42%;height:{{ m.ih }};background:{{ m.ibg }}"></div>
+            <div style="width:42%;height:{{ m.eh }};background:{{ m.ebg }}"></div>
+          </div>
+        </sc-for>
+      </div>
+      <div class="hl-chartx" style="display:flex;gap:13.6px">
+        <sc-for list="{{ months }}" as="m" hint-placeholder-count="12">
+          <div style="flex:1;text-align:center;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:14px;letter-spacing:.06em;color:{{ m.fg }}">{{ m.label }}</div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_monthTable }}</div>
+        <div style="font-size:13px;color:#5d5d60">{{ t_clickMonth }}</div>
+      </div>
+      <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.4fr);gap:10.2px;padding-bottom:8px;border-bottom:1px solid rgba(29,31,32,0.16);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">
+        <span>{{ t_monthCol }}</span><span style="text-align:right">{{ t_legendInc }}</span><span style="text-align:right">{{ t_legendExp }}</span><span style="text-align:right">{{ t_colBal }}</span><span>{{ t_saveRateCol }}</span>
+      </div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="9">
+        <div onClick="{{ goMonth }}" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.4fr);gap:10.2px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08);align-items:center;cursor:pointer" style-hover="background:#eef6ff">
+          <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px">{{ r.month }}</span>
+          <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;color:#1d2d3d">{{ r.income }}</span>
+          <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;color:#5980a6">{{ r.expense }}</span>
+          <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px">{{ r.net }}</span>
+          <span style="display:flex;align-items:center;gap:10.2px">
+            <span style="flex:1;height:6px;background:#e7e7ea"><span style="display:block;height:6px;width:{{ r.w }};background:#5980a6"></span></span>
+            <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;color:#5d5d60;width:42px;text-align:right">{{ r.rate }}</span>
+          </span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+
+  <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+  <div class="hl-page" style="padding:var(--space-8,27.2px);display:flex;flex-direction:column;gap:var(--space-6,20.4px);max-width:1440px;margin:0 auto">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-6,20.4px);flex-wrap:wrap">
+      <div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">{{ t_listKicker }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ listTitle }}</div>
+      </div>
+      <div class="hl-sums" style="display:flex;gap:var(--space-6,20.4px);font-size:13px;color:var(--color-neutral-600,#5d5d60);white-space:nowrap">
+        <span>{{ listInc }}</span><span>{{ listExp }}</span><span style="color:var(--color-accent-700,#416180)">{{ t_netLabel }} {{ sumNet }}</span>
+      </div>
+    </div>
+
+    <div class="hl-filters" style="display:flex;align-items:center;gap:var(--space-6,20.4px);flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:var(--space-4,13.6px)">
+        <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">{{ t_periodLabel }}</span>
+        <div style="display:flex;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16))">
+          <sc-for list="{{ periodOpts }}" as="p" hint-placeholder-count="3">
+            <button onClick="{{ p.pick }}" style="border:0;border-left:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:{{ p.bg }};color:{{ p.fg }};padding:8px 20px;font-size:14px">{{ p.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:var(--space-4,13.6px)">
+        <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">{{ t_typeLabel }}</span>
+        <div style="display:flex;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16))">
+          <sc-for list="{{ kindOpts }}" as="k" hint-placeholder-count="3">
+            <button onClick="{{ k.pick }}" style="border:0;border-left:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:{{ k.bg }};color:{{ k.fg }};padding:8px 20px;font-size:14px">{{ k.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:var(--space-4,13.6px)">
+        <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">{{ t_acctLabel }}</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+            <button onClick="{{ f.pick }}" style="border:1px solid {{ f.bd }};background:{{ f.bg }};color:{{ f.fg }};padding:7px 16px;font-size:14px">{{ f.name }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:1"></div>
+      <div style="font-size:13px;color:var(--color-accent-700,#416180);white-space:nowrap">{{ listCount }}</div>
+    </div>
+
+
+    <div style="display:{{ breakSkipDisp }};font-size:13px;color:var(--color-accent-700,#416180)">{{ breakSkip }}</div>
+
+    <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-6,20.4px)">
+      <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3,10.2px)">
+          <div style="font-weight:600;font-size:20px">{{ sumIncLabel }}</div>
+          <div style="font-size:26px;color:#1d2d3d">{{ sumInc }}</div>
+        </div>
+        <sc-for list="{{ incRows }}" as="r" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;gap:var(--space-3,10.2px)">
+              <span>{{ r.name }}</span>
+              <span style="white-space:nowrap;flex:none">{{ r.amount }} · {{ r.pct }}</span>
+            </div>
+            <div style="height:8px;background:var(--color-neutral-200,#e7e7ea)"><div style="height:8px;width:{{ r.w }};background:{{ r.bg }}"></div></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3,10.2px)">
+          <div style="font-weight:600;font-size:20px">{{ sumExpLabel }}</div>
+          <div style="font-size:26px;color:var(--color-accent,#5980a6)">{{ sumExp }}</div>
+        </div>
+        <sc-for list="{{ expRows }}" as="r" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;gap:var(--space-3,10.2px)">
+              <span>{{ r.name }}</span>
+              <span style="white-space:nowrap;flex:none">{{ r.amount }} · {{ r.pct }}</span>
+            </div>
+            <div style="height:8px;background:var(--color-neutral-200,#e7e7ea)"><div style="height:8px;width:{{ r.w }};background:{{ r.bg }}"></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:0">
+      <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
+        <span></span><span>{{ t_hDate }}</span><span>{{ t_hItem }}</span><span>{{ t_hCat }}</span><span>{{ t_hMethod }}</span><span>{{ t_hAcct }}</span><span style="text-align:right">{{ t_hAmount }}</span><span></span>
+      </div>
+      <sc-for list="{{ listRows }}" as="r" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
+        <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content max-content;gap:var(--space-3,10.2px);padding:11px 0;align-items:center" style-hover="background:var(--color-accent-100,#eef6ff)">
+          <span style="width:4px;height:20px;background:{{ r.mark }}"></span>
+          <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.date }}</span>
+          <span style="display:flex;align-items:center;gap:8px;min-width:0;opacity:{{ r.fade }}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:{{ r.strike }}">{{ r.name }}</span><span style="font-size:11px;letter-spacing:.1em;color:var(--color-accent-700,#416180);flex:none">{{ r.flag }}</span><span style="display:{{ r.voidDisp }};font-size:11px;letter-spacing:.04em;color:#98989b;flex:none;white-space:nowrap">{{ r.voidLabel }}</span></span>
+          <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.cat }}</span>
+          <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.method }}</span>
+          <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.who }}</span>
+          <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ r.color }};white-space:nowrap;text-decoration:{{ r.strike }}">{{ r.amount }}</span>
+          <span style="display:flex;gap:6px;align-items:center;padding-left:10px">
+            <button onClick="{{ r.openSlip }}" style="display:{{ r.slipDisp }};border:1px solid #94bce3;background:{{ r.slipBg }};color:{{ r.slipFg }};padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ t_slipOpen }}</button>
+            <button onClick="{{ r.openHistory }}" style="display:{{ r.editedDisp }};border:1px solid #94bce3;background:{{ r.editedBg }};color:{{ r.editedFg }};padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ r.editedLabel }}</button>
+            <button onClick="{{ r.edit }}" style="display:{{ r.editDisp }};border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:4px 11px;font-size:12px" style-hover="background:#eef6ff">{{ r.editLabel }}</button>
+            <button onClick="{{ r.del }}" style="display:{{ r.delDisp }};border:1px solid {{ r.delBd }};background:{{ r.delBg }};color:{{ r.delFg }};padding:4px 11px;font-size:12px">{{ r.delLabel }}</button>
+          </span>
+        </div>
+        <div style="display:{{ r.slipPanelDisp }};flex-direction:column;gap:10.2px;border:1px solid #94bce3;background:#f7fbff;padding:16px;margin:0 0 13.6px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:13.6px">
+            <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_slipTitle }}</span>
+            <button onClick="{{ r.slipClose }}" style="border:1px solid #94bce3;background:transparent;color:#416180;padding:4px 11px;font-size:12px;flex:none">{{ t_close }}</button>
+          </div>
+          <div style="display:{{ r.slipWaitDisp }};padding:27.2px 0;text-align:center;color:#98989b;font-size:14px">{{ t_slipWait }}</div>
+          <div style="display:{{ r.slipErrDisp }};padding:16px 0;text-align:center;color:#8a2020;font-size:14px">{{ r.slipErrText }}</div>
+          <img src="{{ r.slipImgSrc }}" alt="{{ t_slipTitle }}" style="display:{{ r.slipImgDisp }};max-width:100%;max-height:70vh;margin:0 auto;border:1px solid rgba(29,31,32,0.16);background:#f2f2f3">
+          <iframe src="{{ r.slipPdfSrc }}" title="{{ t_slipTitle }}" style="display:{{ r.slipPdfDisp }};width:100%;height:70vh;border:1px solid rgba(29,31,32,0.16);background:#f2f2f3"></iframe>
+        </div>
+        </div>
+      </sc-for>
+      <div style="display:{{ emptyDisp }};padding:34px 0;text-align:center;color:#98989b;font-size:14px">{{ emptyText }}</div>
+    </div>
+
+    <div class="hl-hist" style="display:{{ askDisp }};flex-direction:column;gap:13.6px;border:1px solid #1d2d3d;background:#f7fbff;padding:20.4px">
+      <div style="display:flex;align-items:baseline;gap:10px;min-width:0;flex-wrap:wrap">
+        <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px;flex:none">{{ askTitle }}</span>
+        <span style="font-size:13px;color:#5d5d60;overflow:hidden;text-overflow:ellipsis">{{ askName }}</span>
+      </div>
+      <input value="{{ voidReason }}" onChange="{{ onVoidReason }}" placeholder="{{ askPh }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:11px 13.6px;font-size:15px;color:#1d1f20;outline:none;width:100%;box-sizing:border-box">
+      <div style="display:{{ voidErrDisp }};font-size:13px;color:#1d2d3d">{{ voidErr }}</div>
+      <div style="display:flex;gap:10.2px;flex-wrap:wrap">
+        <button onClick="{{ askConfirm }}" style="border:1px solid #1d2d3d;background:#1d2d3d;color:#f2f2f3;padding:8px 18px;font-size:14px">{{ t_confirmVoid }}</button>
+        <button onClick="{{ askCancel }}" style="border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:8px 18px;font-size:14px">{{ t_notVoid }}</button>
+      </div>
+    </div>
+
+    <div class="hl-hist" style="display:{{ histDisp }};flex-direction:column;gap:13.6px;border:1px solid #94bce3;background:#f7fbff;padding:20.4px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:13.6px">
+        <div style="display:flex;align-items:baseline;gap:10px;min-width:0">
+          <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px;flex:none;white-space:nowrap">{{ histTitle }}</span>
+          <span style="font-size:13px;color:#5d5d60;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ histName }}</span>
+        </div>
+        <button onClick="{{ histClose }}" style="border:1px solid #94bce3;background:transparent;color:#416180;padding:5px 13px;font-size:13px;flex:none">{{ t_close }}</button>
+      </div>
+      <sc-for list="{{ histRows }}" as="h" hint-placeholder-count="2">
+        <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(29,31,32,0.1);padding-top:10.2px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:#5d5d60;letter-spacing:.04em">
+            <span>{{ h.when }}</span><span style="color:#416180">{{ h.who }}</span>
+          </div>
+          <sc-for list="{{ h.changes }}" as="c" hint-placeholder-count="2">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:14px">
+              <span style="min-width:96px;color:#5d5d60;font-size:13px">{{ c.field }}</span>
+              <span style="color:#98989b;text-decoration:line-through">{{ c.from }}</span>
+              <span style="color:#5d5d60">→</span>
+              <span style="font-weight:500">{{ c.to }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isAdd }}" hint-placeholder-val="{{ true }}">
+  <div class="hl-2col hl-page" style="padding:27.2px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,0.9fr);gap:20.4px;max-width:1440px;margin:0 auto;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:20.4px;min-width:0">
+      <div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_addKicker }}</div>
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_addTitle }}</div>
+      </div>
+
+      <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:20.4px">
+
+        <div>
+          <div class="hl-kinds" style="display:flex;border:1px solid rgba(29,31,32,0.16);width:fit-content;flex-wrap:wrap">
+            <sc-for list="{{ kindBtns }}" as="k" hint-placeholder-count="4">
+              <button onClick="{{ k.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 20px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.06em;background:{{ k.bg }};color:{{ k.fg }}">{{ k.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:{{ kindNoteDisp }};margin-top:8px;font-size:13px;color:#416180;max-width:52ch;line-height:1.5">{{ kindNote }}</div>
+        </div>
+
+        <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20.4px">
+          <div style="display:flex;flex-direction:column;gap:6.8px">
+            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60;display:flex;justify-content:space-between;gap:10px"><span>{{ t_amount }}</span><span style="text-transform:none;letter-spacing:0;color:#416180;min-width:0;text-align:right">{{ entryNote }}</span></label>
+            <div style="display:flex;align-items:center;border:1px solid rgba(29,31,32,0.16);background:#f5f5f8">
+              <span style="padding:0 13.6px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:28px;color:#5d5d60">{{ entrySym }}</span>
+              <input value="{{ amount }}" onChange="{{ onAmount }}" placeholder="{{ amountPh }}" style="flex:1;border:0;background:transparent;padding:12px 13.6px 12px 0;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:34px;letter-spacing:.01em;color:#1d1f20;outline:none">
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10.2px;flex-wrap:wrap">
+              <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+                <sc-for list="{{ entryOpts }}" as="c" hint-placeholder-count="3">
+                  <button onClick="{{ c.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);background:{{ c.bg }};color:{{ c.fg }};padding:6px 13px;font-size:13px;letter-spacing:.04em">{{ c.label }}</button>
+                </sc-for>
+              </div>
+              <div style="font-size:12px;color:#5d5d60">{{ amountHint }}</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6.8px">
+            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_date }}</label>
+            <input type="date" value="{{ date }}" onChange="{{ onDate }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:12px 13.6px;font-size:15px;color:#1d1f20;outline:none;height:100%">
+          </div>
+        </div>
+
+        <div style="display:{{ catDisp }};flex-direction:column;gap:10.2px">
+          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_cat }}</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="8">
+              <button onClick="{{ c.pick }}" style="border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};padding:7px 14px;font-size:14px">{{ c.name }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:{{ xferDisp }};flex-direction:column;gap:10.2px">
+          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_to }}</label>
+          <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+            <sc-for list="{{ toMethods }}" as="m" hint-placeholder-count="3">
+              <button onClick="{{ m.pick }}" style="flex:1;border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 0;font-size:14px;background:{{ m.bg }};color:{{ m.fg }}">{{ m.name }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20.4px">
+          <div style="display:flex;flex-direction:column;gap:10.2px">
+            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_method }}</label>
+            <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+              <sc-for list="{{ methods }}" as="m" hint-placeholder-count="3">
+                <button onClick="{{ m.pick }}" style="flex:1;border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 0;font-size:14px;background:{{ m.bg }};color:{{ m.fg }}">{{ m.name }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10.2px">
+            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60;display:flex;justify-content:space-between;gap:10px"><span>{{ t_acctLabel }}</span><span style="text-transform:none;letter-spacing:0;color:#416180">{{ acctNote }}</span></label>
+            <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+              <sc-for list="{{ members }}" as="p" hint-placeholder-count="3">
+                <button onClick="{{ p.pick }}" style="flex:1;border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 0;font-size:14px;background:{{ p.bg }};color:{{ p.fg }}">{{ p.name }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:6.8px">
+          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_note }}</label>
+          <input value="{{ note }}" onChange="{{ onNote }}" placeholder="{{ notePh }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:11px 13.6px;font-size:15px;outline:none">
+        </div>
+
+        <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20.4px;align-items:stretch">
+          <div style="display:flex;flex-direction:column;gap:6.8px">
+            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_slip }}</label>
+            <label style="display:block;border:1px dashed {{ slipBd }};background:#eef6ff;padding:20.4px;text-align:center;color:#416180;font-size:13px;line-height:1.6;cursor:{{ slipCursor }}">
+              <input type="file" accept="image/jpeg,image/png,application/pdf" onChange="{{ onSlip }}" disabled="{{ slipDisabled }}" style="display:none">
+              <span style="text-decoration:underline;word-break:break-all">{{ slipLabel }}</span><br>
+              <span style="color:{{ slipNoteFg }};font-size:12px">{{ slipNote }}</span>
+            </label>
+            <button onClick="{{ clearSlip }}" style="display:{{ slipClearDisp }};align-self:flex-start;border:1px solid rgba(29,31,32,0.16);background:transparent;color:#5d5d60;padding:5px 12px;font-size:12px">{{ t_slipClear }}</button>
+          </div>
+          <sc-if value="{{ showRecurring }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:6.8px">
+            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_recur }}</label>
+            <button onClick="{{ toggleRepeat }}" style="flex:1;display:flex;align-items:center;gap:13.6px;border:1px solid {{ repBd }};background:{{ repBg }};padding:13.6px;text-align:left">
+              <span style="width:18px;height:18px;border:1px solid #5980a6;background:{{ repMark }};flex:none"></span>
+              <span style="display:flex;flex-direction:column;gap:2px">
+                <span style="font-weight:500">{{ t_repeatM }}</span>
+                <span style="font-size:12px;color:#5d5d60">{{ repNote }}</span>
+              </span>
+            </button>
+          </div>
+          </sc-if>
+        </div>
+
+        <div style="display:{{ editingDisp }};align-items:center;gap:13.6px;border:1px solid #94bce3;background:#eef6ff;padding:11px 13.6px;color:#416180;font-size:13px">
+          <span style="flex:1">{{ editingNote }}</span>
+          <button onClick="{{ cancelEdit }}" style="border:1px solid #94bce3;background:transparent;padding:6px 14px;font-size:13px;color:#416180">{{ t_cancel }}</button>
+        </div>
+
+        <div class="hl-actions" style="display:flex;gap:13.6px;border-top:1px solid rgba(29,31,32,0.16);padding-top:20.4px">
+          <button onClick="{{ save }}" style="border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:12px 34px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;letter-spacing:.08em;background-image:var(--w1),var(--w2),var(--w3),var(--w4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%" style-hover="background-color:#416180">{{ saveLabel }}</button>
+          <button onClick="{{ reset }}" style="border:1px solid rgba(29,31,32,0.16);background:transparent;padding:12px 24px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;letter-spacing:.08em;color:#5d5d60" style-hover="background:#eef6ff">{{ t_reset }}</button>
+          <div style="flex:1"></div>
+          <div style="align-self:center;font-size:13px;color:#416180">{{ saveMsg }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:13.6px;margin-top:78px;min-width:0">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px;white-space:nowrap">{{ t_today }}</div>
+        <div style="font-size:12px;color:#5d5d60">{{ t_todayDate }}</div>
+      </div>
+      <sc-for list="{{ todayRows }}" as="t" hint-placeholder-count="2">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10.2px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08)">
+          <span style="display:flex;flex-direction:column;gap:2px;flex:1;min-width:0">
+            <span>{{ t.name }}</span>
+            <span style="font-size:12px;color:#5d5d60">{{ t.cat }} · {{ t.method }} · {{ t.who }}</span>
+          </span>
+          <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:19px;color:{{ t.color }};white-space:nowrap;flex:none">{{ t.amount }}</span>
+        </div>
+      </sc-for>
+      <div style="display:flex;justify-content:space-between;padding-top:6.8px">
+        <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.1em;text-transform:uppercase;color:#5d5d60">{{ t_todaySum }}</span>
+        <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:22px">{{ todayTotal }}</span>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+
+  <sc-if value="{{ isSet }}" hint-placeholder-val="{{ true }}">
+  <div class="hl-page" style="padding:var(--space-8,27.2px);display:flex;flex-direction:column;gap:var(--space-6,20.4px);max-width:1440px;margin:0 auto">
+    <div>
+      <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">{{ t_setKicker }}</div>
+      <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_setTitle }}</div>
+      <div style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ t_setNote }}</div>
+    </div>
+
+    <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:var(--space-6,20.4px);align-items:start">
+
+      <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
+        <div>
+          <div style="font-weight:600;font-size:22px">{{ t_catPanel }}</div>
+          <div style="font-size:12px;color:{{ catNoteFg }};line-height:1.5">{{ catNote }}</div>
+        </div>
+        <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
+          <span>{{ t_colTh }}</span><span>{{ t_colLo }}</span><span></span>
+        </div>
+        <sc-for list="{{ catRows }}" as="c" hint-placeholder-count="8">
+          <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) max-content;gap:var(--space-3,10.2px);align-items:center;padding-bottom:var(--space-3,10.2px);border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
+            <input value="{{ c.th }}" onChange="{{ c.onTh }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
+            <input value="{{ c.lo }}" onChange="{{ c.onLo }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
+            <button onClick="{{ c.del }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:transparent;color:var(--color-neutral-600,#5d5d60);padding:7px 12px;font-size:13px" style-hover="background:var(--color-accent-100,#eef6ff)">{{ t_del }}</button>
+          </div>
+        </sc-for>
+        <button onClick="{{ addCat }}" style="display:{{ addCatDisp }};border:1px solid var(--color-accent,#5980a6);background:transparent;color:var(--color-accent-700,#416180);padding:9px 18px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:15px;letter-spacing:.06em;align-self:flex-start" style-hover="background:var(--color-accent-100,#eef6ff)">{{ t_addCat }}</button>
+      </div>
+
+      <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:var(--space-4,13.6px)">
+        <div style="font-weight:600;font-size:22px">{{ t_acctPanel }}</div>
+        <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,0.7fr) minmax(0,0.7fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
+          <span>{{ t_colName }}</span><span>{{ t_colRole }}</span><span>{{ t_colCur }}</span><span>{{ t_colEmail }}</span><span>{{ t_colPerm }}</span>
+        </div>
+        <sc-for list="{{ acctEdits }}" as="a" hint-placeholder-count="3">
+          <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,0.7fr) minmax(0,0.7fr) max-content;gap:var(--space-3,10.2px);align-items:center;padding-bottom:var(--space-3,10.2px);border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
+            <input value="{{ a.name }}" onChange="{{ a.onName }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
+            <input value="{{ a.role }}" onChange="{{ a.onRole }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
+            <select value="{{ a.code }}" onChange="{{ a.onCode }}" style="border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));background:var(--color-surface,#f5f5f8);padding:8px 10px;font:inherit;font-size:14px;outline:none;min-width:0;width:100%">
+              <sc-for list="{{ curCodes }}" as="c" hint-placeholder-count="3">
+                <option value="{{ c.code }}">{{ c.label }}</option>
+              </sc-for>
+            </select>
+            <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ a.email }}</span>
+            <span style="font-size:12px;letter-spacing:.06em;color:{{ a.roleFg }};white-space:nowrap">{{ a.roleTag }}</span>
+          </div>
+        </sc-for>
+        <div style="font-size:12px;color:#5d5d60;line-height:1.7;border-top:1px solid rgba(29,31,32,0.08);padding-top:10.2px">{{ t_acctNote }}</div>
+      </div>
+
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ true }}">
+  <div class="hl-page" style="padding:27.2px;max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:20.4px">
+    <div>
+      <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d5d60">{{ t_mKicker }}</div>
+      <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_mTitle }}</div>
+      <div style="font-size:13px;color:#416180;max-width:62ch;line-height:1.6">{{ t_mNote }}</div>
+    </div>
+    <div style="display:flex;gap:34px;flex-wrap:wrap">
+
+      <div class="hl-phone" style="width:320px;display:flex;flex-direction:column;gap:10.2px">
+        <div class="hl-phone" style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);background:#1d2d3d;color:#eef6ff;padding:27.2px;display:flex;flex-direction:column;justify-content:center;gap:20.4px">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#94bce3">{{ appName }}</div>
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:28px">{{ t_enterPin }}</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ mobileAccounts }}" as="a" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid {{ a.bd }};background:{{ a.bg }}">
+                <span style="min-width:28px;height:28px;flex:none;padding:0 6px;background:{{ a.avBg }};color:{{ a.avFg }};display:flex;align-items:center;justify-content:center;font-size:12px;white-space:nowrap">{{ a.name }}</span>
+                <span style="display:flex;flex-direction:column;line-height:1.2;min-width:0">
+                  <span style="font-size:14px">{{ a.name }}</span>
+                  <span style="font-size:11px;color:#94bce3">{{ a.role }}</span>
+                </span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#94bce3">{{ t_password }}</div>
+            <div style="border:1px solid rgba(148,188,227,.45);background:rgba(148,188,227,.12);padding:12px 13.6px;font-size:18px;letter-spacing:.3em;color:#eef6ff">••••••••</div>
+          </div>
+          <div style="text-align:center;padding:12px 0;background:#5980a6;color:#f2f2f3;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;letter-spacing:.08em">{{ t_signinBtn }}</div>
+        </div>
+        <div style="font-size:13px;color:#5d5d60">{{ t_mCap1 }}</div>
+      </div>
+
+      <div class="hl-phone" style="width:320px;display:flex;flex-direction:column;gap:10.2px">
+        <div class="hl-phone" style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);padding:20.4px;display:flex;flex-direction:column;gap:16px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px">{{ t_monthTitle }}</span>
+            <span style="font-size:12px;color:#5d5d60">{{ t_family }}</span>
+          </div>
+          <div style="border:1px solid rgba(29,31,32,0.16);padding:13.6px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%">
+            <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_bal }}</div>
+            <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:34px;line-height:1.2">{{ mBal }}</div>
+            <div style="display:flex;gap:16px;font-size:12px;color:#5d5d60"><span>รับ {{ mInc }}</span><span>จ่าย {{ mExp }}</span></div>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:90px;border-bottom:1px solid rgba(29,31,32,0.16)">
+            <sc-for list="{{ days }}" as="d" hint-placeholder-count="30">
+              <div style="flex:1;height:{{ d.mh }};background:{{ d.bg }}"></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <sc-for list="{{ cats }}" as="c" hint-placeholder-count="8">
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <div style="display:flex;justify-content:space-between;font-size:12px"><span>{{ c.name }}</span><span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:14px">{{ c.amount }}</span></div>
+                <div style="height:6px;background:#e7e7ea"><div style="height:6px;width:{{ c.w }};background:{{ c.bg }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="font-size:13px;color:#5d5d60">{{ t_mCap2 }}</div>
+      </div>
+
+      <div class="hl-phone" style="width:320px;display:flex;flex-direction:column;gap:10.2px">
+        <div class="hl-phone" style="width:320px;height:640px;border:1px solid rgba(29,31,32,0.16);padding:20.4px;display:flex;flex-direction:column;gap:16px">
+          <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:20px">{{ t_addTitle }}</div>
+          <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+            <div style="flex:1;text-align:center;padding:9px 0;background:#5980a6;color:#f2f2f3;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px">{{ t_kindExp }}</div>
+            <div style="flex:1;text-align:center;padding:9px 0;border-left:1px solid rgba(29,31,32,0.16);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:16px;color:#5d5d60">{{ t_kindInc }}</div>
+          </div>
+          <div style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:16px;display:flex;align-items:baseline;gap:8px">
+            <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:26px;color:#5d5d60"><span style="font-family:'Noto Serif Thai','Noto Serif Lao',serif;padding-right:.09em">{{ cur }}</span></span>
+            <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:42px">1,280</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px">
+            <sc-for list="{{ mobileChips }}" as="c" hint-placeholder-count="5">
+              <span style="border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};padding:6px 12px;font-size:13px">{{ c.name }}</span>
+            </sc-for>
+          </div>
+          <div style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:11px 13.6px;font-size:14px;color:#5d5d60">{{ t_sampleNote }}</div>
+          <div style="border:1px dashed #94bce3;background:#eef6ff;padding:16px;text-align:center;color:#416180;font-size:13px">{{ t_slip }}</div>
+          <div style="flex:1"></div>
+          <div style="text-align:center;padding:14px 0;background:#5980a6;color:#f2f2f3;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:17px;letter-spacing:.08em;background-image:var(--w1),var(--w2),var(--w3),var(--w4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%">{{ t_saveShort }}</div>
+        </div>
+        <div style="font-size:13px;color:#5d5d60">{{ t_mCap3 }}</div>
+      </div>
+
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;เข้าสู่ระบบ&quot;,&quot;ภาพรวมรายเดือน&quot;,&quot;สรุปรายปี&quot;,&quot;รายการทั้งหมด&quot;,&quot;บันทึกข้อมูล&quot;,&quot;ตั้งค่า&quot;,&quot;มือถือ&quot;],&quot;default&quot;:&quot;เข้าสู่ระบบ&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;language&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ไทย&quot;,&quot;ລາວ&quot;],&quot;default&quot;:&quot;ไทย&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showBudget&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showRecurring&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+
+const T = {
+  th: {
+    t_month: "ภาพรวมรายเดือน", t_year: "สรุปรายปี", t_add: "บันทึกข้อมูล", t_mobile: "มือถือ",
+    t_loggedIn: "เข้าสู่ระบบอยู่", t_addBtn: "+ เพิ่มรายการ", t_out: "ออก",
+    t_signin: "เข้าสู่ระบบ / Sign in", t_enterPin: "เข้าสู่ระบบ",
+    t_hero1: "บัญชีรายรับรายจ่าย", t_hero2: "ของบ้านเรา",
+    t_heroSub: "บันทึกร่วมกันสองคน ดูสรุปรายเดือนและรายปีในที่เดียว",
+    t_incYear: "รายรับปีนี้", t_expYear: "รายจ่ายปีนี้", t_balance: "คงเหลือ", t_forgot: "",
+    t_monthKicker: "ภาพรวมรายเดือน / Monthly overview", t_monthTitle: "กันยายน 2569",
+    t_acctLabel: "บัญชี / Account", t_all: "ทุกบัญชี",
+    t_income: "รายรับ / Income", t_expense: "รายจ่าย / Expense", t_bal: "คงเหลือ / Balance", t_perday: "เฉลี่ยต่อวัน / Per day",
+    t_daily: "รายจ่ายรายวัน", t_byCat: "สัดส่วนตามหมวดหมู่", t_recent: "รายการล่าสุด", t_seeAll: "ดูทั้งหมด →",
+    t_hDate: "วันที่", t_hItem: "รายการ", t_hCat: "หมวดหมู่", t_hMethod: "ช่องทาง", t_hAcct: "บัญชี", t_hAmount: "จำนวนเงิน",
+    t_budget: "งบประมาณเดือนนี้", t_byAcct: "แยกตามบัญชี",
+    t_yearKicker: "สรุปรายปี / Yearly summary", t_yearTitle: "ปี 2569", t_chart12: "รายรับ / รายจ่าย 12 เดือน", t_monthTable: "ตารางรายเดือน",
+    t_addKicker: "บันทึกข้อมูล / New entry", t_addTitle: "เพิ่มรายการ",
+    t_kindExp: "รายจ่าย", t_kindInc: "รายรับ",
+    t_amount: "จำนวนเงิน / Amount", t_date: "วันที่ / Date", t_cat: "หมวดหมู่ / Category",
+    t_method: "ช่องทางจ่าย / Method", t_note: "โน้ต / Note", t_slip: "แนบสลิป / Slip", t_recur: "รายการประจำ / Recurring",
+    t_save: "บันทึกรายการ", t_reset: "ล้างฟอร์ม", t_today: "บันทึกวันนี้", t_todaySum: "รวมวันนี้",
+    methods: ["เงินสด", "โอน", "บัตร"],
+    roles: { pin: "บัญชีส่วนตัว", ton: "บัญชีส่วนตัว", home: "บัญชีกลางของบ้าน" },
+    cats: ["อาหาร / Food", "ที่อยู่อาศัย / Housing", "เดินทาง / Transport", "ลูก / Kids", "ของใช้ในบ้าน / Household", "สุขภาพ / Health", "บันเทิง / Leisure", "อื่น ๆ / Other"],
+    chips: ["อาหาร", "ที่อยู่อาศัย", "เดินทาง", "ลูก", "ของใช้ในบ้าน", "สุขภาพ", "บันเทิง", "อื่น ๆ"],
+    t_saveGoal: "เป้าหมายออม",
+    mAbbr: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."],
+    mFull: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
+    t_recurFlag: "ประจำ", t_incomeCat: "รายรับ",
+    t_saveRate: "อัตราเก็บออม", t_daysNote: "28 วันจาก 30 มีรายการ",
+    t_avgBase: "จ่ายจริงถึงวันนี้ ÷ {n} วัน",
+    t_fromPrev: "จากเดือนก่อน", t_peak: "สูงสุด", t_range: "1–30 ก.ย. 2569",
+    t_prevM: "‹ ส.ค.", t_thisM: "ก.ย. 2569", t_nextM: "ต.ค. ›",
+    t_left: "เหลือ", t_over: "เกินงบ",
+    t_acctCaption: "ยอดเดือนนี้ แยกตามบัญชี", t_inUse: "กำลังใช้งาน",
+    t_mainCur: "สกุลหลัก", t_totalBal: "คงเหลือรวม",
+    t_clickMonth: "คลิกเดือนเพื่อดูรายละเอียด", t_saveRateCol: "อัตราเก็บออม", t_monthCol: "เดือน",
+    t_scopeAll: "รวมทุกบัญชี", t_scopeOne: "เฉพาะบัญชี",
+    t_legendInc: "รายรับ", t_legendExp: "รายจ่าย", t_legendEst: "ประมาณการ",
+    t_yInc: "รายรับสะสม", t_yExp: "รายจ่ายสะสม", t_yNet: "คงเหลือสะสม", t_yPeakM: "เดือนที่จ่ายมากสุด",
+    t_yRange: "ม.ค.–ก.ย. 2569", t_yPeakName: "เมษายน", t_colBal: "คงเหลือ",
+    t_yearWord: "ปี", t_noData: "ยังไม่มีรายการ", t_loading: "กำลังโหลด…",
+    t_password: "รหัสผ่าน / Password", t_pwPh: "ใส่รหัสผ่านของบัญชีนี้",
+    t_signinBtn: "เข้าสู่ระบบ", t_signingIn: "กำลังเข้าสู่ระบบ…",
+    t_secureNote: "รหัสผ่านตรวจสอบที่เซิร์ฟเวอร์ Supabase ไม่มีเก็บไว้ในหน้าเว็บ · สิทธิ์แก้/ลบบังคับที่ฐานข้อมูล",
+    t_roleAdmin: "บัญชีหลัก", t_roleMember: "เพิ่มรายการได้อย่างเดียว",
+    t_colEmail: "อีเมลที่ใช้เข้าระบบ", t_colPerm: "สิทธิ์",
+    t_edited: "แก้ไขแล้ว", t_histTitle: "ประวัติการแก้ไข", t_editedBy: "แก้โดย",
+    t_close: "ปิด", t_blank: "(ว่าง)",
+    fields: { ts: "วันที่", name: "รายการ", cat: "หมวดหมู่", method: "ช่องทาง",
+              method_to: "โอนไปยัง", void: "สถานะ", slip: "สลิป",
+              kind: "ประเภท", amt: "จำนวนเงิน", code: "สกุลเงิน", flag: "รายการประจำ", who: "บัญชี" },
+    t_kindXfer: "โอนระหว่างช่องทาง", t_kindOpen: "ยอดยกมา", t_to: "ไปยัง",
+    t_needTo: "เลือกช่องทางปลายทางที่ไม่ใช่ช่องทางเดิม",
+    t_xferNote: "ย้ายเงินระหว่างช่องทาง เช่น ถอน ATM (โอน → เงินสด) หรือจ่ายบัตร (โอน → บัตร) ไม่นับเป็นรายรับหรือรายจ่าย",
+    t_openNote: "เงินตั้งต้นที่มีอยู่ก่อนเริ่มใช้สมุดนี้ ใส่ครั้งเดียวต่อช่องทาง ไม่นับเป็นรายรับของเดือนไหน",
+    t_dupOpening: "{m} · {c} มียอดยกมาอยู่แล้ว ({v}) — กดแก้ยอดเดิมแทน หรือยกเลิกแถวเก่าก่อน",
+    t_viewCur: "กราฟและ % คิดเฉพาะสกุล", t_otherCur: "อีก {n} รายการเป็นสกุลอื่น ไม่รวมในหน้านี้",
+    t_breakCur: "แถบแยกหมวดคิดเฉพาะสกุล {c} — อีก {n} รายการเป็นสกุลอื่น ส่วนยอดรวมหัวการ์ดรวมทุกสกุล",
+    t_catsOffline: "ยังแก้หมวดหมู่ไม่ได้ — ตาราง cats ยังไม่มีในฐานข้อมูล (ต้องรัน upgrade_v2.sql ก่อน)",
+    t_catsAdminOnly: "เฉพาะบัญชีหลักที่แก้หมวดหมู่ได้ · ทุกคนเห็นชุดเดียวกัน",
+    t_balTitle: "ยอดคงเหลือแยกช่องทาง",
+    t_balCash: "เงินสดคงเหลือ", t_balBank: "เงินในบัญชี", t_balCard: "ยอดค้างบัตร",
+    t_balCardNote: "หนี้ที่ต้องจ่าย ไม่ใช่เงินคงเหลือ",
+    t_balReal: "สะสมจากยอดยกมาถึงวันนี้",
+    t_balNoOpening: "ยังไม่ได้ใส่ยอดยกมา — นี่คือยอดตั้งแต่วันแรกที่บันทึก ไม่ใช่เงินจริงในกระเป๋า",
+    t_balLater: "อีก {n} รายการลงวันไว้ล่วงหน้า ยังไม่นับในยอดนี้ — เงินยังไม่เข้าออกจริง",
+    t_void: "ยกเลิก", t_confirmVoid: "ยืนยันยกเลิก", t_restore: "กู้คืน",
+    t_notVoid: "ไม่ยกเลิก", t_voidedBy: "ยกเลิกโดย",
+    t_voidTitle: "ยกเลิกรายการ", t_reasonPh: "เหตุผลที่ยกเลิก เช่น บันทึกซ้ำ / กรอกผิด / ยกเลิกการซื้อ",
+    t_needReason: "ต้องระบุเหตุผลที่ยกเลิกก่อน",
+    t_acctNote: "รหัสผ่านและสิทธิ์ admin/member แก้ที่ Supabase เท่านั้น (Authentication → Users และตาราง profiles) — แก้จากหน้านี้ไม่ได้ เพราะฐานข้อมูลไม่เปิดให้เขียน",
+    t_edit: "แก้", t_del: "ลบ", t_confirmDel: "ยืนยัน?", t_cancel: "ยกเลิก",
+    t_editing: "กำลังแก้ไขรายการ", t_saveEdit: "บันทึกการแก้ไข",
+    t_lockedAcct: "บันทึกในชื่อบัญชีของคุณเท่านั้น", t_adminOnly: "เฉพาะบัญชีหลัก",
+    t_drop: "", t_pick: "เลือกไฟล์จากเครื่อง", t_fileNote: "JPG / PNG / PDF · ไม่เกิน 5 MB",
+    t_slipHas: "แนบไฟล์แล้ว · กดเพื่อเปลี่ยนไฟล์", t_slipClear: "เอาไฟล์ที่เลือกออก",
+    t_slipType: "รับเฉพาะไฟล์ JPG · PNG · PDF", t_slipBig: "ไฟล์ใหญ่เกิน 5 MB",
+    t_slipOpen: "สลิป",
+    t_slipWait: "กำลังเปิดสลิป…",
+    t_slipTitle: "สลิปที่แนบไว้",
+    t_slipOffline: "ยังแนบสลิปไม่ได้",
+    t_slipOfflineNote: "ต้องรัน upgrade_v4.sql ใน Supabase ก่อน (ส่วนอื่นใช้ได้ตามปกติ)",
+    t_slipNoBucket: "ยังไม่มีถังเก็บไฟล์ — รัน upgrade_v4.sql ให้ผ่านข้อ 2 กับ 3 ก่อน (รายการยังไม่ถูกบันทึก)",
+    t_slipDenied: "ไม่มีสิทธิ์อัปไฟล์ — รัน upgrade_v4.sql ให้ผ่านข้อ 3 ก่อน (รายการยังไม่ถูกบันทึก)",
+    t_repeatM: "ทำซ้ำทุกเดือน", t_todayDate: "28 ก.ย. 2569",
+    t_mKicker: "มือถือ / Mobile", t_mTitle: "สามหน้าหลักบนมือถือ",
+    t_mNote: "ภาพตัวอย่างการออกแบบ กดใช้งานจากหน้านี้ไม่ได้ — ใช้จริงเปิดเว็บนี้บนมือถือได้เลย ทุกหน้ารองรับจอเล็กอยู่แล้ว (เครื่องกลาง \"ภาพรวมเดือน\" ใช้ตัวเลขจริงของคุณ)",
+    t_mCap1: "เข้าสู่ระบบ", t_mCap2: "ภาพรวมเดือน", t_mCap3: "บันทึกข้อมูลแบบเร็ว",
+    t_sampleNote: "ซื้อของเข้าบ้าน โลตัส",
+    t_keepThb: "เก็บค่าเป็นบาท", t_keepNative: "เก็บค่าเป็นสกุล", t_inThb: "บันทึกเป็นเงินบาท",
+    t_repOff: "ปิดอยู่", t_repOn: "จะสร้างซ้ำให้เองทุกเดือน วันเดียวกับรายการนี้",
+    t_recurMade: "เติมรายการประจำที่ค้างให้แล้ว {n} รายการ",
+    t_notePh: "เช่น ซื้อของเข้าบ้าน โลตัส",
+    t_needAmount: "ใส่จำนวนเงินก่อนบันทึก", t_needAcct: "เลือกบัญชีก่อนบันทึก",
+    t_savedOk: "บันทึกแล้ว", t_toAcct: "บัญชี", t_goalYear: "เป้าทั้งปี",
+    t_settings: "ตั้งค่า", t_setKicker: "ตั้งค่า / Settings", t_setTitle: "หมวดหมู่และบัญชี",
+    t_catPanel: "หมวดหมู่", t_acctPanel: "บัญชี",
+    t_addCat: "+ เพิ่มหมวดหมู่", t_addAcct: "+ เพิ่มบัญชี", t_del: "ลบ",
+    t_colTh: "ชื่อภาษาไทย", t_colLo: "ชื่อภาษาลาว", t_colName: "ชื่อบัญชี", t_colRole: "คำอธิบาย", t_colCur: "สกุลหลัก", t_colPin: "PIN 6 หลัก",
+    t_newCat: "หมวดหมู่ใหม่", t_newAcct: "บัญชีใหม่", t_newRole: "บัญชีส่วนตัว",
+    t_setNote: "หมวดหมู่บันทึกลงฐานข้อมูลจริง ทุกคนเห็นชุดเดียวกัน · ส่วนบัญชีแก้ได้แค่การแสดงผลบนเครื่องนี้ ชื่อตัวจริงอยู่ในตาราง profiles ที่ Supabase — เปลี่ยนชื่อบัญชีตรงนี้แล้วบันทึกรายการไม่ได้",
+    t_typeLabel: "ประเภท / Type", t_periodLabel: "ช่วงเวลา / Period",
+    t_pMonth: "เดือนนี้", t_pYear: "ปีนี้", t_pAll: "ทั้งหมด",
+    t_pMonthTitle: "กันยายน 2569", t_pYearTitle: "ปี 2569", t_pAllTitle: "ทุกช่วงเวลา",
+    t_breakInc: "รายรับ · แยกตามหมวด", t_breakExp: "รายจ่าย · แยกตามหมวด", t_net: "คงเหลือสุทธิ",
+    t_list: "รายการทั้งหมด", t_listKicker: "รายการทั้งหมด / All transactions",
+    t_typeAll: "ทั้งหมด", t_found: "พบ", t_items: "รายการ",
+    t_sumInc: "รวมรายรับ", t_sumExp: "รวมรายจ่าย", t_empty: "ไม่พบรายการตามเงื่อนไขที่เลือก",
+    t_entered: "ใส่แล้ว", t_of6: "/ 6 หลัก",
+    t_peakWhy: "สงกรานต์ + ค่าเทอม",
+    curNames: { THB: "บาท", USD: "ดอลลาร์สหรัฐ", KIP: "กีบลาว" },
+    t_hello: "สวัสดี", t_saveShort: "บันทึก", t_family: "ปิ่น + ต้น",
+    pinOwn: "เลือกบัญชีแล้วใส่รหัสผ่าน",
+  },
+  lo: {
+    t_month: "ພາບລວມລາຍເດືອນ", t_year: "ສະຫຼຸບລາຍປີ", t_add: "ບັນທຶກຂໍ້ມູນ", t_mobile: "ມືຖື",
+    t_loggedIn: "ກຳລັງໃຊ້ງານ", t_addBtn: "+ ເພີ່ມລາຍການ", t_out: "ອອກ",
+    t_signin: "ເຂົ້າສູ່ລະບົບ / Sign in", t_enterPin: "ເຂົ້າສູ່ລະບົບ",
+    t_hero1: "ບັນຊີລາຍຮັບລາຍຈ່າຍ", t_hero2: "ຂອງບ້ານເຮົາ",
+    t_heroSub: "ບັນທຶກຮ່ວມກັນ ເບິ່ງສະຫຼຸບລາຍເດືອນ ແລະ ລາຍປີໃນບ່ອນດຽວ",
+    t_incYear: "ລາຍຮັບປີນີ້", t_expYear: "ລາຍຈ່າຍປີນີ້", t_balance: "ຍອດເຫຼືອ", t_forgot: "",
+    t_monthKicker: "ພາບລວມລາຍເດືອນ / Monthly overview", t_monthTitle: "ກັນຍາ 2569",
+    t_acctLabel: "ບັນຊີ / Account", t_all: "ທຸກບັນຊີ",
+    t_income: "ລາຍຮັບ / Income", t_expense: "ລາຍຈ່າຍ / Expense", t_bal: "ຍອດເຫຼືອ / Balance", t_perday: "ສະເລ່ຍຕໍ່ວັນ / Per day",
+    t_daily: "ລາຍຈ່າຍລາຍວັນ", t_byCat: "ສັດສ່ວນຕາມໝວດ", t_recent: "ລາຍການຫຼ້າສຸດ", t_seeAll: "ເບິ່ງທັງໝົດ →",
+    t_hDate: "ວັນທີ", t_hItem: "ລາຍການ", t_hCat: "ໝວດ", t_hMethod: "ຊ່ອງທາງ", t_hAcct: "ບັນຊີ", t_hAmount: "ຈຳນວນເງິນ",
+    t_budget: "ງົບປະມານເດືອນນີ້", t_byAcct: "ແຍກຕາມບັນຊີ",
+    t_yearKicker: "ສະຫຼຸບລາຍປີ / Yearly summary", t_yearTitle: "ປີ 2569", t_chart12: "ລາຍຮັບ / ລາຍຈ່າຍ 12 ເດືອນ", t_monthTable: "ຕາຕະລາງລາຍເດືອນ",
+    t_addKicker: "ບັນທຶກຂໍ້ມູນ / New entry", t_addTitle: "ເພີ່ມລາຍການ",
+    t_kindExp: "ລາຍຈ່າຍ", t_kindInc: "ລາຍຮັບ",
+    t_amount: "ຈຳນວນເງິນ / Amount", t_date: "ວັນທີ / Date", t_cat: "ໝວດ / Category",
+    t_method: "ຊ່ອງທາງຈ່າຍ / Method", t_note: "ບັນທຶກ / Note", t_slip: "ແນບໃບບິນ / Slip", t_recur: "ລາຍການປະຈຳ / Recurring",
+    t_save: "ບັນທຶກລາຍການ", t_reset: "ລ້າງຟອມ", t_today: "ບັນທຶກມື້ນີ້", t_todaySum: "ລວມມື້ນີ້",
+    methods: ["ເງິນສົດ", "ໂອນ", "ບັດ"],
+    roles: { pin: "ບັນຊີສ່ວນຕົວ", ton: "ບັນຊີສ່ວນຕົວ", home: "ບັນຊີກາງຂອງບ້ານ" },
+    cats: ["ອາຫານ / Food", "ທີ່ຢູ່ອາໄສ / Housing", "ການເດີນທາງ / Transport", "ລູກ / Kids", "ເຄື່ອງໃຊ້ໃນເຮືອນ / Household", "ສຸຂະພາບ / Health", "ບັນເທິງ / Leisure", "ອື່ນໆ / Other"],
+    chips: ["ອາຫານ", "ທີ່ຢູ່ອາໄສ", "ການເດີນທາງ", "ລູກ", "ເຄື່ອງໃຊ້ໃນເຮືອນ", "ສຸຂະພາບ", "ບັນເທິງ", "ອື່ນໆ"],
+    t_saveGoal: "ເປົ້າໝາຍເກັບອອມ",
+    mAbbr: ["ມ.ກ.", "ກ.ພ.", "ມີ.ນ.", "ເມ.ສ.", "ພ.ພ.", "ມິ.ຖ.", "ກ.ລ.", "ສ.ຫ.", "ກ.ຍ.", "ຕ.ລ.", "ພ.ຈ.", "ທ.ວ."],
+    mFull: ["ມັງກອນ", "ກຸມພາ", "ມີນາ", "ເມສາ", "ພຶດສະພາ", "ມິຖຸນາ", "ກໍລະກົດ", "ສິງຫາ", "ກັນຍາ", "ຕຸລາ", "ພະຈິກ", "ທັນວາ"],
+    t_recurFlag: "ປະຈຳ", t_incomeCat: "ລາຍຮັບ",
+    t_saveRate: "ອັດຕາເກັບອອມ", t_daysNote: "28 ວັນ ຈາກ 30 ມີລາຍການ",
+    t_avgBase: "ຈ່າຍຈິງເຖິງມື້ນີ້ ÷ {n} ວັນ",
+    t_fromPrev: "ຈາກເດືອນກ່ອນ", t_peak: "ສູງສຸດ", t_range: "1–30 ກັນຍາ 2569",
+    t_prevM: "‹ ສ.ຫ.", t_thisM: "ກ.ຍ. 2569", t_nextM: "ຕ.ລ. ›",
+    t_left: "ຍັງເຫຼືອ", t_over: "ເກີນງົບ",
+    t_acctCaption: "ຍອດເດືອນນີ້ ແຍກຕາມບັນຊີ", t_inUse: "ກຳລັງໃຊ້ງານ",
+    t_mainCur: "ສະກຸນຫຼັກ", t_totalBal: "ຍອດເຫຼືອລວມ",
+    t_clickMonth: "ກົດເລືອກເດືອນເພື່ອເບິ່ງລາຍລະອຽດ", t_saveRateCol: "ອັດຕາເກັບອອມ", t_monthCol: "ເດືອນ",
+    t_scopeAll: "ລວມທຸກບັນຊີ", t_scopeOne: "ສະເພາະບັນຊີ",
+    t_legendInc: "ລາຍຮັບ", t_legendExp: "ລາຍຈ່າຍ", t_legendEst: "ຄາດຄະເນ",
+    t_yInc: "ລາຍຮັບສະສົມ", t_yExp: "ລາຍຈ່າຍສະສົມ", t_yNet: "ຍອດເຫຼືອສະສົມ", t_yPeakM: "ເດືອນທີ່ຈ່າຍຫຼາຍສຸດ",
+    t_yRange: "ມ.ກ.–ກ.ຍ. 2569", t_yPeakName: "ເມສາ", t_colBal: "ຍອດເຫຼືອ",
+    t_yearWord: "ປີ", t_noData: "ຍັງບໍ່ມີລາຍການ", t_loading: "ກຳລັງໂຫຼດ…",
+    t_password: "ລະຫັດຜ່ານ / Password", t_pwPh: "ໃສ່ລະຫັດຜ່ານຂອງບັນຊີນີ້",
+    t_signinBtn: "ເຂົ້າສູ່ລະບົບ", t_signingIn: "ກຳລັງເຂົ້າສູ່ລະບົບ…",
+    t_secureNote: "ລະຫັດຜ່ານກວດສອບທີ່ເຊີບເວີ Supabase ບໍ່ມີເກັບໄວ້ໃນໜ້າເວັບ · ສິດແກ້/ລຶບບັງຄັບທີ່ຖານຂໍ້ມູນ",
+    t_roleAdmin: "ບັນຊີຫຼັກ", t_roleMember: "ເພີ່ມລາຍການໄດ້ຢ່າງດຽວ",
+    t_colEmail: "ອີເມວທີ່ໃຊ້ເຂົ້າລະບົບ", t_colPerm: "ສິດ",
+    t_edited: "ແກ້ໄຂແລ້ວ", t_histTitle: "ປະຫວັດການແກ້ໄຂ", t_editedBy: "ແກ້ໂດຍ",
+    t_close: "ປິດ", t_blank: "(ຫວ່າງ)",
+    fields: { ts: "ວັນທີ", name: "ລາຍການ", cat: "ໝວດໝູ່", method: "ຊ່ອງທາງ",
+              method_to: "ໂອນໄປຫາ", void: "ສະຖານະ", slip: "ໃບບິນ",
+              kind: "ປະເພດ", amt: "ຈຳນວນເງິນ", code: "ສະກຸນເງິນ", flag: "ລາຍການປະຈຳ", who: "ບັນຊີ" },
+    t_kindXfer: "ໂອນລະຫວ່າງຊ່ອງທາງ", t_kindOpen: "ຍອດຍົກມາ", t_to: "ໄປຫາ",
+    t_needTo: "ເລືອກຊ່ອງທາງປາຍທາງທີ່ບໍ່ແມ່ນຊ່ອງທາງເດີມ",
+    t_xferNote: "ຍ້າຍເງິນລະຫວ່າງຊ່ອງທາງ ເຊັ່ນ ຖອນ ATM (ໂອນ → ເງິນສົດ) ຫຼືຈ່າຍບັດ (ໂອນ → ບັດ) ບໍ່ນັບເປັນລາຍຮັບຫຼືລາຍຈ່າຍ",
+    t_openNote: "ເງິນຕັ້ງຕົ້ນທີ່ມີຢູ່ກ່ອນເລີ່ມໃຊ້ປຶ້ມນີ້ ໃສ່ຄັ້ງດຽວຕໍ່ຊ່ອງທາງ ບໍ່ນັບເປັນລາຍຮັບຂອງເດືອນໃດ",
+    t_dupOpening: "{m} · {c} ມີຍອດຍົກມາຢູ່ແລ້ວ ({v}) — ກົດແກ້ຍອດເດີມແທນ ຫຼື ຍົກເລີກແຖວເກົ່າກ່ອນ",
+    t_viewCur: "ກຣາຟແລະ % ຄິດສະເພາະສະກຸນ", t_otherCur: "ອີກ {n} ລາຍການເປັນສະກຸນອື່ນ ບໍ່ລວມໃນໜ້ານີ້",
+    t_breakCur: "ແຖບແຍກໝວດຄິດສະເພາະສະກຸນ {c} — ອີກ {n} ລາຍການເປັນສະກຸນອື່ນ ສ່ວນຍອດລວມຫົວກາດລວມທຸກສະກຸນ",
+    t_catsOffline: "ຍັງແກ້ໝວດໝູ່ບໍ່ໄດ້ — ຕາຕະລາງ cats ຍັງບໍ່ມີໃນຖານຂໍ້ມູນ",
+    t_catsAdminOnly: "ສະເພາະບັນຊີຫຼັກທີ່ແກ້ໝວດໝູ່ໄດ້ · ທຸກຄົນເຫັນຊຸດດຽວກັນ",
+    t_balTitle: "ຍອດຄົງເຫຼືອແຍກຊ່ອງທາງ",
+    t_balCash: "ເງິນສົດຄົງເຫຼືອ", t_balBank: "ເງິນໃນບັນຊີ", t_balCard: "ຍອດຄ້າງບັດ",
+    t_balCardNote: "ໜີ້ທີ່ຕ້ອງຈ່າຍ ບໍ່ແມ່ນເງິນຄົງເຫຼືອ",
+    t_balReal: "ສະສົມຈາກຍອດຍົກມາເຖິງມື້ນີ້",
+    t_balNoOpening: "ຍັງບໍ່ໄດ້ໃສ່ຍອດຍົກມາ — ນີ້ແມ່ນຍອດຕັ້ງແຕ່ມື້ທຳອິດທີ່ບັນທຶກ ບໍ່ແມ່ນເງິນຈິງໃນກະເປົາ",
+    t_balLater: "ອີກ {n} ລາຍການລົງວັນໄວ້ລ່ວງໜ້າ ຍັງບໍ່ນັບໃນຍອດນີ້ — ເງິນຍັງບໍ່ເຂົ້າອອກຈິງ",
+    t_void: "ຍົກເລີກ", t_confirmVoid: "ຢືນຢັນຍົກເລີກ", t_restore: "ກູ້ຄືນ",
+    t_notVoid: "ບໍ່ຍົກເລີກ", t_voidedBy: "ຍົກເລີກໂດຍ",
+    t_voidTitle: "ຍົກເລີກລາຍການ", t_reasonPh: "ເຫດຜົນທີ່ຍົກເລີກ ເຊັ່ນ ບັນທຶກຊ້ຳ / ພິມຜິດ / ຍົກເລີກການຊື້",
+    t_needReason: "ຕ້ອງລະບຸເຫດຜົນທີ່ຍົກເລີກກ່ອນ",
+    t_acctNote: "ລະຫັດຜ່ານແລະສິດ admin/member ແກ້ທີ່ Supabase ເທົ່ານັ້ນ — ແກ້ຈາກໜ້ານີ້ບໍ່ໄດ້",
+    t_edit: "ແກ້", t_del: "ລຶບ", t_confirmDel: "ຢືນຢັນ?", t_cancel: "ຍົກເລີກ",
+    t_editing: "ກຳລັງແກ້ໄຂລາຍການ", t_saveEdit: "ບັນທຶກການແກ້ໄຂ",
+    t_lockedAcct: "ບັນທຶກໃນຊື່ບັນຊີຂອງທ່ານເທົ່ານັ້ນ", t_adminOnly: "ສະເພາະບັນຊີຫຼັກ",
+    t_drop: "", t_pick: "ເລືອກໄຟລ໌ຈາກເຄື່ອງ", t_fileNote: "JPG / PNG / PDF · ບໍ່ເກີນ 5 MB",
+    t_slipHas: "ແນບໄຟລ໌ແລ້ວ · ກົດເພື່ອປ່ຽນໄຟລ໌", t_slipClear: "ເອົາໄຟລ໌ທີ່ເລືອກອອກ",
+    t_slipType: "ຮັບສະເພາະໄຟລ໌ JPG · PNG · PDF", t_slipBig: "ໄຟລ໌ໃຫຍ່ເກີນ 5 MB",
+    t_slipOpen: "ໃບບິນ",
+    t_slipWait: "ກຳລັງເປີດໃບບິນ…",
+    t_slipTitle: "ໃບບິນທີ່ແນບໄວ້",
+    t_slipOffline: "ຍັງແນບໃບບິນບໍ່ໄດ້",
+    t_slipOfflineNote: "ຕ້ອງແລ່ນ upgrade_v4.sql ໃນ Supabase ກ່ອນ (ສ່ວນອື່ນໃຊ້ໄດ້ຕາມປົກກະຕິ)",
+    t_slipNoBucket: "ຍັງບໍ່ມີບ່ອນເກັບໄຟລ໌ — ແລ່ນ upgrade_v4.sql ໃຫ້ຜ່ານຂໍ້ 2 ແລະ 3 ກ່ອນ (ລາຍການຍັງບໍ່ຖືກບັນທຶກ)",
+    t_slipDenied: "ບໍ່ມີສິດອັບໄຟລ໌ — ແລ່ນ upgrade_v4.sql ໃຫ້ຜ່ານຂໍ້ 3 ກ່ອນ (ລາຍການຍັງບໍ່ຖືກບັນທຶກ)",
+    t_repeatM: "ເຮັດຄືນທຸກເດືອນ", t_todayDate: "28 ກັນຍາ 2569",
+    t_mKicker: "ມືຖື / Mobile", t_mTitle: "ສາມໜ້າຫຼັກເທິງມືຖື",
+    t_mNote: "ພາບຕົວຢ່າງການອອກແບບ ກົດໃຊ້ງານຈາກໜ້ານີ້ບໍ່ໄດ້ — ໃຊ້ຈິງເປີດເວັບນີ້ເທິງມືຖືໄດ້ເລີຍ ທຸກໜ້າຮອງຮັບຈໍນ້ອຍຢູ່ແລ້ວ (ເຄື່ອງກາງ \"ພາບລວມເດືອນ\" ໃຊ້ຕົວເລກຈິງຂອງທ່ານ)",
+    t_mCap1: "ເຂົ້າສູ່ລະບົບ", t_mCap2: "ພາບລວມເດືອນ", t_mCap3: "ບັນທຶກຂໍ້ມູນແບບໄວ",
+    t_sampleNote: "ຊື້ເຄື່ອງເຂົ້າເຮືອນ",
+    t_keepThb: "ເກັບຄ່າເປັນເງິນບາດ", t_keepNative: "ເກັບຄ່າເປັນສະກຸນ", t_inThb: "ບັນທຶກເປັນເງິນບາດ",
+    t_repOff: "ປິດຢູ່", t_repOn: "ຈະສ້າງຄືນໃຫ້ເອງທຸກເດືອນ ວັນດຽວກັບລາຍການນີ້",
+    t_recurMade: "ເຕີມລາຍການປະຈຳທີ່ຄ້າງໃຫ້ແລ້ວ {n} ລາຍການ",
+    t_notePh: "ຕົວຢ່າງ ຊື້ເຄື່ອງເຂົ້າເຮືອນ",
+    t_needAmount: "ໃສ່ຈຳນວນເງິນກ່ອນບັນທຶກ", t_needAcct: "ເລືອກບັນຊີກ່ອນບັນທຶກ",
+    t_savedOk: "ບັນທຶກແລ້ວ", t_toAcct: "ບັນຊີ", t_goalYear: "ເປົ້າໝາຍທັງປີ",
+    t_settings: "ຕັ້ງຄ່າ", t_setKicker: "ຕັ້ງຄ່າ / Settings", t_setTitle: "ໝວດ ແລະ ບັນຊີ",
+    t_catPanel: "ໝວດ", t_acctPanel: "ບັນຊີ",
+    t_addCat: "+ ເພີ່ມໝວດ", t_addAcct: "+ ເພີ່ມບັນຊີ", t_del: "ລຶບ",
+    t_colTh: "ຊື່ພາສາໄທ", t_colLo: "ຊື່ພາສາລາວ", t_colName: "ຊື່ບັນຊີ", t_colRole: "ຄຳອະທິບາຍ", t_colCur: "ສະກຸນຫຼັກ", t_colPin: "PIN 6 ຫຼັກ",
+    t_newCat: "ໝວດໃໝ່", t_newAcct: "ບັນຊີໃໝ່", t_newRole: "ບັນຊີສ່ວນຕົວ",
+    t_setNote: "ໝວດໝູ່ບັນທຶກລົງຖານຂໍ້ມູນຈິງ ທຸກຄົນເຫັນຊຸດດຽວກັນ · ສ່ວນບັນຊີແກ້ໄດ້ແຕ່ການສະແດງຜົນເທິງເຄື່ອງນີ້ ຊື່ຕົວຈິງຢູ່ໃນຕາຕະລາງ profiles ທີ່ Supabase — ປ່ຽນຊື່ບັນຊີຢູ່ນີ້ແລ້ວບັນທຶກລາຍການບໍ່ໄດ້",
+    t_typeLabel: "ປະເພດ / Type", t_periodLabel: "ຊ່ວງເວລາ / Period",
+    t_pMonth: "ເດືອນນີ້", t_pYear: "ປີນີ້", t_pAll: "ທັງໝົດ",
+    t_pMonthTitle: "ກັນຍາ 2569", t_pYearTitle: "ປີ 2569", t_pAllTitle: "ທຸກຊ່ວງເວລາ",
+    t_breakInc: "ລາຍຮັບ · ແຍກຕາມໝວດ", t_breakExp: "ລາຍຈ່າຍ · ແຍກຕາມໝວດ", t_net: "ຍອດເຫຼືອສຸດທິ",
+    t_list: "ລາຍການທັງໝົດ", t_listKicker: "ລາຍການທັງໝົດ / All transactions",
+    t_typeAll: "ທັງໝົດ", t_found: "ພົບ", t_items: "ລາຍການ",
+    t_sumInc: "ລວມລາຍຮັບ", t_sumExp: "ລວມລາຍຈ່າຍ", t_empty: "ບໍ່ພົບລາຍການຕາມເງື່ອນໄຂທີ່ເລືອກ",
+    t_entered: "ໃສ່ແລ້ວ", t_of6: "/ 6 ຫຼັກ",
+    t_peakWhy: "ບຸນປີໃໝ່ + ຄ່າຮຽນ",
+    curNames: { THB: "ບາດ", USD: "ໂດລາສະຫະລັດ", KIP: "ກີບລາວ" },
+    t_hello: "ສະບາຍດີ", t_saveShort: "ບັນທຶກ", t_family: "ປິ່ນ + ຕົ້ນ",
+    pinOwn: "ເລືອກບັນຊີແລ້ວໃສ່ລະຫັດຜ່ານ",
+  },
+};
+
+// ภาษาที่กำลังใช้ — ชั้นต่อฐานข้อมูลอยู่นอกคอมโพเนนต์ จึงหยิบ this.L ไม่ได้
+// คอมโพเนนต์ตั้งค่านี้ให้ทุกครั้งที่อ่าน L (ดู get L()) ข้อความ error จึงตามภาษาที่เลือกได้
+let LANG = "th";
+const STR = (k) => ((T[LANG] || T.th)[k] || k);
+
+const ACC = "#5980a6", DARK = "#1d2d3d", INK = "#1d1f20", MUTED = "#5d5d60";
+
+const CFG = window.LEDGER_CONFIG || {};
+
+const CHIPS = ["อาหาร", "ที่อยู่อาศัย", "เดินทาง", "ลูก", "ของใช้ในบ้าน", "สุขภาพ", "บันเทิง", "อื่น ๆ"];
+const METHODS = ["เงินสด", "โอน", "บัตร"];
+const KINDS = ["expense", "income", "transfer", "opening"];
+const KIND_LABEL = (L) => ({
+  expense: L.t_kindExp, income: L.t_kindInc, transfer: L.t_kindXfer, opening: L.t_kindOpen,
+});
+// ไม่มีช่อง rate โดยตั้งใจ — ระบบนี้ไม่แปลงค่าเงินข้ามสกุลเลย
+// เงินคนละสกุลคือคนละก้อน บวกกันไม่ได้ ยอดรวมจึงแยกตามสกุลเสมอ
+// ส่วนกราฟกับ % ที่ต้องมีฐานเดียวกัน จะคิดทีละสกุลตามที่เลือกบนหน้าจอ
+const CURRENCIES = (Array.isArray(CFG.CURRENCIES) && CFG.CURRENCIES.length ? CFG.CURRENCIES : [
+  { code: "KIP", sym: "₭", dp: 0, name: "กีบลาว" },
+  { code: "THB", sym: "฿", dp: 0, name: "บาท" },
+  { code: "USD", sym: "$", dp: 2, name: "ดอลลาร์สหรัฐ" },
+]);
+const CODES = CURRENCIES.map((c) => c.code);
+const cur = (code) => CURRENCIES.find((c) => c.code === code) || CURRENCIES[0];
+const raw = (n, code) => {
+  const c = cur(code), a = Math.abs(n);
+  const short = a >= 1e9 ? (a / 1e9).toFixed(2) + "B" : a >= 1e6 ? (a / 1e6).toFixed(2) + "M"
+    : a.toLocaleString("en-US", { minimumFractionDigits: c.dp, maximumFractionDigits: c.dp });
+  return (n < 0 ? "−" : "") + c.sym + short;
+};
+
+// รายชื่อบัญชีสำหรับหน้า login — ไม่มีรหัสผ่านในโค้ดอีกต่อไป
+// ชื่อจริงกับสิทธิ์ admin/member อ่านจากตาราง profiles หลังล็อกอินสำเร็จ
+const ACCOUNTS = (CFG.ACCOUNTS && CFG.ACCOUNTS.length ? CFG.ACCOUNTS : [
+  { id: "pin", name: "ปิ่น", role: "บัญชีส่วนตัว", email: "pin@homeledger.local" },
+  { id: "ton", name: "ต้น", role: "บัญชีส่วนตัว", email: "ton@homeledger.local" },
+  { id: "home", name: "บ้านเรา", role: "บัญชีกลางของบ้าน", email: "home@homeledger.local" },
+]).map((a) => ({ code: CODES[0], ...a }));
+const MEMBERS = ACCOUNTS.map((a) => a.name);
+
+const CAT_SEED = [
+  { th: "อาหาร", lo: "ອາຫານ" },
+  { th: "ที่อยู่อาศัย", lo: "ທີ່ຢູ່ອາໄສ" },
+  { th: "เดินทาง", lo: "ການເດີນທາງ" },
+  { th: "ลูก", lo: "ລູກ" },
+  { th: "ของใช้ในบ้าน", lo: "ເຄື່ອງໃຊ້ໃນເຮືອນ" },
+  { th: "สุขภาพ", lo: "ສຸຂະພາບ" },
+  { th: "บันเทิง", lo: "ບັນເທິງ" },
+  { th: "อื่น ๆ", lo: "ອື່ນໆ" },
+];
+const ACCT_SEED = ACCOUNTS.map((a) => ({
+  id: a.id, name: a.name, code: a.code, email: a.email,
+  roleTh: a.role, roleLo: { pin: "ບັນຊີສ່ວນຕົວ", ton: "ບັນຊີສ່ວນຕົວ", home: "ບັນຊີກາງຂອງບ້ານ" }[a.id] || a.role,
+}));
+
+const APP_NAME = CFG.APP_NAME || "บ้านเรา · Home Ledger";
+
+// เป้างบประมาณต่อเดือน (หน่วยเป็นบาท) — ยอดที่ใช้จริงคำนวณจากรายการใน DB
+// แก้ได้ที่ config.js · รับทั้งรูปแบบใหม่ {cat,limit} และแบบเก่า ["ชื่อ", จำนวน]
+const SAVE_GOAL = "เป้าหมายออม";
+const BUDGET_TARGETS = (Array.isArray(CFG.BUDGETS) ? CFG.BUDGETS : [])
+  .map((b) => (Array.isArray(b) ? { cat: b[0], limit: b[1] } : b))
+  .filter((b) => b && b.cat)
+  .map((b) => ({ ...b, code: b.code || CODES[0] }));
+
+// เป้าเงินเก็บทั้งปี — ผูกกับสกุลเงินตรง ๆ ไม่แปลงค่า
+const YG = CFG.YEAR_GOAL;
+const YEAR_GOAL = typeof YG === "object" && YG
+  ? { amount: Number(YG.amount) || 0, code: YG.code || CODES[0] }
+  : { amount: Number(YG) || 0, code: CODES[0] };
+
+// ───────────────── Supabase (Auth + REST) ─────────────────
+const DB_ON = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY
+  && CFG.SUPABASE_URL.indexOf("PASTE_") < 0 && CFG.SUPABASE_ANON_KEY.indexOf("PASTE_") < 0);
+
+const ORIGIN = () => String(CFG.SUPABASE_URL).replace(/\/+$/, "");
+const REST = (t) => ORIGIN() + "/rest/v1/" + t;
+const SESS_KEY = "homeledger.session";
+
+// session = { access_token, refresh_token, expires_at }
+let SESSION = null;
+try { SESSION = JSON.parse(localStorage.getItem(SESS_KEY) || "null"); } catch (e) { SESSION = null; }
+
+const saveSession = (s) => {
+  SESSION = s;
+  try { s ? localStorage.setItem(SESS_KEY, JSON.stringify(s)) : localStorage.removeItem(SESS_KEY); } catch (e) {}
+};
+
+const packSession = (j) => ({
+  access_token: j.access_token,
+  refresh_token: j.refresh_token,
+  expires_at: Date.now() + (Number(j.expires_in) || 3600) * 1000 - 60000, // เผื่อ 1 นาที
+});
+
+const authFail = async (r) => {
+  let m = "";
+  try { const j = await r.json(); m = j.error_description || j.msg || j.message || ""; } catch (e) {}
+  if (r.status === 400 || r.status === 401) throw new Error("รหัสผ่านไม่ถูกต้อง");
+  throw new Error("เข้าสู่ระบบไม่สำเร็จ (HTTP " + r.status + (m ? " · " + m : "") + ")");
+};
+
+let refreshing = null;   // สายต่ออายุ token ที่กำลังทำงานอยู่ (ดู AUTH.refresh)
+
+const AUTH = {
+  async signIn(email, password) {
+    const r = await fetch(ORIGIN() + "/auth/v1/token?grant_type=password", {
+      method: "POST",
+      headers: { apikey: CFG.SUPABASE_ANON_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!r.ok) await authFail(r);
+    saveSession(packSession(await r.json()));
+  },
+  // ต่ออายุ token ได้ทีละสายเท่านั้น — refresh_token ของ Supabase ใช้แล้วหมุนตัวใหม่ทันที
+  // load() ยิง list/edits/cats พร้อมกัน 3 สาย (แล้ว listAll ยังยิงซ้ำอีกหลายหน้า)
+  // ถ้า token หมดอายุพอดี ทุกสายจะแย่งกันต่ออายุด้วย refresh_token ตัวเดียวกัน
+  // สายที่ช้าจะถือ token ที่ถูกหมุนทิ้งไปแล้ว แล้วเด้งออกจากระบบทั้งที่เพิ่งต่ออายุสำเร็จ
+  // รวมเป็นสายเดียว ใครมาทีหลังรอผลของสายแรก — ประหยัด request ไปด้วยในตัว
+  refresh() {
+    if (refreshing) return refreshing;
+    refreshing = (async () => {
+      // finally ทำงานก่อน promise จะ settle — ปลดล็อกจากข้างนอกด้วย .then() จะช้าไปหนึ่ง microtask
+      // แล้วคนที่เรียกซ้ำทันทีหลัง await จะได้ promise เก่าที่จบไปแล้วคืนไป โดยไม่ได้ต่ออายุจริง
+      try {
+        if (!SESSION || !SESSION.refresh_token) throw new Error("หมดเวลาเข้าสู่ระบบ");
+        const r = await fetch(ORIGIN() + "/auth/v1/token?grant_type=refresh_token", {
+          method: "POST",
+          headers: { apikey: CFG.SUPABASE_ANON_KEY, "Content-Type": "application/json" },
+          body: JSON.stringify({ refresh_token: SESSION.refresh_token }),
+        });
+        if (!r.ok) { saveSession(null); throw new Error("หมดเวลาเข้าสู่ระบบ กรุณาเข้าใหม่"); }
+        saveSession(packSession(await r.json()));
+      } finally {
+        refreshing = null;
+      }
+    })();
+    return refreshing;
+  },
+  async signOut() {
+    const s = SESSION;
+    saveSession(null);
+    if (!s) return;
+    try {
+      await fetch(ORIGIN() + "/auth/v1/logout", {
+        method: "POST",
+        headers: { apikey: CFG.SUPABASE_ANON_KEY, Authorization: "Bearer " + s.access_token },
+      });
+    } catch (e) {}
+  },
+  get signedIn() { return !!(SESSION && SESSION.access_token); },
+};
+
+const dbFail = async (r, what) => {
+  let detail = "", code = "";
+  try { const j = (await r.json()) || {}; detail = j.message || ""; code = j.code || ""; } catch (e) {}
+  if (r.status === 401) throw new Error("หมดเวลาเข้าสู่ระบบ กรุณาเข้าใหม่");
+  if (r.status === 403) throw new Error("บัญชีนี้ไม่มีสิทธิ์ทำรายการนี้");
+  // ยอดยกมาซ้ำ — ฐานข้อมูลกันไว้ให้ช่องทางละ 1 แถว (fix_opening_dup.sql)
+  if (code === "23505" && detail.indexOf("txns_opening_unique") >= 0)
+    throw new Error("ช่องทางนี้มียอดยกมาที่ใช้อยู่แล้ว — ต้องเหลือช่องทางละ 1 แถว");
+  // ชื่อบัญชีไม่มีใน profiles — เช่น แก้ชื่อในหน้าตั้งค่าซึ่งเปลี่ยนแค่ที่เครื่องนี้ (fix_who_fk.sql)
+  if (code === "23503" && detail.indexOf("txns_who_fkey") >= 0)
+    throw new Error("ไม่มีบัญชีชื่อนี้ในฐานข้อมูล — ชื่อบัญชีตัวจริงอยู่ในตาราง profiles ที่ Supabase แก้จากหน้าตั้งค่าไม่ได้");
+  throw new Error(what + " (HTTP " + r.status + (detail ? " · " + detail : "") + ")");
+};
+
+// ยิง REST ด้วย token ของผู้ใช้ — เจอ 401 ก็ต่ออายุ token แล้วลองใหม่หนึ่งครั้ง
+const call = async (url, opts, what) => {
+  if (!AUTH.signedIn) throw new Error("ยังไม่ได้เข้าสู่ระบบ");
+  if (SESSION.expires_at && Date.now() > SESSION.expires_at) await AUTH.refresh();
+  const go = () => fetch(url, {
+    ...opts,
+    headers: {
+      apikey: CFG.SUPABASE_ANON_KEY,
+      Authorization: "Bearer " + SESSION.access_token,
+      "Content-Type": "application/json",
+      ...(opts && opts.headers),
+    },
+  });
+  let r = await go();
+  if (r.status === 401) { await AUTH.refresh(); r = await go(); }
+  if (!r.ok) await dbFail(r, what);
+  return r;
+};
+
+// PostgREST ตัดผลลัพธ์เงียบ ๆ ที่เพดาน Max rows ของโปรเจกต์ (ค่าเริ่มต้น Supabase = 1,000)
+// ดึงรวดเดียวจึงใช้ไม่ได้ — พอรายการเกินเพดาน ยอดรวมจะขาดไปโดยไม่มีอะไรฟ้องสักตัว
+// วนขอทีละหน้าจนกว่าจะได้หน้าว่าง แล้วค่อยหยุด (ไม่เดาว่าเพดานจริงเท่าไหร่)
+//
+// offset นับจากจำนวนที่ได้มาแล้วจริง ไม่ใช่ขนาดหน้าที่ขอไป
+// เพดานฝั่งเซิร์ฟเวอร์จะต่ำกว่าที่ขอแค่ไหนก็ยังไล่ได้ครบ
+const PAGE = 1000;
+const MAX_PAGES = 500;   // กันวนไม่รู้จบถ้าเซิร์ฟเวอร์ตอบผิดรูป
+
+const listAll = async (path, what) => {
+  const out = [];
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const r = await call(path + "&limit=" + PAGE + "&offset=" + out.length, {}, what);
+    const chunk = await r.json();
+    if (!Array.isArray(chunk) || !chunk.length) return out;
+    out.push(...chunk);
+  }
+  throw new Error("ข้อมูลมากเกินกว่าที่หน้านี้จะโหลดไหว");
+};
+
+// ───── สลิป — ไฟล์อยู่ใน Supabase Storage ถัง "slips" ที่ไม่เปิดสาธารณะ ─────
+// ฐานข้อมูลเก็บแค่ path ส่วนตัวไฟล์อยู่ในถัง (upgrade_v4.sql)
+// ตรวจขนาด/ชนิดที่นี่เพื่อบอกผู้ใช้เป็นภาษาคน ส่วนถังก็บังคับซ้ำอีกชั้นอยู่แล้ว
+const SLIP_MAX = 5 * 1024 * 1024;
+const SLIP_EXT = { "image/jpeg": "jpg", "image/png": "png", "application/pdf": "pdf" };
+
+// ภาพเปล่า 1×1 — ใส่ให้ <img> ตอนยังไม่มีลิงก์ ถ้าปล่อย src ว่างเบราว์เซอร์จะยิงโหลดหน้าตัวเองซ้ำ
+const BLANK_PX = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+
+// เหมือน call() แต่ไม่บังคับ Content-Type เป็น JSON — ใช้ยิง Storage ที่ส่งตัวไฟล์ดิบ
+const callRaw = async (url, opts, what) => {
+  if (!AUTH.signedIn) throw new Error("ยังไม่ได้เข้าสู่ระบบ");
+  if (SESSION.expires_at && Date.now() > SESSION.expires_at) await AUTH.refresh();
+  const go = () => fetch(url, {
+    ...opts,
+    headers: {
+      apikey: CFG.SUPABASE_ANON_KEY,
+      Authorization: "Bearer " + SESSION.access_token,
+      ...(opts && opts.headers),
+    },
+  });
+  let r = await go();
+  if (r.status === 401) { await AUTH.refresh(); r = await go(); }
+  if (!r.ok) await storageFail(r, what);
+  return r;
+};
+
+// Storage ตอบคนละรูปแบบกับ PostgREST และข้อความดิบอ่านไม่รู้เรื่อง
+// สองเคสที่เจอจริงคือ "ยังไม่ได้สร้างถัง" กับ "ยังไม่ได้ตั้ง policy" — บอกให้ตรงว่าต้องไปทำอะไร
+const storageFail = async (r, what) => {
+  let detail = "", code = "";
+  try { const j = (await r.json()) || {}; detail = j.message || j.error || ""; code = j.code || ""; } catch (e) {}
+  if (r.status === 401 && !detail) throw new Error("หมดเวลาเข้าสู่ระบบ กรุณาเข้าใหม่");
+  if (code === "NoSuchBucket" || /bucket not found/i.test(detail)) throw new Error(STR("t_slipNoBucket"));
+  if (r.status === 403 || /row-level security|unauthorized|permission/i.test(detail)) throw new Error(STR("t_slipDenied"));
+  throw new Error(what + " (HTTP " + r.status + (detail ? " · " + detail : "") + ")");
+};
+
+const DB = {
+  async me() {
+    const r = await call(REST("profiles") + "?select=name,role,code", {}, "โหลดโปรไฟล์ไม่สำเร็จ");
+    return r.json();
+  },
+  // ลำดับต้องนิ่งข้ามหน้า ไม่งั้นแถวจะซ้ำหรือหายตรงรอยต่อ — ปิดท้ายด้วย id ที่ไม่ซ้ำเสมอ
+  async list() {
+    return listAll(REST("txns") + "?select=*&order=ts.desc,id.desc", "โหลดข้อมูลไม่สำเร็จ");
+  },
+  async edits() {
+    return listAll(REST("txn_edits") + "?select=*&order=edited_at.desc,id.desc", "โหลดประวัติไม่สำเร็จ");
+  },
+  async insert(row) {
+    await call(REST("txns"), { method: "POST", body: JSON.stringify(row) }, "บันทึกไม่สำเร็จ");
+  },
+  async update(id, patch) {
+    await call(REST("txns") + "?id=eq." + encodeURIComponent(id),
+      { method: "PATCH", body: JSON.stringify(patch) }, "แก้ไขไม่สำเร็จ");
+  },
+  // เติมรายการประจำที่ยังขาดของทุกเดือนจนถึงเดือนนี้ — ฐานข้อมูลกันซ้ำให้เอง
+  async runRecurring() {
+    const r = await call(REST("rpc/run_recurring"),
+      { method: "POST", body: "{}" }, "สร้างรายการประจำไม่สำเร็จ");
+    return Number(await r.json()) || 0;
+  },
+
+  // ───── หมวดหมู่ — เก็บในฐานข้อมูล ทุกคนเห็นชุดเดียวกัน ─────
+  async cats() {
+    const r = await call(REST("cats") + "?select=*&order=sort.asc,id.asc", {}, "โหลดหมวดหมู่ไม่สำเร็จ");
+    return r.json();
+  },
+  async catAdd(row) {
+    const r = await call(REST("cats"), {
+      method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(row),
+    }, "เพิ่มหมวดหมู่ไม่สำเร็จ");
+    return r.json();
+  },
+  async catSave(id, patch) {
+    await call(REST("cats") + "?id=eq." + encodeURIComponent(id),
+      { method: "PATCH", body: JSON.stringify(patch) }, "แก้หมวดหมู่ไม่สำเร็จ");
+  },
+  async catDel(id) {
+    await call(REST("cats") + "?id=eq." + encodeURIComponent(id), { method: "DELETE" }, "ลบหมวดหมู่ไม่สำเร็จ");
+  },
+
+  // ───── สลิป ─────
+  // ตรวจว่ารัน upgrade_v4.sql แล้วหรือยัง — ถ้ายังไม่มีคอลัมน์ slip จะได้ 400 กลับมา
+  // ต้องรู้ก่อน ไม่งั้นจะเผลอส่งช่องที่ฐานข้อมูลไม่รู้จักไปพร้อมทุกการบันทึก แล้วพังทั้งระบบ
+  async slipReady() {
+    await call(REST("txns") + "?select=slip&limit=1", {}, "ตรวจคอลัมน์สลิปไม่สำเร็จ");
+    return true;
+  },
+  // อัปก่อนบันทึกแถว เพราะตอนนั้นยังไม่มี id ให้ตั้งชื่อไฟล์ — ใช้ชื่อสุ่มแทน
+  // แยกโฟลเดอร์ตามเดือนไว้ให้หาง่ายเวลาเข้าไปดูใน dashboard
+  async slipUpload(file) {
+    if (!file) return "";
+    const ext = SLIP_EXT[file.type];
+    if (!ext) throw new Error("รับเฉพาะไฟล์ JPG · PNG · PDF");
+    if (file.size > SLIP_MAX) throw new Error("ไฟล์ใหญ่เกิน 5 MB");
+    if (!file) return "";
+    const rnd = (self.crypto && self.crypto.randomUUID)
+      ? self.crypto.randomUUID()
+      : Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    const path = new Date().toISOString().slice(0, 7) + "/" + rnd + "." + ext;
+    await callRaw(ORIGIN() + "/storage/v1/object/slips/" + path, {
+      method: "POST",
+      headers: { "Content-Type": file.type, "x-upsert": "false" },
+      body: file,
+    }, "อัปโหลดสลิปไม่สำเร็จ");
+    return path;
+  },
+  // ถังไม่เปิดสาธารณะ จึงไม่มีลิงก์ถาวร ต้องขอลิงก์ชั่วคราวทุกครั้งที่จะเปิดดู
+  async slipUrl(path) {
+    const r = await callRaw(ORIGIN() + "/storage/v1/object/sign/slips/" + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ expiresIn: 3600 }),
+    }, "เปิดสลิปไม่สำเร็จ");
+    const j = await r.json();
+    const signed = j.signedURL || j.signedUrl || "";
+    if (!signed) throw new Error("เปิดสลิปไม่สำเร็จ — ไม่ได้ลิงก์กลับมา");
+    return ORIGIN() + "/storage/v1" + signed;
+  },
+
+  // ยกเลิก / กู้คืน — ไม่ลบทิ้ง แถวยังอยู่ ประวัติการแก้ไขจึงไม่หาย
+  // ส่งแค่ void_at ไป ฐานข้อมูลเขียน "ใครยกเลิก เมื่อไหร่" เองด้วย trigger
+  async setVoid(id, on, reason) {
+    const patch = on
+      ? { void_at: new Date().toISOString(), void_reason: reason || "" }
+      : { void_at: null };
+    await call(REST("txns") + "?id=eq." + encodeURIComponent(id),
+      { method: "PATCH", body: JSON.stringify(patch) },
+      on ? "ยกเลิกรายการไม่สำเร็จ" : "กู้คืนรายการไม่สำเร็จ");
+  },
+};
+
+// ───────────────── วันที่ / ปฏิทินไทย ─────────────────
+const M_ABBR = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+const pad2 = (n) => String(n).padStart(2, "0");
+const iso = (d) => d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+const TODAY = new Date();
+const TODAY_ISO = iso(TODAY);
+const NOW_M = TODAY.getMonth() + 1;
+const NOW_Y = TODAY.getFullYear() + 543;
+const daysInMonth = (m, yBE) => new Date(yBE - 543, m, 0).getDate();
+
+// แปลงแถวจาก DB → รูปแบบที่หน้าเว็บใช้
+const fromDb = (r) => {
+  const p = String(r.ts).slice(0, 10).split("-");
+  const yAD = Number(p[0]), mo = Number(p[1]), day = Number(p[2]);
+  const val = Number(r.amt) || 0;
+  return {
+    id: r.id, ts: String(r.ts).slice(0, 10),
+    month: mo, year: yAD + 543, day,
+    date: pad2(day) + " " + M_ABBR[mo - 1] + " " + String(yAD + 543).slice(-2),
+    name: r.name || "", cat: r.cat || "", method: r.method || "", who: r.who || "",
+    methodTo: r.method_to || "",
+    voidAt: r.void_at || null, voidBy: r.void_by || "", voidReason: r.void_reason || "",
+    slip: r.slip || "",
+    kind: r.kind, val, code: r.code || "THB", flag: r.flag || "",
+    amount: (SIGN_OF[r.kind] || "−") + val.toLocaleString("en-US"),
+  };
+};
+
+// income/opening เข้ากระเป๋า · expense ออก · transfer ย้ายที่ ไม่เข้าไม่ออก
+const SIGN_OF = { income: "+", opening: "+", expense: "−", transfer: "→" };
+
+const acctCode = (name) => (ACCOUNTS.find((a) => a.name === name) || {}).code || CODES[0];
+
+class Component extends DCLogic {
+  state = {
+    screen: null,
+    pw: "",
+    loginId: ACCOUNTS[0] ? ACCOUNTS[0].id : "pin",
+    meId: null,
+    meRole: "member",
+    acct: "",
+    pinErr: "",
+    signing: false,
+    filter: "ทุกบัญชี",
+    entryCode: null,
+    lang: null,
+    kindFilter: "all",
+    period: "month",
+    kind: "expense",
+    // ค่าตั้งต้นอ่านจาก config.js ไม่ตรึงชื่อไว้ — เปลี่ยนชุดบัญชีแล้วยังทำงานได้
+    cat: CAT_SEED[0] ? CAT_SEED[0].th : "",
+    method: METHODS[0],
+    methodTo: "",
+    voidReason: "",
+    voidErr: "",
+    viewCode: null,          // สกุลเงินที่หน้าเดือน/หน้าปีกำลังวิเคราะห์ (null = ใช้ของบัญชีตัวเอง)
+    who: MEMBERS[0] || "",
+    amount: "",
+    note: "",
+    date: TODAY_ISO,
+    repeat: false,
+    saved: "",
+    editId: null,
+    pendingDel: null,
+    edits: [],
+    historyId: null,
+    slipViewId: null,        // รายการที่กำลังเปิดดูสลิปอยู่ (null = ไม่ได้เปิด)
+    slipViewUrl: "",         // ลิงก์ชั่วคราวของใบที่เปิดอยู่ ปิดแผงแล้วทิ้งทันที
+    slipViewErr: "",
+    slipViewBusy: false,
+    slipViewPdf: false,
+    busy: false,
+    loading: true,
+    dbErr: "",
+    vMonth: NOW_M,
+    vYear: NOW_Y,
+    txns: [],
+    cats: CAT_SEED,
+    catsLive: false,         // true = อ่านมาจากตาราง cats จริง แก้แล้วบันทึกได้
+    accts: ACCT_SEED,
+    slipFile: null,          // ไฟล์ที่เพิ่งเลือก ยังไม่ได้อัป (อัปตอนกดบันทึก)
+    slipPath: "",            // สลิปที่แนบอยู่แล้วของรายการที่กำลังแก้
+    slipErr: "",
+    slipLive: false,         // true = รัน upgrade_v4.sql แล้ว แนบสลิปได้จริง
+  };
+
+  componentDidMount() {
+    if (!DB_ON) {
+      return this.setState({ loading: false, dbErr: "ยังไม่ได้ตั้งค่า Supabase — เปิดไฟล์ config.js แล้วใส่ URL กับ key" });
+    }
+    // มี session ค้างอยู่ก็เข้าต่อได้เลย ไม่ต้องล็อกอินซ้ำ
+    if (AUTH.signedIn) this.resume();
+    else this.setState({ loading: false, screen: "login" });
+  }
+
+  // สิทธิ์มาจากตาราง profiles ในฐานข้อมูล ไม่ใช่จากโค้ดหน้าเว็บ
+  get isAdmin() { return this.state.meRole === "admin"; }
+
+  resume = async () => {
+    this.setState({ loading: true, dbErr: "" });
+    try {
+      const rows = await DB.me();
+      const me = rows && rows[0];
+      if (!me) throw new Error("บัญชีนี้ยังไม่ได้ผูกกับชื่อในสมุด — รันบล็อกที่ 5 ใน schema.sql");
+      this.setState({
+        meRole: me.role, acct: me.name, who: me.name,
+        meId: (ACCOUNTS.find((a) => a.name === me.name) || {}).id || null,
+        screen: this.state.screen === "login" || !this.state.screen ? "month" : this.state.screen,
+      });
+      // เติมรายการประจำที่ค้างก่อนโหลด จะได้เห็นครบตั้งแต่หน้าจอแรก
+      // ถ้าฟังก์ชันยังไม่มีในฐานข้อมูล ก็ข้ามไป ไม่ทำให้เข้าใช้งานไม่ได้
+      const made = await DB.runRecurring()
+        .catch((e) => { console.warn("รายการประจำใช้ไม่ได้:", e.message || e); return 0; });
+      await this.load();
+      if (made) this.setState({ saved: this.L.t_recurMade.replace("{n}", made) });
+    } catch (e) {
+      await AUTH.signOut();
+      this.setState({ loading: false, screen: "login", meId: null, meRole: "member", pinErr: e.message || String(e) });
+    }
+  };
+
+  load = async () => {
+    this.setState({ loading: true, dbErr: "" });
+    try {
+      // ประวัติการแก้ไขกับหมวดหมู่เป็นของเสริม — ถ้าตารางยังไม่มี (ยังไม่ได้รัน SQL)
+      // รายการหลักต้องยังขึ้นได้ตามปกติ ไม่ใช่พังทั้งหน้า
+      const soft = (what) => (e) => { console.warn(what + ":", e.message || e); return null; };
+      const [rows, edits, cats, slipOk] = await Promise.all([
+        DB.list(),
+        DB.edits().catch(soft("ประวัติการแก้ไขใช้ไม่ได้")),
+        DB.cats().catch(soft("หมวดหมู่ใช้ไม่ได้ ใช้ชุดเริ่มต้นไปก่อน")),
+        DB.slipReady().catch(soft("แนบสลิปยังใช้ไม่ได้ ยังไม่ได้รัน upgrade_v4.sql")),
+      ]);
+      this.setState({
+        txns: rows.map(fromDb),
+        edits: edits || [],
+        // ยังไม่ได้รัน upgrade_v4.sql ก็ใช้ทุกอย่างที่เหลือได้ตามปกติ แค่แนบสลิปไม่ได้
+        slipLive: !!slipOk,
+        // ถ้าตาราง cats ยังไม่มี ก็ยังใช้งานต่อได้ด้วยชุดเริ่มต้น (แต่แก้แล้วไม่ถูกบันทึก)
+        cats: cats && cats.length ? cats : CAT_SEED,
+        catsLive: !!(cats && cats.length),
+        loading: false, dbErr: "",
+      });
+    } catch (e) {
+      this.setState({ loading: false, dbErr: e.message || String(e) });
+    }
+  };
+
+  reload = () => { if (AUTH.signedIn) this.load(); };
+
+  get screen() {
+    return this.state.screen || (this.props.startScreen === "ตั้งค่า" ? "settings" : this.props.startScreen === "รายการทั้งหมด" ? "list" : this.props.startScreen === "เข้าสู่ระบบ" ? "login" : this.props.startScreen === "สรุปรายปี" ? "year" : this.props.startScreen === "บันทึกข้อมูล" ? "add" : this.props.startScreen === "มือถือ" ? "mobile" : "month");
+  }
+
+  go = (s) => () => this.setState({ screen: s, saved: "" });
+
+  signIn = async () => {
+    const s = this.state;
+    if (s.signing) return;
+    const acc = s.accts.find((a) => a.id === s.loginId) || s.accts[0];
+    if (!acc || !acc.email) return this.setState({ pinErr: "บัญชีนี้ยังไม่ได้ตั้งอีเมลใน config.js" });
+    if (!s.pw) return this.setState({ pinErr: "ใส่รหัสผ่านก่อน" });
+
+    this.setState({ signing: true, pinErr: "" });
+    try {
+      await AUTH.signIn(acc.email, s.pw);
+      this.setState({ signing: false, pw: "", filter: "ทุกบัญชี" });
+      await this.resume();
+    } catch (e) {
+      this.setState({ signing: false, pw: "", pinErr: e.message || String(e) });
+    }
+  };
+
+  onPw = (e) => this.setState({ pw: e.target.value, pinErr: "" });
+  onPwKey = (e) => { if (e.key === "Enter") this.signIn(); };
+
+  logout = async () => {
+    await AUTH.signOut();
+    this.setState({
+      screen: "login", meId: null, meRole: "member", acct: "", pw: "", pinErr: "",
+      editId: null, pendingDel: null, saved: "", amount: "", note: "", txns: [],
+      // ประวัติการแก้ไขก็ต้องทิ้งด้วย ไม่งั้นข้อมูลของคนก่อนยังค้างในหน่วยความจำหลังกดออก
+      edits: [], historyId: null, slipFile: null, slipPath: "", slipErr: "",
+      // ลิงก์ชั่วคราวของสลิปที่เปิดค้างไว้ก็ต้องทิ้ง มันเปิดไฟล์ได้โดยไม่ต้องล็อกอิน
+      slipViewId: null, slipViewUrl: "", slipViewErr: "", slipViewBusy: false, slipViewPdf: false,
+    });
+  };
+
+  // ───── หมวดหมู่ — พิมพ์แล้วเห็นทันที แล้วค่อยบันทึกลงฐานข้อมูล ─────
+  // ถ้าบันทึกไม่ผ่าน (ไม่ใช่บัญชีหลัก / ตารางยังไม่มี) จะโหลดของจริงกลับมาทับ
+  // จะได้ไม่หลอกตาว่าแก้สำเร็จทั้งที่ฐานข้อมูลไม่รับ
+  catFail = (e) => { this.setState({ dbErr: e.message || String(e) }); this.reload(); };
+
+  setCat = (i, k) => (e) => {
+    const val = e.target.value;
+    const cats = this.state.cats.map((c, j) => (j === i ? { ...c, [k]: val } : c));
+    this.setState({ cats });
+    const row = cats[i];
+    if (!this.state.catsLive || !row || row.id == null) return;
+    clearTimeout(this._catT);
+    this._catT = setTimeout(() => {
+      DB.catSave(row.id, { [k]: val }).catch(this.catFail);
+    }, 600);   // หน่วงไว้ไม่ให้ยิงทุกตัวอักษรที่พิมพ์
+  };
+
+  addCat = async () => {
+    const L = this.L;
+    if (!this.state.catsLive) return this.setState({ dbErr: L.t_catsOffline });
+    const sort = this.state.cats.reduce((n, c) => Math.max(n, Number(c.sort) || 0), 0) + 1;
+    try {
+      const made = await DB.catAdd({ th: L.t_newCat, lo: L.t_newCat, sort });
+      this.setState({ cats: [...this.state.cats, ...(made || [])] });
+    } catch (e) { this.catFail(e); }
+  };
+
+  delCat = (i) => async () => {
+    const row = this.state.cats[i];
+    if (!this.state.catsLive || !row) return this.setState({ dbErr: this.L.t_catsOffline });
+    this.setState({ cats: this.state.cats.filter((_, j) => j !== i) });
+    try { await DB.catDel(row.id); } catch (e) { this.catFail(e); }
+  };
+
+  // ชื่อ/คำอธิบาย/สกุลเงิน ปรับได้แค่การแสดงผลในเครื่องนี้
+  // ส่วนรหัสผ่านกับสิทธิ์ admin/member อยู่ที่ Supabase แก้จากหน้าเว็บไม่ได้
+  setAcct = (i, k) => (e) => {
+    const accts = this.state.accts.map((a, j) => (j === i ? { ...a, [k]: e.target.value } : a));
+    this.setState({ accts });
+  };
+
+  get L() {
+    LANG = this.state.lang || (this.props.language === "ລາວ" ? "lo" : "th");
+    return T[LANG] || T.th;
+  }
+
+  // ใครล็อกอิน ก็บันทึกได้ในชื่อบัญชีตัวเองเท่านั้น — ยกเว้นบัญชีหลัก
+  get targetWho() { return this.isAdmin ? this.state.who : this.state.acct; }
+
+  save = async () => {
+    const s = this.state;
+    if (s.busy) return;
+    if (!DB_ON) return this.setState({ saved: "ยังไม่ได้ตั้งค่า Supabase (config.js)" });
+    const n = Number((s.amount || "").replace(/[^0-9.]/g, "")) || 0;
+    if (!n) return this.setState({ saved: this.L.t_needAmount });
+
+    const who = this.targetWho;
+    if (!who) return this.setState({ saved: this.L.t_needAcct });
+    const code = s.entryCode || (s.accts.find((a) => a.name === who) || {}).code || "THB";
+
+    // โอนระหว่างช่องทางต้องมีปลายทาง และต้องไม่ใช่ช่องทางเดิม (ฐานข้อมูลก็บังคับซ้ำอีกชั้น)
+    const xfer = s.kind === "transfer";
+    const to = xfer ? (s.methodTo || METHODS.find((m) => m !== s.method)) : "";
+    if (xfer && to === s.method) return this.setState({ saved: this.L.t_needTo });
+
+    // ยอดยกมามีได้ช่องทางละแถวเดียวต่อบัญชีต่อสกุล — บอกก่อนยิง จะได้เห็นยอดเดิมด้วย
+    // (ฐานข้อมูลก็บังคับซ้ำอีกชั้นด้วย index txns_opening_unique เผื่ออีกคนใส่พร้อมกัน)
+    if (s.kind === "opening") {
+      const dup = s.txns.find((t) => t.kind === "opening" && !t.voidAt && t.id !== s.editId &&
+                                     t.who === who && t.method === s.method && t.code === code);
+      if (dup) return this.setState({
+        saved: this.L.t_dupOpening.replace("{m}", s.method).replace("{c}", code)
+                   .replace("{v}", dup.val.toLocaleString("en-US")),
+      });
+    }
+
+    // โอนกับยอดยกมาไม่มีหมวดหมู่ ใช้ชื่อประเภทเป็นชื่อรายการตั้งต้นแทน
+    const plain = s.kind === "income" || s.kind === "expense";
+    const label = KIND_LABEL(this.L)[s.kind] || s.kind;
+    const row = {
+      ts: s.date || TODAY_ISO,
+      name: s.note || (plain ? (s.kind === "income" ? "รายรับ" : s.cat) : label),
+      cat: plain ? (s.kind === "income" ? "รายรับ" : s.cat) : "",
+      method: s.method,
+      method_to: to,
+      who,
+      kind: s.kind,
+      amt: n,
+      code,
+      flag: s.repeat && plain ? "ประจำ" : "",
+    };
+
+    this.setState({ busy: true, saved: "" });
+    try {
+      // อัปสลิปก่อน ถ้าอัปไม่ผ่านก็ไม่ต้องบันทึกแถว จะได้ไม่ได้รายการที่อ้างไฟล์ที่ไม่มีอยู่
+      //
+      // ส่งช่อง slip **เฉพาะตอนมีไฟล์ใหม่จริง ๆ** เท่านั้น
+      // เดิมใส่ slip: "" ไปกับทุกการบันทึก ซึ่งแปลว่าถ้ายังไม่ได้รัน upgrade_v4.sql
+      // ฐานข้อมูลจะไม่รู้จักช่องนี้แล้วตีกลับ 400 — บันทึกไม่ได้เลยแม้แต่รายการที่ไม่มีสลิป
+      // หลักเดียวกับตาราง cats: ของเสริมใช้ไม่ได้ ก็ต้องไม่ลากของหลักพังไปด้วย
+      if (s.slipFile) row.slip = await DB.slipUpload(s.slipFile);
+
+      if (s.editId != null) {
+        const target = s.txns.find((t) => t.id === s.editId);
+        if (target && !this.canEdit(target)) throw new Error("แก้ได้เฉพาะรายการของบัญชีตัวเอง");
+        await DB.update(s.editId, row);
+      } else {
+        await DB.insert(row);
+      }
+      const done = s.editId != null ? "แก้ไขแล้ว" : this.L.t_savedOk;
+      this.setState({
+        busy: false, editId: null, entryCode: null, amount: "", note: "", repeat: false, methodTo: "",
+        slipFile: null, slipPath: "", slipErr: "",
+        saved: done + " · " + code + " → " + this.L.t_toAcct + " " + who,
+      });
+      this.reload();
+    } catch (e) {
+      this.setState({ busy: false, saved: e.message || String(e) });
+    }
+  };
+
+  // แก้ได้ถ้าเป็นรายการของตัวเอง — บัญชีหลักแก้ของทุกคนได้
+  // (ฐานข้อมูลบังคับกฎเดียวกันอีกชั้นด้วย RLS)
+  canEdit = (t) => this.isAdmin || t.who === this.state.acct;
+
+  beginEdit = (t) => () => {
+    if (!this.canEdit(t)) return;
+    this.setState({
+      screen: "add", editId: t.id, pendingDel: null, saved: "", historyId: null,
+      slipViewId: null, slipViewUrl: "", slipViewErr: "", slipViewBusy: false,
+      kind: t.kind, cat: t.cat || this.state.cat,
+      method: t.method, methodTo: t.methodTo || "", who: t.who, amount: String(t.val),
+      note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
+      slipFile: null, slipPath: t.slip || "", slipErr: "",
+    });
+  };
+
+  cancelEdit = () => this.setState({
+    editId: null, amount: "", note: "", repeat: false, entryCode: null, saved: "", methodTo: "",
+    slipFile: null, slipPath: "", slipErr: "",
+  });
+
+  // ───── สลิป ─────
+  // ตรวจตั้งแต่ตอนเลือกไฟล์ จะได้รู้ทันทีว่าไฟล์ใช้ไม่ได้ ไม่ใช่ไปรู้ตอนกดบันทึก
+  onSlip = (e) => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = "";                       // เลือกไฟล์เดิมซ้ำได้ ถ้าเพิ่งเอาออกไป
+    if (!f) return;
+    if (!SLIP_EXT[f.type]) return this.setState({ slipFile: null, slipErr: this.L.t_slipType });
+    if (f.size > SLIP_MAX) return this.setState({ slipFile: null, slipErr: this.L.t_slipBig });
+    this.setState({ slipFile: f, slipErr: "" });
+  };
+
+  clearSlip = () => this.setState({ slipFile: null, slipErr: "" });
+
+  // เปิดสลิป**ในหน้าเดิม** ไม่เด้งแท็บใหม่ — กดปุ่มเดิมซ้ำหรือกด "ปิด" ก็กลับมาที่รายการทันที
+  // แผงจะโผล่ใต้ตารางเหมือนแผงประวัติการแก้ไข ปุ่มย้อนกลับของเบราว์เซอร์จึงไม่เกี่ยวข้อง
+  //
+  // ถังไม่เปิดสาธารณะ จึงไม่มีลิงก์ถาวร ต้องขอลิงก์ชั่วคราว (1 ชม.) ใหม่ทุกครั้งที่กดเปิด
+  // ไม่เก็บลิงก์ค้างไว้ในหน่วยความจำข้ามใบ เพราะมันคือกุญแจเปิดไฟล์โดยไม่ต้องล็อกอิน
+  openSlip = (t) => async () => {
+    if (this.state.slipViewId === t.id) return this.closeSlipView();
+    this.setState({
+      slipViewId: t.id,
+      slipViewUrl: "", slipViewErr: "", slipViewBusy: true,
+      slipViewPdf: /\.pdf$/i.test(t.slip),
+      historyId: null,                       // เปิดทีละแผง ไม่ให้สองแผงชนกันใต้ตาราง
+    });
+    try {
+      const url = await DB.slipUrl(t.slip);
+      // ระหว่างรอลิงก์ ผู้ใช้อาจกดปิดหรือกดดูใบอื่นไปแล้ว — ของที่มาช้าต้องไม่แย่งจอคืน
+      if (this.state.slipViewId !== t.id) return;
+      this.setState({ slipViewUrl: url, slipViewBusy: false });
+    } catch (e) {
+      if (this.state.slipViewId !== t.id) return;
+      this.setState({ slipViewBusy: false, slipViewErr: e.message || String(e) });
+    }
+  };
+
+  closeSlipView = () => this.setState({
+    slipViewId: null, slipViewUrl: "", slipViewErr: "", slipViewBusy: false, slipViewPdf: false,
+  });
+
+  showHistory = (id) => () => this.setState({ historyId: this.state.historyId === id ? null : id });
+  closeHistory = () => this.setState({ historyId: null });
+
+  askDel = (id) => () => this.setState({ pendingDel: id, voidReason: "", voidErr: "", historyId: null });
+
+  // ยกเลิก (on=true) / กู้คืน (on=false) — ไม่ลบทิ้ง ประวัติการแก้ไขจึงอยู่ครบ
+  setVoid = (id, on) => async () => {
+    if (!this.isAdmin || this.state.busy) return;
+    const reason = (this.state.voidReason || "").trim();
+    // ฐานข้อมูลก็ปฏิเสธซ้ำอีกชั้นถ้าเหตุผลว่าง แต่ดักที่นี่ก่อนจะได้ไม่ต้องยิงไปเสียเที่ยว
+    if (on && !reason) return this.setState({ voidErr: this.L.t_needReason });
+    this.setState({ busy: true, voidErr: "" });
+    try {
+      await DB.setVoid(id, on, reason);
+      this.setState({
+        busy: false, pendingDel: null, voidReason: "", voidErr: "",
+        editId: this.state.editId === id ? null : this.state.editId,
+      });
+      this.reload();
+    } catch (e) {
+      // ยกเลิกมีแผงกรอกเหตุผลรองรับข้อความอยู่แล้ว · กู้คืนกดจากแถวตรง ๆ ไม่มีแผง
+      // ถ้าไม่โยนขึ้นแบนเนอร์ ข้อความจะหายเงียบ (เช่น กู้คืนยอดยกมาที่ช่องทางนั้นมีแถวใหม่แล้ว)
+      const msg = e.message || String(e);
+      this.setState(on ? { busy: false, voidErr: msg } : { busy: false, dbErr: msg });
+    }
+  };
+
+  askDelClose = () => this.setState({ pendingDel: null, voidReason: "", voidErr: "" });
+  onVoidReason = (e) => this.setState({ voidReason: e.target.value, voidErr: "" });
+
+  renderVals() {
+    const s = this.state, screen = this.screen;
+    const sel = (on) => ({ bg: on ? ACC : "transparent", fg: on ? "#f2f2f3" : MUTED, bd: on ? ACC : "rgba(29,31,32,0.16)" });
+
+    const alt = () => "";
+    const lang = s.lang || (this.props.language === "ລາວ" ? "lo" : "th");
+    const L = T[lang] || T.th;
+    const catName = (c) => (lang === "lo" ? c.lo || c.th : c.th);
+    const catLabel = (raw) => {
+      const hit = s.cats.find((c) => c.th === raw || c.lo === raw);
+      return raw === "รายรับ" ? L.t_incomeCat : hit ? catName(hit) : raw;
+    };
+    const codeOf = (name) => (s.accts.find((a) => a.name === name) || {}).code || CODES[0];
+    const valOf = (t) => t.val || 0;
+    const codeOfTx = (t) => t.code || codeOf(t.who);
+    // ───── สกุลเงินที่กำลังวิเคราะห์ ─────
+    // กราฟ % งบประมาณ ต้องมีฐานเดียวกันถึงจะเทียบกันได้ แต่ระบบไม่แปลงค่าเงิน
+    // จึงคิดทีละสกุล: หน้าเดือนกับหน้าปีจะกรองเหลือสกุลนี้สกุลเดียว
+    const V = s.viewCode || acctCode(s.acct) || CODES[0];
+    const C = cur(V);                           // ใช้กับสัญลักษณ์และป้ายกำกับ
+    const inView = (t) => codeOfTx(t) === V;
+    const fmt = (n) => raw(n, V);               // จัดรูปตัวเลขด้วยสกุลที่กำลังดู
+    const sumV = (list) => list.reduce((n, t) => n + valOf(t), 0);   // ผู้เรียกต้องกรองสกุลมาแล้ว
+
+    const isInc   = (t) => t.kind === "income";
+    const isExp   = (t) => t.kind === "expense";
+    const isXfer  = (t) => t.kind === "transfer";   // ย้ายเงินระหว่างช่องทาง ไม่ใช่รับ ไม่ใช่จ่าย
+    const isOpen  = (t) => t.kind === "opening";    // ยอดยกมา ไม่ใช่รายรับของงวดไหน
+    const isVoid  = (t) => !!t.voidAt;              // ยกเลิกแล้ว — ยังอยู่ในตาราง แต่ไม่นับในยอดใด ๆ
+    const live    = (list) => list.filter((t) => !isVoid(t));
+
+    // ทิศทางเงินสำหรับยอดรับ-จ่าย-คงเหลือ: โอนกับยอดยกมาไม่นับ (เป็น 0)
+    const flow = (t) => (isInc(t) ? 1 : isExp(t) ? -1 : 0);
+    const signed = (list) => list.map((t) => ({ ...t, val: flow(t) * valOf(t) }));
+    // ยอดรวมหลายสกุลในบรรทัดเดียว เช่น "₭2,300,000  ·  ฿12,400" — ไม่บวกข้ามสกุล
+    const sumByCode = (list) => {
+      const by = {};
+      list.forEach((t) => { const c = codeOfTx(t); by[c] = (by[c] || 0) + valOf(t); });
+      const order = CODES.filter((c) => by[c]);
+      return order.length ? order.map((c) => raw(by[c], c)).join("  ·  ") : raw(0, V);
+    };
+
+    const isToday = (t) => t.ts === TODAY_ISO;
+    const inScope = (t) => s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ" || t.who === s.filter;
+    const inMonthOf = (t, mm, yy) => t.month === mm && t.year === yy;
+    const inPeriod = (t) => s.period === "all" ? true
+      : s.period === "year" ? t.year === s.vYear
+      : inMonthOf(t, s.vMonth, s.vYear);
+    // หน้ารายการยังโชว์รายการที่ยกเลิกแล้ว (ขีดฆ่าไว้ ให้กู้คืนได้) แต่ทุกยอดรวมไม่นับ
+    const kindOk = (t) => s.kindFilter === "all" || t.kind === s.kindFilter;
+    const shown = s.txns.filter((t) => inScope(t) && inPeriod(t) && kindOk(t));
+    const shownLive = live(shown);
+
+    // ───── ยอดของเดือนที่กำลังดู ─────
+    // หน้าเดือนทั้งหน้าคิดเฉพาะสกุลที่เลือก จึงบวกกันตรง ๆ ได้โดยไม่ต้องแปลงค่า
+    const monthTx = live(s.txns.filter((t) => inScope(t) && inMonthOf(t, s.vMonth, s.vYear) && inView(t)));
+    const monthInc = monthTx.filter(isInc);
+    const monthExp = monthTx.filter(isExp);
+    const incV = sumV(monthInc), expV = sumV(monthExp);
+
+    const dim = daysInMonth(s.vMonth, s.vYear);
+    const isCurMonth = s.vMonth === NOW_M && s.vYear === NOW_Y;
+    const elapsed = isCurMonth ? Math.max(1, TODAY.getDate()) : dim;
+    // "เฉลี่ยต่อวัน" = จ่ายไปแล้วจริง ÷ วันที่ผ่านมาแล้ว — ตัวตั้งกับตัวหารต้องเป็นช่วงเดียวกัน
+    // เดิมตัวตั้งเป็นรายจ่ายทั้งเดือน (รวมรายการที่ลงวันล่วงหน้า) แต่ตัวหารเป็นวันที่ผ่านมาแล้ว
+    // ต้นเดือนที่มีรายการประจำรออยู่ปลายเดือน ตัวเลขจึงพุ่งสูงกว่าที่จ่ายจริงหลายเท่า
+    // เดือนที่ผ่านไปแล้วไม่มีรายการล่วงหน้าอยู่แล้ว ค่าจึงเท่าเดิมทุกประการ
+    const expToDate = sumV(monthExp.filter((t) => t.ts <= TODAY_ISO));
+
+    const pm = s.vMonth === 1 ? 12 : s.vMonth - 1;
+    const py = s.vMonth === 1 ? s.vYear - 1 : s.vYear;
+    const prevExpV = sumV(live(s.txns.filter((t) => inScope(t) && inMonthOf(t, pm, py) && isExp(t) && inView(t))));
+
+    // ───── รายจ่ายรายวันของเดือนนี้ ─────
+    const dayTot = [];
+    for (let i = 0; i < dim; i++) dayTot.push(0);
+    monthExp.forEach((t) => { if (t.day >= 1 && t.day <= dim) dayTot[t.day - 1] += valOf(t); });
+    const dayPeak = dayTot.reduce((a, v) => (v > a ? v : a), 0);
+    const activeDays = dayTot.filter((v) => v > 0).length;
+
+    // ───── ยอดรายปีของปีที่กำลังดู ─────
+    // ทั้งหน้าคิดเฉพาะสกุลที่เลือก ตัวเลขทุกช่องจึงเป็นสกุลเดียวกันหมด
+    const yInc = [], yExp = [], yIncTx = [], yExpTx = [];
+    for (let i = 0; i < 12; i++) { yInc.push(0); yExp.push(0); yIncTx.push([]); yExpTx.push([]); }
+    const yearTx = live(s.txns.filter((t) => inScope(t) && t.year === s.vYear && inView(t)));
+    yearTx.forEach((t) => {
+      const i = t.month - 1;
+      if (i < 0 || i > 11) return;
+      if (isInc(t)) { yInc[i] += valOf(t); yIncTx[i].push(t); }
+      else if (isExp(t)) { yExp[i] += valOf(t); yExpTx[i].push(t); }
+    });
+    const yearInc = yearTx.filter(isInc);
+    const yearExp = yearTx.filter(isExp);
+    const yPeakV = Math.max(yInc.reduce((a, v) => (v > a ? v : a), 0), yExp.reduce((a, v) => (v > a ? v : a), 0));
+    const yIncTot = yInc.reduce((a, v) => a + v, 0), yExpTot = yExp.reduce((a, v) => a + v, 0);
+    const monthsUsed = yExp.filter((v) => v > 0).length || yInc.filter((v) => v > 0).length;
+    let peakI = -1;
+    yExp.forEach((v, i) => { if (v > 0 && (peakI < 0 || v > yExp[peakI])) peakI = i; });
+    const isFuture = (i) => s.vYear === NOW_Y && i + 1 > NOW_M;
+    // สัดส่วนตามหมวด — คิด % ได้ต่อเมื่อทุกแถวเป็นสกุลเดียวกัน จึงกรอง inView ก่อน
+    const breakdown = (income) => {
+      const rows = shownLive.filter((t) => (income ? isInc(t) : isExp(t)) && inView(t));
+      const byCat = {};
+      rows.forEach((t) => { (byCat[t.cat] = byCat[t.cat] || []).push(t); });
+      const share = (list) => list.reduce((a, t) => a + valOf(t), 0);
+      const total = share(rows) || 1;
+      return Object.entries(byCat).sort((a, c) => share(c[1]) - share(a[1])).map(([k, list]) => {
+        const pct = Math.round((share(list) / total) * 100);
+        return {
+          name: catLabel(k), amount: fmt(share(list)),
+          pct: pct + "%", w: pct + "%", bg: income ? DARK : ACC,
+        };
+      });
+    };
+    // ───── ยอดคงเหลือแยกช่องทาง ─────
+    // สะสมตั้งแต่รายการแรกจนถึงวันนี้ ไม่ผูกกับเดือนที่กำลังดู เพราะเงินในกระเป๋าไม่รีเซ็ตทุกเดือน
+    // เงินสด/โอน = เงินจริงที่มี · บัตร = หนี้ที่ต้องจ่าย จึงกลับเครื่องหมายตอนแสดง
+    //
+    // ตัดรายการที่ลงวันไว้ล่วงหน้าออก — เงินยังไม่ออกจากกระเป๋าจริง เอามาหักตอนนี้คือยอดผิด
+    // เจอง่ายมากเพราะ run_recurring() สร้างรายการประจำของเดือนนี้ให้ตั้งแต่ตอนล็อกอิน
+    // ถ้าแม่แบบเป็นวันที่ 25 แต่วันนี้วันที่ 3 เงินจะหายไปทั้งก้อนตั้งแต่ต้นเดือน
+    const balScope = live(s.txns.filter((t) => inScope(t) && inView(t)));
+    const balTx = balScope.filter((t) => t.ts <= TODAY_ISO);
+    const laterN = balScope.length - balTx.length;   // ไม่นับ แต่ต้องบอกว่ามีอยู่ ไม่ใช่เงียบไป
+    const inMethod = (t, m) => (isXfer(t) ? t.method === m || t.methodTo === m : t.method === m);
+    const balOf = (m) => balTx.filter((t) => inMethod(t, m)).map((t) => {
+      const sign = isXfer(t) ? (t.methodTo === m ? 1 : -1)
+        : isInc(t) || isOpen(t) ? 1
+        : isExp(t) ? -1 : 0;
+      return { ...t, val: sign * valOf(t) };
+    });
+    const cardDebt = balOf(METHODS[2]).map((t) => ({ ...t, val: -valOf(t) }));
+    const hasOpening = balTx.some(isOpen);
+
+    const admin = this.isAdmin;
+    const E = cur(s.entryCode || acctCode(this.targetWho));
+
+    // ───── ประวัติการแก้ไข ─────
+    const editsOf = (id) => (s.edits || []).filter((e) => e.txn_id === id);
+    const askTx = s.pendingDel != null ? s.txns.find((t) => t.id === s.pendingDel) : null;
+    const histTx = s.historyId != null ? s.txns.find((t) => t.id === s.historyId) : null;
+    const hist = histTx ? { tx: histTx, list: editsOf(histTx.id) } : null;
+
+    const fmtWhen = (iso) => {
+      const dt = new Date(iso);
+      if (isNaN(dt)) return String(iso);
+      return dt.getDate() + " " + L.mAbbr[dt.getMonth()] + " " + (dt.getFullYear() + 543)
+        + " " + pad2(dt.getHours()) + ":" + pad2(dt.getMinutes());
+    };
+    const fieldLabel = (f) => (L.fields || {})[f] || f;
+    const fieldVal = (f, v) => {
+      if (v == null || v === "") return "";
+      if (f === "amt") return Number(v).toLocaleString("en-US");
+      if (f === "kind") return KIND_LABEL(L)[v] || v;
+      if (f === "cat") return catLabel(v);
+      if (f === "method" || f === "method_to") { const i = METHODS.indexOf(v); return i >= 0 ? L.methods[i] : v; }
+      // ประวัติเก็บ path จริงไว้ แต่ path ไม่มีความหมายกับคนอ่าน บอกแค่ว่ามีไฟล์หรือไม่มี
+      if (f === "slip") return L.t_slipHas;
+      if (f === "ts") { const p = String(v).slice(0, 10).split("-");
+        return pad2(Number(p[2])) + " " + M_ABBR[Number(p[1]) - 1] + " " + (Number(p[0]) + 543); }
+      return String(v);
+    };
+
+    const tabDefs = [[L.t_month, "month"], [L.t_year, "year"], [L.t_list, "list"], [L.t_add, "add"]]
+      .concat(admin ? [[L.t_settings, "settings"]] : [])
+      .concat([[L.t_mobile, "mobile"]]);
+
+    return {
+      ...L,
+      // วางหลัง ...L จึงทับคำแปลได้ — สองค่านี้มาจาก config.js ไม่ใช่ไฟล์นี้
+      appName: APP_NAME,
+      t_family: MEMBERS.slice(0, 2).join(" + "),
+
+      langOpts: [["th", "ไทย"], ["lo", "ລາວ"]].map(([id, label]) => ({
+        label, pick: () => this.setState({ lang: id }),
+        bg: lang === id ? ACC : "transparent", fg: lang === id ? "#f2f2f3" : MUTED,
+      })),
+      isLogin: screen === "login",
+      isApp: screen !== "login",
+      isMonth: screen === "month",
+      isYear: screen === "year",
+      isList: screen === "list",
+      isSet: screen === "settings",
+      isAdd: screen === "add",
+      isMobile: screen === "mobile",
+      showBudget: this.props.showBudget ?? true,
+      showRecurring: this.props.showRecurring ?? true,
+
+      tabs: tabDefs.map(([label, id]) => ({
+        label, go: this.go(id),
+        fg: screen === id ? INK : MUTED,
+        bd: screen === id ? ACC : "transparent",
+      })),
+      goAdd: this.go("add"),
+      goLogin: this.go("login"),
+      goMonth: this.go("month"),
+
+      loginAccounts: s.accts.map((a) => {
+        const on = s.loginId === a.id;
+        return {
+          name: a.name, role: lang === "lo" ? a.roleLo : a.roleTh,
+          pick: () => this.setState({ loginId: a.id, pw: "", pinErr: "" }),
+          bd: on ? ACC : "rgba(29,31,32,0.16)",
+          bg: on ? "#eef6ff" : "transparent",
+          avBg: on ? DARK : "#d4d4d7",
+          avFg: on ? "#eef6ff" : "#424244",
+        };
+      }),
+      activeAcct: s.acct,
+      pw: s.pw,
+      onPw: this.onPw,
+      onPwKey: this.onPwKey,
+      signIn: this.signIn,
+      signInLabel: s.signing ? L.t_signingIn : L.t_signinBtn,
+      pinHint: s.pinErr || L.pinOwn,
+      pinHintColor: s.pinErr ? "#8a2020" : MUTED,
+      pinDemo: L.t_secureNote,
+      roleBadge: admin ? L.t_roleAdmin : L.t_roleMember,
+
+      cats: (() => {
+        const by = {};
+        monthExp.forEach((t) => { (by[t.cat] = by[t.cat] || []).push(t); });
+        const tot = expV || 1;
+        return Object.keys(by)
+          .map((k) => ({ k, list: by[k], v: sumV(by[k]) }))
+          .sort((a, c) => c.v - a.v)
+          .map(({ k, list, v }) => {
+            const pct = Math.round((v / tot) * 100);
+            return {
+              name: catLabel(k), pct, amount: fmt(v),
+              w: Math.max(2, Math.min(100, (v / tot) * 100)) + "%",
+              bg: pct > 20 ? DARK : ACC,
+            };
+          });
+      })(),
+
+      days: dayTot.map((v) => ({
+        h: (dayPeak ? Math.max(2, Math.round((v / dayPeak) * 170)) : 2) + "px",
+        mh: (dayPeak ? Math.max(2, Math.round((v / dayPeak) * 119)) : 2) + "px",
+        bg: dayPeak && v >= dayPeak * 0.85 ? DARK : ACC,
+      })),
+
+      months: yInc.map((inc, i) => ({
+        label: L.mAbbr[i],
+        ih: (yPeakV ? Math.max(2, Math.round((inc / yPeakV) * 170)) : 2) + "px",
+        eh: (yPeakV ? Math.max(2, Math.round((yExp[i] / yPeakV) * 170)) : 2) + "px",
+        ibg: isFuture(i) ? "#d4d4d7" : DARK,
+        ebg: isFuture(i) ? "#e7e7ea" : ACC,
+        fg: isFuture(i) ? "#98989b" : MUTED,
+      })),
+
+      rows: yInc.map((inc, i) => {
+        const exp = yExp[i], net = inc - exp;
+        const rate = inc ? Math.round((net / inc) * 100) : 0;
+        return {
+          month: L.mFull[i],
+          income: fmt(inc), expense: fmt(exp), net: fmt(net),
+          rate: inc ? rate + "%" : "—",
+          w: Math.max(0, Math.min(100, rate)) + "%",
+        };
+      }),
+
+      // งบประมาณผูกกับสกุลเงินตรง ๆ — แสดงเฉพาะอันที่ตรงกับสกุลที่กำลังดู ไม่มีการแปลงค่า
+      budgets: BUDGET_TARGETS.filter((t) => t.code === V).map(({ cat: name, limit }) => {
+        const goal = name === SAVE_GOAL;
+        const total = Number(limit) || 0;
+        // ชื่อแปลผ่าน catLabel เหมือนหมวดหมู่ทั่วไป จึงเพิ่มบรรทัดใน config.js ได้เลย
+        // ไม่ต้องมาแก้รายการคำแปลในไฟล์นี้ให้ตรงลำดับกันอีก
+        const used = goal
+          ? Math.max(0, incV - expV)
+          : sumV(monthExp.filter((t) => t.cat === name));
+        const over = goal ? used < total : used > total;
+        const diff = Math.abs(total - used);
+        return {
+          name: goal ? L.t_saveGoal : catLabel(name), used: fmt(used), total: fmt(total),
+          w: Math.min(100, total ? (used / total) * 100 : 0) + "%",
+          bg: over ? DARK : ACC,
+          color: over ? DARK : MUTED,
+          note: (goal
+            ? (used >= total ? L.t_over + " " : L.t_left + " ")
+            : (over ? L.t_over + " " : L.t_left + " ")) + fmt(diff),
+        };
+      }),
+
+      txns: monthTx.slice(0, 6).map((t) => {
+        const inc = isInc(t);
+        const mi = METHODS.indexOf(t.method);
+        return {
+          ...t, cat: catLabel(t.cat),
+          method: mi >= 0 ? L.methods[mi] : t.method,
+          flag: t.flag ? L.t_recurFlag : "",
+          // เครื่องหมายเดียวกับที่อื่นทั้งไฟล์ — โอนกับยอดยกมาไม่ใช่รายจ่าย
+          amount: (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+          color: inc || isOpen(t) ? DARK : INK,
+        };
+      }),
+
+      cur: C.sym,
+      curCode: C.code,
+      curName: (L.curNames || {})[C.code] || C.name,
+      // ตัวเลือก "สกุลเงินที่กำลังดู" — คุมทั้งหน้าเดือนและหน้าปี
+      viewOpts: CURRENCIES.map((c) => ({
+        label: c.sym + " " + c.code,
+        pick: () => this.setState({ viewCode: c.code }),
+        bg: c.code === V ? ACC : "transparent",
+        fg: c.code === V ? "#f2f2f3" : MUTED,
+      })),
+      viewNote: L.t_viewCur + " " + (cur(V).name || V),
+      // นับรายการสกุลอื่นที่หน้านี้ตัดทิ้ง — ตัดได้ แต่ต้องไม่ตัดเงียบ ๆ
+      // สองหน้านับคนละช่วงเวลา หน้าปีจึงใช้ตัวเลขของหน้าเดือนแทนกันไม่ได้
+      viewSkipped: (() => {
+        const n = live(s.txns.filter((t) => inScope(t) && inMonthOf(t, s.vMonth, s.vYear) && !inView(t))).length;
+        return n ? L.t_otherCur.replace("{n}", n) : "";
+      })(),
+      viewSkippedYear: (() => {
+        const n = live(s.txns.filter((t) => inScope(t) && t.year === s.vYear && !inView(t))).length;
+        return n ? L.t_otherCur.replace("{n}", n) : "";
+      })(),
+      amountPh: E.dp ? "0.00" : "0",
+      notePh: L.t_notePh,
+      entrySym: E.sym,
+      entryOpts: CURRENCIES.map((c) => ({
+        label: c.sym + " " + c.code,
+        pick: () => this.setState({ entryCode: c.code }),
+        ...sel(c.code === E.code),
+      })),
+      entryNote: L.t_keepNative + " " + E.code,
+      rateNote: L.t_mainCur + " " + C.code,
+      amountHint: "",
+      // หน้าปีคิดสกุลเดียวทั้งหน้า ตัวเลขทุกช่องจึงเทียบกันได้โดยไม่ต้องแปลงค่า
+      yIncome: fmt(yIncTot), yExpense: fmt(yExpTot), yNet: fmt(yIncTot - yExpTot),
+      yAvg: fmt(monthsUsed ? yExpTot / monthsUsed : 0),
+      // เป้าหมายปีผูกกับสกุลของมันเอง ถ้าไม่ตรงกับที่กำลังดูก็ไม่แสดง แทนที่จะแปลงค่ามั่ว
+      yGoalNote: YEAR_GOAL.code === V && YEAR_GOAL.amount
+        ? L.t_goalYear + " " + fmt(YEAR_GOAL.amount) + " · "
+          + Math.max(0, Math.round(((yIncTot - yExpTot) / YEAR_GOAL.amount) * 100)) + "%"
+        : "",
+      t_yPeakName: peakI >= 0 ? L.mFull[peakI] : "—",
+      yPeakNote: peakI >= 0 ? fmt(yExp[peakI]) : L.t_noData,
+      t_yRange: L.mAbbr[0] + "–" + L.mAbbr[Math.max(0, (s.vYear === NOW_Y ? NOW_M : 12) - 1)] + " " + s.vYear,
+      t_yearTitle: L.t_yearWord + " " + s.vYear,
+      dayMax: "1–" + dim + " " + L.mAbbr[s.vMonth - 1] + " " + s.vYear + " · " + L.t_peak + " " + fmt(dayPeak),
+      mBal: fmt(incV - expV), mInc: fmt(incV), mExp: fmt(expV),
+      todayRows: live(s.txns.filter(isToday)).map((t) => ({
+        name: t.name, cat: catLabel(t.cat),
+        method: (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method),
+        who: t.who,
+        // ใช้ SIGN_OF ชุดเดียวกับที่อื่น — เดิมเขียน isInc ? "+" : "−" ทำให้ยอดยกมาติดลบ
+        // และรายการโอนกลายเป็นรายจ่าย ทั้งที่ยอดรวมข้างล่างนับสองอย่างนี้เป็น 0 แถวเลยบวกไม่ได้เท่าที่สรุป
+        amount: (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+        color: isInc(t) || isOpen(t) ? DARK : INK,
+      })),
+      todayTotal: sumByCode(signed(live(s.txns.filter(isToday)))),
+      t_todayDate: TODAY.getDate() + " " + L.mAbbr[TODAY.getMonth()] + " " + NOW_Y,
+      loginInc: fmt(yIncTot), loginExp: fmt(yExpTot), loginNet: fmt(yIncTot - yExpTot),
+      kindOpts: [["all", L.t_typeAll], ["income", L.t_kindInc], ["expense", L.t_kindExp],
+                 ["transfer", L.t_kindXfer], ["opening", L.t_kindOpen]].map(([id, label]) => ({
+        label, pick: () => this.setState({ kindFilter: id }), ...sel(s.kindFilter === id),
+      })),
+      listRows: shown.map((t) => {
+          const inc = isInc(t);
+          const mi = METHODS.indexOf(t.method);
+          const ti = METHODS.indexOf(t.methodTo);
+          const asking = s.pendingDel === t.id;
+          const mine = this.canEdit(t) && !isVoid(t);
+          const nEdits = editsOf(t.id).length;
+          const open = s.historyId === t.id;
+          const dead = isVoid(t);
+          // สลิปกางอยู่ใต้แถวของตัวเอง จึงต้องคิดทีละแถวว่าแถวนี้ใช่ใบที่เปิดอยู่ไหม
+          const slipOn = s.slipViewId === t.id;
+          const slipPic = slipOn && s.slipViewUrl && !s.slipViewPdf;
+          const slipPdf = slipOn && s.slipViewUrl && s.slipViewPdf;
+          const mLabel = mi >= 0 ? L.methods[mi] : t.method;
+          return {
+            date: t.date, name: t.name, who: t.who,
+            cat: isXfer(t) || isOpen(t) ? KIND_LABEL(L)[t.kind] : catLabel(t.cat),
+            method: isXfer(t) ? mLabel + " → " + (ti >= 0 ? L.methods[ti] : t.methodTo) : mLabel,
+            flag: t.flag ? L.t_recurFlag : "",
+            amount: (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+            color: dead ? "#98989b" : inc || isOpen(t) ? DARK : INK,
+            mark: dead ? "#d4d4d7" : isXfer(t) || isOpen(t) ? "#94bce3" : inc ? DARK : ACC,
+
+            // รายการที่ยกเลิกแล้ว — ขีดฆ่า จางลง แต่ยังอยู่ให้กู้คืนได้
+            strike: dead ? "line-through" : "none",
+            fade: dead ? "0.55" : "1",
+            voidDisp: dead ? "inline-flex" : "none",
+            voidLabel: dead
+              ? L.t_voidedBy + " " + t.voidBy + " · " + fmtWhen(t.voidAt)
+                + (t.voidReason ? " · " + t.voidReason : "")
+              : "",
+
+            // ปุ่มเปิดสลิป — โผล่เฉพาะแถวที่แนบไว้จริง กดซ้ำคือปิด
+            slipDisp: t.slip ? "inline-flex" : "none",
+            slipBg: slipOn ? DARK : "transparent",
+            slipFg: slipOn ? "#eef6ff" : "#416180",
+            openSlip: t.slip ? this.openSlip(t) : () => {},
+
+            // แผงรูปที่กางใต้แถวนี้ — ปิดแล้วแถวก็หุบกลับที่เดิม ไม่ต้องเลื่อนหาที่ท้ายตาราง
+            slipPanelDisp: slipOn ? "flex" : "none",
+            slipWaitDisp: slipOn && s.slipViewBusy ? "block" : "none",
+            slipErrDisp: slipOn && s.slipViewErr ? "block" : "none",
+            slipErrText: slipOn ? s.slipViewErr : "",
+            slipImgDisp: slipPic ? "block" : "none",
+            slipImgSrc: slipPic ? s.slipViewUrl : BLANK_PX,
+            slipPdfDisp: slipPdf ? "block" : "none",
+            slipPdfSrc: slipPdf ? s.slipViewUrl : "about:blank",
+            slipClose: this.closeSlipView,
+
+            // ป้าย "แก้ไขแล้ว" กดดูประวัติได้
+            editedDisp: nEdits ? "inline-flex" : "none",
+            editedLabel: L.t_edited + " " + nEdits + "×",
+            editedBg: open ? DARK : "#eef6ff",
+            editedFg: open ? "#eef6ff" : "#416180",
+            openHistory: this.showHistory(t.id),
+
+            editDisp: mine ? "inline-flex" : "none",
+            editLabel: L.t_edit,
+            edit: mine ? this.beginEdit(t) : () => {},
+
+            // ปิ่นเท่านั้น — ยกเลิก (ไม่ลบทิ้ง) และกู้คืนได้ทีหลัง
+            delDisp: admin ? "inline-flex" : "none",
+            // ปุ่มในแถวแค่เปิด/ปิดแผงกรอกเหตุผล ตัวยืนยันจริงอยู่ในแผง
+            delLabel: dead ? L.t_restore : asking ? L.t_notVoid : L.t_void,
+            delBd: asking || dead ? DARK : "rgba(29,31,32,0.16)",
+            delFg: asking ? "#f2f2f3" : dead ? DARK : MUTED,
+            delBg: asking ? DARK : "transparent",
+            del: !admin ? () => {}
+              : dead ? this.setVoid(t.id, false)
+              : asking ? this.askDelClose : this.askDel(t.id),
+          };
+        }),
+
+      // แผงกรอกเหตุผลก่อนยกเลิก — เปิดเมื่อกดปุ่ม "ยกเลิก" ที่แถวใดแถวหนึ่ง
+      askDisp: askTx ? "flex" : "none",
+      askTitle: L.t_voidTitle,
+      askName: askTx ? (askTx.name || catLabel(askTx.cat)) + " · " + askTx.date : "",
+      askPh: L.t_reasonPh,
+      voidReason: s.voidReason || "",
+      onVoidReason: this.onVoidReason,
+      askConfirm: askTx ? this.setVoid(askTx.id, true) : () => {},
+      askCancel: this.askDelClose,
+      voidErr: s.voidErr || "",
+      voidErrDisp: s.voidErr ? "block" : "none",
+
+      // แผงประวัติการแก้ไขของรายการที่กดเลือก
+      histDisp: hist ? "flex" : "none",
+      histTitle: L.t_histTitle,
+      histName: hist ? hist.tx.name || catLabel(hist.tx.cat) : "",
+      histClose: this.closeHistory,
+      t_close: L.t_close,
+      histRows: hist ? hist.list.map((e) => ({
+        when: fmtWhen(e.edited_at),
+        who: L.t_editedBy + " " + e.edited_by,
+        changes: (e.changes || []).map((c) => ({
+          field: fieldLabel(c.field),
+          from: fieldVal(c.field, c.from) || L.t_blank,
+          to: fieldVal(c.field, c.to) || L.t_blank,
+        })),
+      })) : [],
+      // หัวแผงสลิปกับข้อความรอ — แผงตัวจริงอยู่ในแต่ละแถว (ดู listRows)
+      t_slipTitle: L.t_slipTitle,
+      t_slipWait: L.t_slipWait,
+      filters: [L.t_all, ...s.accts.map((a) => a.name)].map((name) => ({
+        name, pick: () => this.setState({ filter: name }), ...sel(s.filter === name),
+      })),
+      catRows: s.cats.map((c, i) => ({
+        th: c.th, lo: c.lo,
+        onTh: this.setCat(i, "th"), onLo: this.setCat(i, "lo"), del: this.delCat(i),
+      })),
+      acctEdits: s.accts.map((a, i) => {
+        const isMe = a.name === s.acct;
+        const adminHere = isMe && admin;
+        return {
+          name: a.name, role: lang === "lo" ? a.roleLo : a.roleTh, code: a.code,
+          email: a.email || "—",
+          roleTag: adminHere ? L.t_roleAdmin : isMe ? L.t_roleMember : "",
+          roleFg: adminHere ? DARK : MUTED,
+          onName: this.setAcct(i, "name"), onRole: this.setAcct(i, lang === "lo" ? "roleLo" : "roleTh"),
+          onCode: this.setAcct(i, "code"),
+        };
+      }),
+      t_colEmail: L.t_colEmail, t_colPerm: L.t_colPerm, t_acctNote: L.t_acctNote,
+      curCodes: CURRENCIES.map((c) => ({ code: c.code, label: c.sym + " " + c.code })),
+      addCat: this.addCat,
+      catNote: !s.catsLive ? L.t_catsOffline : L.t_catsAdminOnly,
+      catNoteFg: !s.catsLive ? "#1d2d3d" : "#5d5d60",
+      addCatDisp: s.catsLive && admin ? "inline-flex" : "none",
+      listTitle: s.period === "month" ? L.t_pMonthTitle : s.period === "year" ? L.t_pYearTitle : L.t_pAllTitle,
+      periodOpts: [["month", L.t_pMonth], ["year", L.t_pYear], ["all", L.t_pAll]].map(([id, label]) => ({
+        label, pick: () => this.setState({ period: id }), ...sel(s.period === id),
+      })),
+      incRows: breakdown(true),
+      expRows: breakdown(false),
+      // ยอดรวมหัวการ์ดแยกทุกสกุล แต่แถบ % ข้างล่างคิดได้ทีละสกุลเท่านั้น
+      // ไม่บอกไว้ก็จะเห็นยอดรวมสองสกุลอยู่เหนือแถบที่รวมกันได้แค่สกุลเดียว แล้วงงว่าส่วนต่างหายไปไหน
+      breakSkip: (() => {
+        const n = shownLive.filter((t) => (isInc(t) || isExp(t)) && !inView(t)).length;
+        return n ? L.t_breakCur.replace("{c}", (L.curNames || {})[V] || cur(V).name || V)
+                               .replace("{n}", n) : "";
+      })(),
+      breakSkipDisp: shownLive.some((t) => (isInc(t) || isExp(t)) && !inView(t)) ? "block" : "none",
+      sumIncLabel: L.t_breakInc,
+      sumExpLabel: L.t_breakExp,
+      sumInc: sumByCode(shownLive.filter(isInc)),
+      sumExp: sumByCode(shownLive.filter(isExp)),
+      sumNet: sumByCode(signed(shownLive)),
+      t_netLabel: L.t_net,
+      listCount: L.t_found + " " + shown.length + " " + L.t_items,
+      listInc: L.t_sumInc + " " + sumByCode(shownLive.filter(isInc)),
+      listExp: L.t_sumExp + " " + sumByCode(shownLive.filter(isExp)),
+      // ยอดคงเหลือแยกช่องทาง
+      balCash: fmt(sumV(balOf(METHODS[0]))),
+      balBank: fmt(sumV(balOf(METHODS[1]))),
+      balCard: fmt(sumV(cardDebt)),
+      balNote: hasOpening ? L.t_balReal : L.t_balNoOpening,
+      balNoteFg: hasOpening ? "#5d5d60" : "#416180",
+      balLater: laterN ? L.t_balLater.replace("{n}", laterN) : "",
+      balLaterDisp: laterN ? "block" : "none",
+
+      kpiIncome: fmt(incV),
+      kpiExpense: fmt(expV),
+      kpiBalance: fmt(incV - expV),
+      kpiAvg: fmt(elapsed ? expToDate / elapsed : 0),
+      kpiIncomeAlt: "", kpiExpenseAlt: "", kpiBalanceAlt: "",
+      // บอกฐานที่ใช้หารไว้ด้วย เดือนที่ผ่านไปแล้วหารด้วยทั้งเดือนอยู่แล้วจึงไม่ต้องบอก
+      kpiAvgAlt: isCurMonth ? L.t_avgBase.replace("{n}", elapsed) : "",
+      kpiScope: s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ" ? L.t_scopeAll : L.t_scopeOne + " " + s.filter,
+      kpiRate: incV ? Math.round(((incV - expV) / incV) * 100) + "%" : "—",
+      kpiExpNote: prevExpV
+        ? (expV <= prevExpV ? "↓ " : "↑ ") + Math.abs(Math.round(((expV - prevExpV) / prevExpV) * 1000) / 10) + "% " + L.t_fromPrev
+        : "—",
+      t_daysNote: activeDays + " / " + dim + " " + (lang === "lo" ? "ວັນມີລາຍການ" : "วันมีรายการ"),
+      acctRows: (() => {
+        const per = s.accts.map((a) => {
+          const mine = live(s.txns.filter((t) => t.who === a.name && inMonthOf(t, s.vMonth, s.vYear)));
+          // แท่งเทียบระหว่างบัญชีต้องเป็นสกุลเดียวกันถึงจะเทียบได้ ส่วนยอดในการ์ดยังแยกทุกสกุล
+          return { a, mine, exp: sumV(mine.filter((t) => isExp(t) && inView(t))) };
+        });
+        const maxExp = per.reduce((n, p) => (p.exp > n ? p.exp : n), 0);
+        return per.map(({ a, mine, exp }) => {
+          const inc = mine.filter(isInc), out = mine.filter(isExp);
+          const codes = CODES.filter((c) => mine.some((t) => codeOfTx(t) === c));
+          return {
+            name: a.name, role: lang === "lo" ? a.roleLo : a.roleTh,
+            income: sumByCode(inc), expense: sumByCode(out), net: sumByCode(signed(mine)),
+            code: a.code, curNote: L.t_mainCur + " " + a.code,
+            wallets: codes.map((c) => {
+              const ci = inc.filter((t) => codeOfTx(t) === c).reduce((n, t) => n + valOf(t), 0);
+              const ce = out.filter((t) => codeOfTx(t) === c).reduce((n, t) => n + valOf(t), 0);
+              return {
+                code: c, bal: raw(ci - ce, c), flow: raw(ci, c) + " / " + raw(ce, c),
+                weight: c === a.code ? "600" : "400",
+                fg: c === a.code ? INK : MUTED,
+              };
+            }),
+            w: (maxExp ? Math.round((exp / maxExp) * 100) : 0) + "%",
+            bg: a.id === "home" ? DARK : ACC,
+            badge: a.name === s.acct ? L.t_inUse : "",
+          };
+        });
+      })(),
+
+      // ปุ่มเลือกประเภท 4 แบบ — รายจ่าย / รายรับ / โอนระหว่างช่องทาง / ยอดยกมา
+      kindBtns: KINDS.map((id) => ({
+        label: KIND_LABEL(L)[id],
+        pick: () => this.setState({ kind: id }),
+        bg: s.kind === id ? ACC : "transparent",
+        fg: s.kind === id ? "#f2f2f3" : MUTED,
+      })),
+      // หมวดหมู่กับรายการประจำใช้ได้เฉพาะรายรับ/รายจ่าย
+      catDisp: s.kind === "income" || s.kind === "expense" ? "flex" : "none",
+      // ช่องปลายทาง โผล่เฉพาะตอนโอน
+      xferDisp: s.kind === "transfer" ? "flex" : "none",
+      toMethods: L.methods.map((name, i) => {
+        const id = METHODS[i];
+        const on = (s.methodTo || METHODS.find((m) => m !== s.method)) === id;
+        const same = id === s.method;
+        return {
+          name, pick: same ? () => {} : () => this.setState({ methodTo: id }),
+          bg: on && !same ? ACC : "transparent",
+          fg: same ? "#c4c4c8" : on ? "#f2f2f3" : MUTED,
+        };
+      }),
+      kindNote: s.kind === "transfer" ? L.t_xferNote : s.kind === "opening" ? L.t_openNote : "",
+      kindNoteDisp: s.kind === "transfer" || s.kind === "opening" ? "block" : "none",
+
+      // ภาพตัวอย่างหน้าล็อกอินบนมือถือ — ต้องสะท้อนวิธีล็อกอินจริง (อีเมล + รหัสผ่าน)
+      // เดิมวาดเป็นแป้น PIN 6 หลัก ซึ่งเป็นของเหลือจากเวอร์ชันก่อนเปลี่ยนมาใช้ Supabase Auth
+      // กดไม่ได้อยู่แล้วเพราะเป็นภาพ แต่ที่แย่กว่าคือมันบอกวิธีเข้าระบบผิดไปเลย
+      mobileAccounts: s.accts.map((a, i) => ({
+        name: a.name,
+        role: lang === "lo" ? a.roleLo : a.roleTh,
+        bd:   i === 0 ? "#94bce3" : "rgba(148,188,227,.3)",
+        bg:   i === 0 ? "rgba(148,188,227,.18)" : "transparent",
+        avBg: i === 0 ? "#94bce3" : "rgba(148,188,227,.25)",
+        avFg: i === 0 ? "#1d2d3d" : "#eef6ff",
+      })),
+
+      mobileChips: s.cats.slice(0, 5).map((c, i) => ({
+        name: catName(c),
+        bd: i === 0 ? ACC : "rgba(29,31,32,0.16)",
+        bg: i === 0 ? ACC : "transparent",
+        fg: i === 0 ? "#f2f2f3" : INK,
+      })),
+      chips: s.cats.map((c) => ({ name: catName(c), pick: () => this.setState({ cat: c.th }), ...sel(s.cat === c.th) })),
+      // เก็บค่าเป็น METHODS (ไทย) เสมอ ส่วน L.methods เป็นแค่ป้ายที่แสดง — เหมือน toMethods ข้างบน
+      // ถ้าเก็บป้ายที่แสดงลงฐานข้อมูล พอบันทึกด้วยภาษาลาวจะได้ "ເງິນສົດ" ซึ่งไม่ตรงกับ METHODS[0]
+      // แถวนั้นจะหลุดจากการ์ดยอดคงเหลือทุกใบเงียบ ๆ และนับเป็นคนละช่องทางกับที่บันทึกเป็นไทย
+      methods: L.methods.map((name, i) => {
+        const id = METHODS[i];
+        return { name, pick: () => this.setState({ method: id }), ...sel(s.method === id) };
+      }),
+      // ใครล็อกอิน ก็เลือกได้แค่บัญชีตัวเอง — บัญชีหลักเลือกได้ทุกบัญชี
+      members: (admin ? s.accts.map((a) => a.name) : [s.acct])
+        .map((name) => ({ name, pick: () => this.setState({ who: name }), ...sel(this.targetWho === name) })),
+      acctNote: admin ? "" : L.t_lockedAcct,
+
+      amount: s.amount,
+      note: s.note,
+      date: s.date,
+      onAmount: (e) => this.setState({ amount: e.target.value }),
+      onNote: (e) => this.setState({ note: e.target.value }),
+      onDate: (e) => this.setState({ date: e.target.value }),
+
+      toggleRepeat: () => this.setState({ repeat: !s.repeat }),
+      repBg: s.repeat ? "#eef6ff" : "transparent",
+      repBd: s.repeat ? ACC : "rgba(29,31,32,0.16)",
+      repMark: s.repeat ? ACC : "transparent",
+      repNote: s.repeat ? L.t_repOn : L.t_repOff,
+
+      // ───── สลิป ─────
+      // ยังไม่ได้รัน upgrade_v4.sql = บอกตรง ๆ ว่าทำไมยังใช้ไม่ได้ และกดเลือกไฟล์ไม่ได้
+      // ดีกว่าให้กดได้แล้วไปล้มตอนกดบันทึก ซึ่งจะดูเหมือนทั้งระบบพัง
+      onSlip: s.slipLive ? this.onSlip : () => {},
+      clearSlip: this.clearSlip,
+      slipDisabled: s.slipLive ? undefined : true,
+      slipCursor: s.slipLive ? "pointer" : "not-allowed",
+      slipLabel: !s.slipLive ? L.t_slipOffline
+        : s.slipFile ? s.slipFile.name
+        : s.slipPath ? L.t_slipHas
+        : L.t_pick,
+      slipNote: s.slipErr || (s.slipLive ? L.t_fileNote : L.t_slipOfflineNote),
+      slipNoteFg: s.slipErr || !s.slipLive ? "#8a2020" : "#5d5d60",
+      slipBd: !s.slipLive ? "rgba(29,31,32,0.16)"
+        : (s.slipFile || s.slipPath) ? ACC : "#94bce3",
+      // ปุ่มเอาออกโผล่เฉพาะตอนเพิ่งเลือกไฟล์ — สลิปที่อัปไปแล้วลบไม่ได้ (ถังไม่มี policy delete)
+      // เปลี่ยนได้อย่างเดียวคืออัปไฟล์ใหม่ทับการอ้างอิง แล้วประวัติจะบันทึกไว้ว่าเปลี่ยน
+      slipClearDisp: s.slipFile ? "inline-flex" : "none",
+      t_slipClear: L.t_slipClear,
+
+      save: this.save,
+      reset: () => this.setState({ amount: "", note: "", repeat: false, saved: "", date: TODAY_ISO,
+                                   slipFile: null, slipErr: "" }),
+      saveMsg: s.busy ? L.t_loading : s.saved,
+      saveLabel: s.editId != null ? L.t_saveEdit : L.t_save,
+      editingDisp: s.editId != null ? "flex" : "none",
+      editingNote: L.t_editing,
+      cancelEdit: this.cancelEdit,
+      t_cancel: L.t_cancel,
+
+      // แถบสถานะฐานข้อมูล
+      bannerDisp: (s.loading || s.dbErr) ? "block" : "none",
+      bannerText: s.dbErr || L.t_loading,
+      bannerBg: s.dbErr ? "#fdecec" : "#eef6ff",
+      bannerFg: s.dbErr ? "#8a2020" : "#416180",
+      bannerBd: s.dbErr ? "#e0a0a0" : "#94bce3",
+      emptyDisp: (!s.loading && !s.dbErr && !shown.length) ? "block" : "none",
+      emptyText: L.t_noData,
+
+      // แถบเลือกเดือน
+      t_monthTitle: L.mFull[s.vMonth - 1] + " " + s.vYear,
+      t_prevM: "‹ " + L.mAbbr[(s.vMonth + 10) % 12],
+      t_thisM: L.mAbbr[s.vMonth - 1] + " " + s.vYear,
+      t_nextM: L.mAbbr[s.vMonth % 12] + " ›",
+      prevMonth: () => this.setState(s.vMonth === 1
+        ? { vMonth: 12, vYear: s.vYear - 1 } : { vMonth: s.vMonth - 1 }),
+      nextMonth: () => this.setState(s.vMonth === 12
+        ? { vMonth: 1, vYear: s.vYear + 1 } : { vMonth: s.vMonth + 1 }),
+      thisMonth: () => this.setState({ vMonth: NOW_M, vYear: NOW_Y }),
+
+      logout: this.logout,
+      refresh: this.reload,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
