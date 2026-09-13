@@ -1302,7 +1302,7 @@ const ORIGIN = () => String(CFG.SUPABASE_URL).replace(/\/+$/, "");
 const REST = (t) => ORIGIN() + "/rest/v1/" + t;
 const SESS_KEY = "homeledger.session";
 
-// session = { access_token, refresh_token, expires_at }
+// session = { access_token, refresh_token, expires_at, user_id }
 let SESSION = null;
 try { SESSION = JSON.parse(localStorage.getItem(SESS_KEY) || "null"); } catch (e) { SESSION = null; }
 
@@ -1315,6 +1315,7 @@ const packSession = (j) => ({
   access_token: j.access_token,
   refresh_token: j.refresh_token,
   expires_at: Date.now() + (Number(j.expires_in) || 3600) * 1000 - 60000, // เผื่อ 1 นาที
+  user_id: j.user && j.user.id,   // ตัวจริงของ "ฉันคือใคร" — DB.me() ต้องกรองด้วยค่านี้เสมอ
 });
 
 const authFail = async (r) => {
@@ -1467,8 +1468,14 @@ const storageFail = async (r, what) => {
 };
 
 const DB = {
+  // ต้องกรองด้วย id ของคนที่ล็อกอินอยู่จริงเสมอ — ไม่งั้นได้ profiles ทุกคนกลับมา (RLS อ่านได้ทุกแถว
+  // อยู่แล้ว) แล้ว resume() หยิบแถวแรกไปแสดงเป็น "ฉัน" มั่ว ๆ ทั้งที่อาจเป็นคนละคนกับที่ล็อกอินจริง
+  // (หน้าเว็บจะขึ้นชื่อ/สิทธิ์ผิดคน แต่บันทึกรายการไม่ได้เพราะฐานข้อมูลเช็คจาก auth.uid() จริง ไม่ใช่
+  // จากชื่อที่หน้าเว็บคิดว่าใช่ — อาการคือขึ้น "บัญชีนี้ไม่มีสิทธิ์ทำรายการนี้" ทั้งที่หน้าจอบอกว่าเป็น admin)
   async me() {
-    const r = await call(REST("profiles") + "?select=name,role,code", {}, "โหลดโปรไฟล์ไม่สำเร็จ");
+    if (!SESSION || !SESSION.user_id) throw new Error("เซสชันเก่าเกินไป กรุณาเข้าสู่ระบบใหม่อีกครั้ง");
+    const r = await call(REST("profiles") + "?select=name,role,code&id=eq." + encodeURIComponent(SESSION.user_id),
+      {}, "โหลดโปรไฟล์ไม่สำเร็จ");
     return r.json();
   },
   // ลำดับต้องนิ่งข้ามหน้า ไม่งั้นแถวจะซ้ำหรือหายตรงรอยต่อ — ปิดท้ายด้วย id ที่ไม่ซ้ำเสมอ
