@@ -702,6 +702,16 @@
           </div>
         </div>
 
+        <div style="display:{{ giveDisp }};flex-direction:column;gap:10.2px">
+          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_receiveMethod }}</label>
+          <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
+            <sc-for list="{{ giveMethods }}" as="m" hint-placeholder-count="3">
+              <button onClick="{{ m.pick }}" style="flex:1;border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 0;font-size:14px;background:{{ m.bg }};color:{{ m.fg }}">{{ m.name }}</button>
+            </sc-for>
+          </div>
+          <div style="font-size:12px;color:{{ giveMethodNoteFg }}">{{ giveMethodNote }}</div>
+        </div>
+
         <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20.4px">
           <div style="display:flex;flex-direction:column;gap:10.2px">
             <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_method }}</label>
@@ -1033,13 +1043,16 @@ const T = {
     t_edited: "แก้ไขแล้ว", t_histTitle: "ประวัติการแก้ไข", t_editedBy: "แก้โดย",
     t_close: "ปิด", t_blank: "(ว่าง)",
     fields: { ts: "วันที่", name: "รายการ", cat: "หมวดหมู่", method: "ช่องทาง",
-              method_to: "โอนไปยัง", to_who: "ส่งให้", void: "สถานะ", slip: "สลิป",
+              method_to: "โอนไปยัง", to_who: "ส่งให้", to_method: "ช่องทางรับ", void: "สถานะ", slip: "สลิป",
               kind: "ประเภท", amt: "จำนวนเงิน", code: "สกุลเงิน", flag: "รายการประจำ", who: "บัญชี" },
     t_kindXfer: "โอนระหว่างช่องทาง", t_kindOpen: "ยอดยกมา", t_kindGive: "ส่งเงินให้คน", t_to: "ไปยัง",
     t_needTo: "เลือกช่องทางปลายทางที่ไม่ใช่ช่องทางเดิม",
     t_xferNote: "ย้ายเงินระหว่างช่องทาง เช่น ถอน ATM (โอน → เงินสด) หรือจ่ายบัตร (โอน → บัตร) ไม่นับเป็นรายรับหรือรายจ่าย",
     t_openNote: "เงินตั้งต้นที่มีอยู่ก่อนเริ่มใช้สมุดนี้ ใส่ครั้งเดียวต่อช่องทาง ไม่นับเป็นรายรับของเดือนไหน",
     t_sendTo: "ส่งให้", t_needToWho: "เลือกคนที่จะส่งให้ ต้องไม่ใช่ตัวเอง",
+    t_receiveMethod: "ช่องทางรับของผู้รับ", t_needToMethod: "เลือกช่องทางที่ผู้รับจะได้รับเงิน",
+    t_giveUpgrade: "ต้องรัน upgrade_v10.sql ใน Supabase ก่อนจึงจะบันทึกช่องทางรับเงินได้",
+    t_noToMethod: "ยังไม่ระบุช่องทางรับ",
     t_giveNote: "ส่งเงินให้อีกคนตรง ๆ เลือกได้ว่าจะส่งให้ใคร ไม่ใช่รายรับหรือรายจ่ายของบ้าน แค่เงินเปลี่ยนมือ",
     t_dupOpening: "{m} · {c} มียอดยกมาอยู่แล้ว ({v}) — กดแก้ยอดเดิมแทน หรือยกเลิกแถวเก่าก่อน",
     t_viewCur: "กราฟและ % คิดเฉพาะสกุล", t_otherCur: "อีก {n} รายการเป็นสกุลอื่น ไม่รวมในหน้านี้",
@@ -1154,13 +1167,16 @@ const T = {
     t_edited: "ແກ້ໄຂແລ້ວ", t_histTitle: "ປະຫວັດການແກ້ໄຂ", t_editedBy: "ແກ້ໂດຍ",
     t_close: "ປິດ", t_blank: "(ຫວ່າງ)",
     fields: { ts: "ວັນທີ", name: "ລາຍການ", cat: "ໝວດໝູ່", method: "ຊ່ອງທາງ",
-              method_to: "ໂອນໄປຫາ", to_who: "ສົ່ງໃຫ້", void: "ສະຖານະ", slip: "ໃບບິນ",
+              method_to: "ໂອນໄປຫາ", to_who: "ສົ່ງໃຫ້", to_method: "ຊ່ອງທາງຮັບ", void: "ສະຖານະ", slip: "ໃບບິນ",
               kind: "ປະເພດ", amt: "ຈຳນວນເງິນ", code: "ສະກຸນເງິນ", flag: "ລາຍການປະຈຳ", who: "ບັນຊີ" },
     t_kindXfer: "ໂອນລະຫວ່າງຊ່ອງທາງ", t_kindOpen: "ຍອດຍົກມາ", t_kindGive: "ສົ່ງເງິນໃຫ້ຄົນ", t_to: "ໄປຫາ",
     t_needTo: "ເລືອກຊ່ອງທາງປາຍທາງທີ່ບໍ່ແມ່ນຊ່ອງທາງເດີມ",
     t_xferNote: "ຍ້າຍເງິນລະຫວ່າງຊ່ອງທາງ ເຊັ່ນ ຖອນ ATM (ໂອນ → ເງິນສົດ) ຫຼືຈ່າຍບັດ (ໂອນ → ບັດ) ບໍ່ນັບເປັນລາຍຮັບຫຼືລາຍຈ່າຍ",
     t_openNote: "ເງິນຕັ້ງຕົ້ນທີ່ມີຢູ່ກ່ອນເລີ່ມໃຊ້ປຶ້ມນີ້ ໃສ່ຄັ້ງດຽວຕໍ່ຊ່ອງທາງ ບໍ່ນັບເປັນລາຍຮັບຂອງເດືອນໃດ",
     t_sendTo: "ສົ່ງໃຫ້", t_needToWho: "ເລືອກຄົນທີ່ຈະສົ່ງໃຫ້ ຕ້ອງບໍ່ແມ່ນຕົນເອງ",
+    t_receiveMethod: "ຊ່ອງທາງຮັບຂອງຜູ້ຮັບ", t_needToMethod: "ເລືອກຊ່ອງທາງທີ່ຜູ້ຮັບຈະໄດ້ຮັບເງິນ",
+    t_giveUpgrade: "ຕ້ອງລັນ upgrade_v10.sql ໃນ Supabase ກ່ອນ ຈຶ່ງຈະບັນທຶກຊ່ອງທາງຮັບໄດ້",
+    t_noToMethod: "ຍັງບໍ່ລະບຸຊ່ອງທາງຮັບ",
     t_giveNote: "ສົ່ງເງິນໃຫ້ອີກຄົນຕົງໆ ເລືອກໄດ້ວ່າຈະສົ່ງໃຫ້ໃຜ ບໍ່ແມ່ນລາຍຮັບຫຼືລາຍຈ່າຍຂອງບ້ານ ພຽງແຕ່ເງິນປ່ຽນມື",
     t_dupOpening: "{m} · {c} ມີຍອດຍົກມາຢູ່ແລ້ວ ({v}) — ກົດແກ້ຍອດເດີມແທນ ຫຼື ຍົກເລີກແຖວເກົ່າກ່ອນ",
     t_viewCur: "ກຣາຟແລະ % ຄິດສະເພາະສະກຸນ", t_otherCur: "ອີກ {n} ລາຍການເປັນສະກຸນອື່ນ ບໍ່ລວມໃນໜ້ານີ້",
@@ -1563,6 +1579,16 @@ const DB = {
     await call(REST("txns") + "?select=slip&limit=1", {}, "ตรวจคอลัมน์สลิปไม่สำเร็จ");
     return true;
   },
+  async giveMethodReady() {
+    try {
+      await call(REST("txns") + "?select=to_method&limit=1", {}, "ตรวจช่องทางรับเงินไม่สำเร็จ");
+      return true;
+    } catch (e) {
+      if (/to_method.*(does not exist|column|schema cache)|column.*to_method/i.test(e.message || ""))
+        return false;
+      throw e;
+    }
+  },
   // อัปก่อนบันทึกแถว เพราะตอนนั้นยังไม่มี id ให้ตั้งชื่อไฟล์ — ใช้ชื่อสุ่มแทน
   // แยกโฟลเดอร์ตามเดือนไว้ให้หาง่ายเวลาเข้าไปดูใน dashboard
   async slipUpload(file) {
@@ -1627,7 +1653,7 @@ const fromDb = (r) => {
     month: mo, year: yAD + 543, day,
     date: pad2(day) + " " + M_ABBR[mo - 1] + " " + String(yAD + 543).slice(-2),
     name: r.name || "", cat: r.cat || "", method: r.method || "", who: r.who || "",
-    methodTo: r.method_to || "", toWho: r.to_who || "",
+    methodTo: r.method_to || "", toWho: r.to_who || "", toMethod: r.to_method || "",
     voidAt: r.void_at || null, voidBy: r.void_by || "", voidReason: r.void_reason || "",
     slip: r.slip || "",
     kind: r.kind, val, code: r.code || "THB", flag: r.flag || "",
@@ -1661,6 +1687,7 @@ class Component extends DCLogic {
     method: METHODS[0],
     methodTo: "",
     toWho: "",
+    toMethod: "",
     voidReason: "",
     voidErr: "",
     viewCode: null,          // สกุลเงินที่หน้าเดือน/หน้าปีกำลังวิเคราะห์ (null = ใช้ของบัญชีตัวเอง)
@@ -1696,6 +1723,8 @@ class Component extends DCLogic {
     slipPath: "",            // สลิปที่แนบอยู่แล้วของรายการที่กำลังแก้
     slipErr: "",
     slipLive: false,         // true = รัน upgrade_v4.sql แล้ว แนบสลิปได้จริง
+    giveMethodLive: false,
+    giveMethodErr: "",
   };
 
   componentDidMount() {
@@ -1739,13 +1768,17 @@ class Component extends DCLogic {
       // ประวัติการแก้ไขกับหมวดหมู่เป็นของเสริม — ถ้าตารางยังไม่มี (ยังไม่ได้รัน SQL)
       // รายการหลักต้องยังขึ้นได้ตามปกติ ไม่ใช่พังทั้งหน้า
       const soft = (what) => (e) => { console.warn(what + ":", e.message || e); return null; };
-      const [rows, edits, cats, budgets, yearGoal, slipOk] = await Promise.all([
+      const [rows, edits, cats, budgets, yearGoal, slipOk, giveMethodStatus] = await Promise.all([
         DB.list(),
         DB.edits().catch(soft("ประวัติการแก้ไขใช้ไม่ได้")),
         DB.cats().catch(soft("หมวดหมู่ใช้ไม่ได้ ใช้ชุดเริ่มต้นไปก่อน")),
         DB.budgets().catch(soft("เป้างบประมาณใช้ไม่ได้ ใช้ชุดเริ่มต้นไปก่อน")),
         DB.yearGoal().catch(soft("เป้าเงินเก็บทั้งปีใช้ไม่ได้ ใช้ชุดเริ่มต้นไปก่อน")),
         DB.slipReady().catch(soft("แนบสลิปยังใช้ไม่ได้ ยังไม่ได้รัน upgrade_v4.sql")),
+        DB.giveMethodReady().then((ready) => ({ ready })).catch((e) => {
+          console.warn("ตรวจช่องทางรับเงินไม่สำเร็จ:", e.message || e);
+          return { ready: false, error: e.message || String(e) };
+        }),
       ]);
       // cats/budgets เป็น [] ตามจริงได้ (ลบจนหมด) ต่างจากโหลดไม่สำเร็จซึ่งได้ null — แยกสองกรณีนี้เสมอ
       // ไม่งั้นลบแถวสุดท้ายแล้วปุ่มเพิ่มจะหายไปด้วย ทั้งที่ตารางยังใช้ได้ปกติ (เคยเป็นแบบนี้กับ cats มาก่อน)
@@ -1757,6 +1790,8 @@ class Component extends DCLogic {
         edits: edits || [],
         // ยังไม่ได้รัน upgrade_v4.sql ก็ใช้ทุกอย่างที่เหลือได้ตามปกติ แค่แนบสลิปไม่ได้
         slipLive: !!slipOk,
+        giveMethodLive: !!giveMethodStatus.ready,
+        giveMethodErr: giveMethodStatus.error || "",
         // ถ้าตาราง cats ยังไม่มี (โหลดไม่สำเร็จ) ก็ยังใช้งานต่อได้ด้วยชุดเริ่มต้น (แต่แก้แล้วไม่ถูกบันทึก)
         // แต่ถ้าตารางมีจริงแค่ว่างเปล่า (ลบจนหมด) ต้องโชว์ว่าง ไม่ใช่ CAT_SEED — ไม่งั้นกดแก้/ลบแถวที่โชว์
         // จะพังเพราะแถวพวกนั้นไม่มี id จริงในฐานข้อมูล
@@ -1932,6 +1967,9 @@ class Component extends DCLogic {
     const give = s.kind === "give";
     const toWho = give ? (s.toWho || s.accts.map((a) => a.name).find((n) => n !== who)) : "";
     if (give && (!toWho || toWho === who)) return this.setState({ saved: this.L.t_needToWho });
+    const toMethod = give ? s.toMethod : null;
+    if (give && !s.giveMethodLive) return this.setState({ saved: s.giveMethodErr || this.L.t_giveUpgrade });
+    if (give && !toMethod) return this.setState({ saved: this.L.t_needToMethod });
 
     // ยอดยกมามีได้ช่องทางละแถวเดียวต่อบัญชีต่อสกุล — บอกก่อนยิง จะได้เห็นยอดเดิมด้วย
     // (ฐานข้อมูลก็บังคับซ้ำอีกชั้นด้วย index txns_opening_unique เผื่ออีกคนใส่พร้อมกัน)
@@ -1960,6 +1998,7 @@ class Component extends DCLogic {
       code,
       flag: s.repeat && plain ? "ประจำ" : "",
     };
+    if (s.giveMethodLive) row.to_method = give ? toMethod : null;
 
     this.setState({ busy: true, saved: "" });
     try {
@@ -1981,7 +2020,7 @@ class Component extends DCLogic {
       const done = s.editId != null ? "แก้ไขแล้ว" : this.L.t_savedOk;
       this.setState({
         busy: false, editId: null, entryCode: null, amount: "", note: "", repeat: false, methodTo: "",
-        toWho: "", slipFile: null, slipPath: "", slipErr: "",
+        toWho: "", toMethod: "", slipFile: null, slipPath: "", slipErr: "",
         saved: done + " · " + code + " → " + this.L.t_toAcct + " " + who,
       });
       this.reload();
@@ -2000,14 +2039,14 @@ class Component extends DCLogic {
       screen: "add", editId: t.id, pendingDel: null, saved: "", historyId: null,
       slipViewId: null, slipViewUrl: "", slipViewErr: "", slipViewBusy: false,
       kind: t.kind, cat: t.cat || this.state.cat,
-      method: t.method, methodTo: t.methodTo || "", toWho: t.toWho || "", who: t.who, amount: String(t.val),
+      method: t.method, methodTo: t.methodTo || "", toWho: t.toWho || "", toMethod: t.toMethod || "", who: t.who, amount: String(t.val),
       note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
       slipFile: null, slipPath: t.slip || "", slipErr: "",
     });
   };
 
   cancelEdit = () => this.setState({
-    editId: null, amount: "", note: "", repeat: false, entryCode: null, saved: "", methodTo: "", toWho: "",
+    editId: null, amount: "", note: "", repeat: false, entryCode: null, saved: "", methodTo: "", toWho: "", toMethod: "",
     slipFile: null, slipPath: "", slipErr: "",
   });
 
@@ -2116,7 +2155,11 @@ class Component extends DCLogic {
 
     // ทิศทางเงินสำหรับยอดรับ-จ่าย-คงเหลือ: โอนกับยอดยกมาไม่นับ (เป็น 0)
     const flow = (t) => (isInc(t) ? 1 : isExp(t) ? -1 : 0);
-    const signed = (list) => list.map((t) => ({ ...t, val: flow(t) * valOf(t) }));
+    const signed = (list, accountScoped = false) => list.map((t) => {
+      const giveFlow = (!accountScoped || s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ") ? 0
+        : t.who === s.filter ? -1 : t.toWho === s.filter ? 1 : 0;
+      return { ...t, val: (isGive(t) ? giveFlow : flow(t)) * valOf(t) };
+    });
     // ยอดรวมหลายสกุลในบรรทัดเดียว เช่น "₭2,300,000  ·  ฿12,400" — ไม่บวกข้ามสกุล
     const sumByCode = (list) => {
       const by = {};
@@ -2126,7 +2169,8 @@ class Component extends DCLogic {
     };
 
     const isToday = (t) => t.ts === TODAY_ISO;
-    const inScope = (t) => s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ" || t.who === s.filter;
+    const inScope = (t) => s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ"
+      || t.who === s.filter || (isGive(t) && t.toWho === s.filter);
     const inMonthOf = (t, mm, yy) => t.month === mm && t.year === yy;
     const inPeriod = (t) => s.period === "all" ? true
       : s.period === "year" ? t.year === s.vYear
@@ -2209,12 +2253,20 @@ class Component extends DCLogic {
     const balScope = live(s.txns.filter((t) => inScope(t) && inView(t)));
     const balTx = balScope.filter((t) => t.ts <= TODAY_ISO);
     const laterN = balScope.length - balTx.length;   // ไม่นับ แต่ต้องบอกว่ามีอยู่ ไม่ใช่เงียบไป
+    const allAccounts = s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ";
     const inMethod = (t, m) => (isXfer(t) ? t.method === m || t.methodTo === m : t.method === m);
-    const balOf = (m) => balTx.filter((t) => inMethod(t, m)).map((t) => {
+    const balOf = (m) => balTx.flatMap((t) => {
+      if (isGive(t)) {
+        const flows = [];
+        if ((allAccounts || t.who === s.filter) && t.method === m) flows.push(-1);
+        if ((allAccounts || t.toWho === s.filter) && t.toMethod === m) flows.push(1);
+        return flows.map((sign) => ({ ...t, val: sign * valOf(t) }));
+      }
+      if (!inMethod(t, m)) return [];
       const sign = isXfer(t) ? (t.methodTo === m ? 1 : -1)
         : isInc(t) || isOpen(t) ? 1
-        : isExp(t) || isGive(t) ? -1 : 0;
-      return { ...t, val: sign * valOf(t) };
+        : isExp(t) ? -1 : 0;
+      return [{ ...t, val: sign * valOf(t) }];
     });
     const cardDebt = balOf(METHODS[2]).map((t) => ({ ...t, val: -valOf(t) }));
     const hasOpening = balTx.some(isOpen);
@@ -2465,8 +2517,11 @@ class Component extends DCLogic {
       mBal: fmt(incV - expV), mInc: fmt(incV), mExp: fmt(expV),
       todayRows: live(s.txns.filter(isToday)).map((t) => ({
         name: t.name, cat: catLabel(t.cat),
-        method: (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method),
-        who: t.who,
+        method: isGive(t)
+          ? (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method)
+            + " → " + (METHODS.indexOf(t.toMethod) >= 0 ? L.methods[METHODS.indexOf(t.toMethod)] : L.t_noToMethod)
+          : (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method),
+        who: isGive(t) ? t.who + " → " + t.toWho : t.who,
         // ใช้ SIGN_OF ชุดเดียวกับที่อื่น — เดิมเขียน isInc ? "+" : "−" ทำให้ยอดยกมาติดลบ
         // และรายการโอนกลายเป็นรายจ่าย ทั้งที่ยอดรวมข้างล่างนับสองอย่างนี้เป็น 0 แถวเลยบวกไม่ได้เท่าที่สรุป
         amount: (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
@@ -2488,19 +2543,21 @@ class Component extends DCLogic {
           const nEdits = editsOf(t.id).length;
           const open = s.historyId === t.id;
           const dead = isVoid(t);
+          const received = isGive(t) && t.toWho === s.filter && !allAccounts;
           // สลิปกางอยู่ใต้แถวของตัวเอง จึงต้องคิดทีละแถวว่าแถวนี้ใช่ใบที่เปิดอยู่ไหม
           const slipOn = s.slipViewId === t.id;
           const slipPic = slipOn && s.slipViewUrl && !s.slipViewPdf;
           const slipPdf = slipOn && s.slipViewUrl && s.slipViewPdf;
           const mLabel = mi >= 0 ? L.methods[mi] : t.method;
           return {
-            date: t.date, name: t.name, who: t.who,
+            date: t.date, name: t.name,
             cat: isXfer(t) || isOpen(t) || isGive(t) ? KIND_LABEL(L)[t.kind] : catLabel(t.cat),
             method: isXfer(t) ? mLabel + " → " + (ti >= 0 ? L.methods[ti] : t.methodTo)
-              : isGive(t) ? mLabel + " → " + t.toWho : mLabel,
+              : isGive(t) ? mLabel + " → " + (METHODS.indexOf(t.toMethod) >= 0 ? L.methods[METHODS.indexOf(t.toMethod)] : L.t_noToMethod) : mLabel,
+            who: isGive(t) ? t.who + " → " + t.toWho : t.who,
             flag: t.flag ? L.t_recurFlag : "",
-            amount: (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
-            color: dead ? "#98989b" : inc || isOpen(t) ? DARK : INK,
+            amount: (received ? "+" : SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+            color: dead ? "#98989b" : ((received || inc || isOpen(t)) ? DARK : INK),
             mark: dead ? "#d4d4d7" : isXfer(t) || isOpen(t) ? "#94bce3" : isGive(t) ? "#c98a5e" : inc ? DARK : ACC,
 
             // รายการที่ยกเลิกแล้ว — ขีดฆ่า จางลง แต่ยังอยู่ให้กู้คืนได้
@@ -2651,7 +2708,7 @@ class Component extends DCLogic {
       sumExpLabel: L.t_breakExp,
       sumInc: sumByCode(shownLive.filter(isInc)),
       sumExp: sumByCode(shownLive.filter(isExp)),
-      sumNet: sumByCode(signed(shownLive)),
+      sumNet: sumByCode(signed(shownLive, true)),
       t_netLabel: L.t_net,
       listCount: L.t_found + " " + shown.length + " " + L.t_items,
       listInc: L.t_sumInc + " " + sumByCode(shownLive.filter(isInc)),
@@ -2738,6 +2795,14 @@ class Component extends DCLogic {
           bg: on ? ACC : "transparent", fg: on ? "#f2f2f3" : MUTED,
         };
       }),
+      giveMethods: L.methods.map((name, i) => ({
+        name,
+        pick: s.giveMethodLive ? () => this.setState({ toMethod: METHODS[i] }) : () => {},
+        bg: s.toMethod === METHODS[i] ? ACC : "transparent",
+        fg: s.toMethod === METHODS[i] ? "#f2f2f3" : MUTED,
+      })),
+      giveMethodNote: s.giveMethodLive ? "" : s.giveMethodErr || L.t_giveUpgrade,
+      giveMethodNoteFg: s.giveMethodLive ? "#5d5d60" : "#8a2020",
       kindNote: s.kind === "transfer" ? L.t_xferNote : s.kind === "opening" ? L.t_openNote
         : s.kind === "give" ? L.t_giveNote : "",
       kindNoteDisp: s.kind === "transfer" || s.kind === "opening" || s.kind === "give" ? "block" : "none",
@@ -2807,7 +2872,7 @@ class Component extends DCLogic {
       t_slipClear: L.t_slipClear,
 
       save: this.save,
-      reset: () => this.setState({ amount: "", note: "", repeat: false, saved: "", date: TODAY_ISO,
+      reset: () => this.setState({ amount: "", note: "", repeat: false, saved: "", date: TODAY_ISO, toMethod: "",
                                    slipFile: null, slipErr: "" }),
       saveMsg: s.busy ? L.t_loading : s.saved,
       saveLabel: s.editId != null ? L.t_saveEdit : L.t_save,
