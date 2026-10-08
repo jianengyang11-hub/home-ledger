@@ -658,7 +658,7 @@
             <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60;display:flex;justify-content:space-between;gap:10px"><span>{{ t_amount }}</span><span style="text-transform:none;letter-spacing:0;color:#416180;min-width:0;text-align:right">{{ entryNote }}</span></label>
             <div style="display:flex;align-items:center;border:1px solid rgba(29,31,32,0.16);background:#f5f5f8">
               <span style="padding:0 13.6px;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:28px;color:#5d5d60">{{ entrySym }}</span>
-              <input value="{{ amount }}" onChange="{{ onAmount }}" placeholder="{{ amountPh }}" style="flex:1;border:0;background:transparent;padding:12px 13.6px 12px 0;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:34px;letter-spacing:.01em;color:#1d1f20;outline:none">
+              <input type="text" inputmode="decimal" value="{{ amount }}" onChange="{{ onAmount }}" placeholder="{{ amountPh }}" style="flex:1;border:0;background:transparent;padding:12px 13.6px 12px 0;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:34px;letter-spacing:.01em;color:#1d1f20;outline:none">
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;gap:10.2px;flex-wrap:wrap">
               <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
@@ -1275,6 +1275,26 @@ const raw = (n, code) => {
   const short = a >= 1e9 ? (a / 1e9).toFixed(2) + "B" : a >= 1e6 ? (a / 1e6).toFixed(2) + "M"
     : a.toLocaleString("en-US", { minimumFractionDigits: c.dp, maximumFractionDigits: c.dp });
   return (n < 0 ? "−" : "") + c.sym + short;
+};
+const cleanAmountInput = (value) => {
+  const clean = String(value).replace(/,/g, "").replace(/[^\d.]/g, "");
+  const dot = clean.indexOf(".");
+  return dot < 0 ? clean : clean.slice(0, dot + 1) + clean.slice(dot + 1).replace(/\./g, "");
+};
+const formatAmountInput = (value) => {
+  const clean = cleanAmountInput(value);
+  const dot = clean.indexOf(".");
+  const integer = dot < 0 ? clean : clean.slice(0, dot);
+  const fraction = dot < 0 ? "" : clean.slice(dot);
+  return integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + fraction;
+};
+const amountCaretPosition = (formatted, logicalPosition) => {
+  let index = 0, seen = 0;
+  while (index < formatted.length && seen < logicalPosition) {
+    if (formatted[index] !== ",") seen++;
+    index++;
+  }
+  return index;
 };
 
 // รายชื่อบัญชีสำหรับหน้า login — ไม่มีรหัสผ่านในโค้ดอีกต่อไป
@@ -2039,7 +2059,7 @@ class Component extends DCLogic {
       screen: "add", editId: t.id, pendingDel: null, saved: "", historyId: null,
       slipViewId: null, slipViewUrl: "", slipViewErr: "", slipViewBusy: false,
       kind: t.kind, cat: t.cat || this.state.cat,
-      method: t.method, methodTo: t.methodTo || "", toWho: t.toWho || "", toMethod: t.toMethod || "", who: t.who, amount: String(t.val),
+      method: t.method, methodTo: t.methodTo || "", toWho: t.toWho || "", toMethod: t.toMethod || "", who: t.who, amount: formatAmountInput(String(t.val)),
       note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
       slipFile: null, slipPath: t.slip || "", slipErr: "",
     });
@@ -2841,7 +2861,16 @@ class Component extends DCLogic {
       amount: s.amount,
       note: s.note,
       date: s.date,
-      onAmount: (e) => this.setState({ amount: e.target.value }),
+      onAmount: (e) => {
+        const input = e.target;
+        const cursor = input.selectionStart == null ? input.value.length : input.selectionStart;
+        const logicalPosition = cleanAmountInput(input.value.slice(0, cursor)).length;
+        const amount = formatAmountInput(input.value);
+        this.setState({ amount }, () => {
+          const nextCursor = amountCaretPosition(amount, logicalPosition);
+          input.setSelectionRange(nextCursor, nextCursor);
+        });
+      },
       onNote: (e) => this.setState({ note: e.target.value }),
       onDate: (e) => this.setState({ date: e.target.value }),
 
