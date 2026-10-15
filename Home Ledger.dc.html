@@ -329,7 +329,7 @@
           <span>{{ t_hDate }}</span><span>{{ t_hItem }}</span><span>{{ t_hCat }}</span><span>{{ t_hMethod }}</span><span>{{ t_hAcct }}</span><span style="text-align:right">{{ t_hAmount }}</span>
         </div>
         <sc-for list="{{ txns }}" as="t" hint-placeholder-count="6">
-          <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) minmax(120px,1fr);gap:10.2px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08);align-items:center">
+          <div class="hl-tr" onClick="{{ t.toggleExchange }}" style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) minmax(120px,1fr);gap:10.2px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08);align-items:center;cursor:{{ t.cursor }}">
             <span style="font-size:13px;color:#5d5d60">{{ t.date }}</span>
             <span style="display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.name }}</span><span style="font-size:11px;letter-spacing:.1em;color:#416180;flex:none">{{ t.flag }}</span></span>
             <span style="font-size:13px;color:#5d5d60;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.cat }}</span>
@@ -1820,6 +1820,7 @@ class Component extends DCLogic {
     pendingDel: null,
     edits: [],
     historyId: null,
+    recentExchangeId: null,
     slipViewId: null,        // รายการที่กำลังเปิดดูสลิปอยู่ (null = ไม่ได้เปิด)
     slipViewUrl: "",         // ลิงก์ชั่วคราวของใบที่เปิดอยู่ ปิดแผงแล้วทิ้งทันที
     slipViewErr: "",
@@ -2708,12 +2709,20 @@ class Component extends DCLogic {
       txns: monthTx.slice(0, 6).map((t) => {
         const inc = isInc(t);
         const mi = METHODS.indexOf(t.method);
+        const isExchangeRow = isExchange(t);
+        const exchangeExpanded = isExchangeRow && s.recentExchangeId === t.id;
         return {
           ...t, cat: isExchange(t) ? KIND_LABEL(L)[t.kind] : catLabel(t.cat),
           method: mi >= 0 ? L.methods[mi] : t.method,
           flag: t.flag ? L.t_recurFlag : "",
-          amount: isExchange(t) ? "" : (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
-          exchangeDisp: isExchange(t) ? "block" : "none",
+          amount: isExchangeRow
+            ? "−" + raw(t.val + (t.serviceFee || 0), t.code)
+            : (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+          cursor: isExchangeRow ? "pointer" : "default",
+          toggleExchange: isExchangeRow
+            ? () => this.setState({ recentExchangeId: exchangeExpanded ? null : t.id })
+            : () => {},
+          exchangeDisp: exchangeExpanded ? "block" : "none",
           exchangeDebit: isExchange(t) ? "−" + precise(t.val + (t.serviceFee || 0), t.code) : "",
           exchangePrincipal: isExchange(t)
             ? precise(t.val, t.code) + ((t.serviceFee || 0) > 0
