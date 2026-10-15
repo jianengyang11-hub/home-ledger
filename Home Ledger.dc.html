@@ -823,12 +823,20 @@
         <div style="font-size:12px;color:#5d5d60">{{ t_todayDate }}</div>
       </div>
       <sc-for list="{{ todayRows }}" as="t" hint-placeholder-count="2">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10.2px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08)">
+        <div onClick="{{ t.toggleExchange }}" style="display:flex;flex-direction:column;gap:6px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08);cursor:{{ t.cursor }}">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10.2px">
           <span style="display:flex;flex-direction:column;gap:2px;flex:1;min-width:0">
             <span>{{ t.name }}</span>
             <span style="font-size:12px;color:#5d5d60">{{ t.cat }} · {{ t.method }} · {{ t.who }}</span>
           </span>
           <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:19px;color:{{ t.color }};white-space:nowrap;flex:none">{{ t.amount }}</span>
+          </div>
+          <div style="display:{{ t.exchangeDisp }};padding:8px 10px;background:#f3f7fb;border-left:3px solid #94bce3;line-height:1.6;overflow-wrap:anywhere">
+            <span style="display:block;font-weight:600;color:#1d2d3d">{{ t.exchangeDebit }}</span>
+            <span style="display:block;font-size:13px;color:#5d5d60">{{ t.exchangePrincipal }}</span>
+            <span style="display:block;font-weight:600;color:#1d2d3d">{{ t.exchangeCredit }}</span>
+            <span style="display:block;font-size:12px;color:#416180">{{ t.exchangeRateLabel }}</span>
+          </div>
         </div>
       </sc-for>
       <div style="display:flex;justify-content:space-between;padding-top:6.8px">
@@ -1821,6 +1829,7 @@ class Component extends DCLogic {
     edits: [],
     historyId: null,
     recentExchangeId: null,
+    todayExchangeId: null,
     slipViewId: null,        // รายการที่กำลังเปิดดูสลิปอยู่ (null = ไม่ได้เปิด)
     slipViewUrl: "",         // ลิงก์ชั่วคราวของใบที่เปิดอยู่ ปิดแผงแล้วทิ้งทันที
     slipViewErr: "",
@@ -2840,20 +2849,38 @@ class Component extends DCLogic {
       t_yearTitle: L.t_yearWord + " " + s.vYear,
       dayMax: "1–" + dim + " " + L.mAbbr[s.vMonth - 1] + " " + s.vYear + " · " + L.t_peak + " " + fmt(dayPeak),
       mBal: fmt(incV - expV), mInc: fmt(incV), mExp: fmt(expV),
-      todayRows: live(s.txns.filter(isToday)).map((t) => ({
-        name: t.name, cat: isExchange(t) ? KIND_LABEL(L)[t.kind] : catLabel(t.cat),
-        method: isGive(t)
-          ? (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method)
-            + " → " + (METHODS.indexOf(t.toMethod) >= 0 ? L.methods[METHODS.indexOf(t.toMethod)] : L.t_noToMethod)
-          : (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method),
-        who: isGive(t) ? t.who + " → " + t.toWho : t.who,
-        // ใช้ SIGN_OF ชุดเดียวกับที่อื่น — เดิมเขียน isInc ? "+" : "−" ทำให้ยอดยกมาติดลบ
-        // และรายการโอนกลายเป็นรายจ่าย ทั้งที่ยอดรวมข้างล่างนับสองอย่างนี้เป็น 0 แถวเลยบวกไม่ได้เท่าที่สรุป
-        amount: isExchange(t)
-          ? exchangeText(t)
-          : (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
-        color: isInc(t) || isOpen(t) ? DARK : INK,
-      })),
+      todayRows: live(s.txns.filter(isToday)).map((t) => {
+        const exchangeRow = isExchange(t);
+        const expanded = exchangeRow && s.todayExchangeId === t.id;
+        return {
+          name: t.name, cat: exchangeRow ? KIND_LABEL(L)[t.kind] : catLabel(t.cat),
+          method: isGive(t)
+            ? (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method)
+              + " → " + (METHODS.indexOf(t.toMethod) >= 0 ? L.methods[METHODS.indexOf(t.toMethod)] : L.t_noToMethod)
+            : (METHODS.indexOf(t.method) >= 0 ? L.methods[METHODS.indexOf(t.method)] : t.method),
+          who: isGive(t) ? t.who + " → " + t.toWho : t.who,
+          amount: exchangeRow
+            ? "−" + raw(t.val + (t.serviceFee || 0), t.code)
+            : (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+          cursor: exchangeRow ? "pointer" : "default",
+          toggleExchange: exchangeRow
+            ? () => this.setState({ todayExchangeId: expanded ? null : t.id })
+            : () => {},
+          exchangeDisp: expanded ? "block" : "none",
+          exchangeDebit: exchangeRow ? "−" + precise(t.val + (t.serviceFee || 0), t.code) : "",
+          exchangePrincipal: exchangeRow
+            ? precise(t.val, t.code) + ((t.serviceFee || 0) > 0
+              ? " + " + L.t_feeSummary + " " + precise(t.serviceFee, t.code) : "")
+            : "",
+          exchangeCredit: exchangeRow ? "+ " + precise(t.exchangeToAmt, t.exchangeToCode) : "",
+          exchangeRateLabel: exchangeRow
+            ? (t.exchangeSide === "buy"
+              ? "1 " + t.exchangeToCode + " = " + exchangeRateText(t) + " " + t.code
+              : "1 " + t.code + " = " + exchangeRateText(t) + " " + t.exchangeToCode)
+            : "",
+          color: isInc(t) || isOpen(t) ? DARK : INK,
+        };
+      }),
       todayTotal: sumByCode(signed(live(s.txns.filter(isToday)))),
       t_todayDate: TODAY.getDate() + " " + L.mAbbr[TODAY.getMonth()] + " " + NOW_Y,
       loginInc: fmt(yIncTot), loginExp: fmt(yExpTot), loginNet: fmt(yIncTot - yExpTot),
