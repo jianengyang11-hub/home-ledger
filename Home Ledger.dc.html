@@ -646,6 +646,92 @@
   </div>
   </sc-if>
 
+  <sc-if value="{{ isLoans }}" hint-placeholder-val="{{ true }}">
+  <div class="hl-page" style="padding:var(--space-8,27.2px);display:flex;flex-direction:column;gap:var(--space-6,20.4px);max-width:1100px;margin:0 auto">
+    <div>
+      <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">{{ t_loansKicker }}</div>
+      <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:36px;line-height:1.1">{{ t_loansTitle }}</div>
+      <div style="font-size:13px;color:#5d5d60">{{ t_loansNote }}</div>
+    </div>
+
+    <div style="display:{{ loanUpgradeDisplay }};border:1px solid #d6a45c;background:#fffaf1;padding:13.6px;color:#6f4d20;font-size:14px">{{ loanStatus }}</div>
+    <div style="display:{{ loanFormDisplay }};position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;flex-direction:column;gap:14px">
+      <div style="font-weight:600;font-size:22px">{{ t_loanCreate }}</div>
+      <label style="font-size:12px;letter-spacing:.08em;color:#5d5d60">{{ t_loanDirection }}</label>
+      <div style="display:flex;border:1px solid rgba(29,31,32,0.16);width:fit-content">
+        <sc-for list="{{ loanDirections }}" as="d" hint-placeholder-count="2">
+          <button onClick="{{ d.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);padding:8px 16px;background:{{ d.bg }};color:{{ d.fg }};font-size:14px">{{ d.label }}</button>
+        </sc-for>
+      </div>
+      <div class="hl-2col" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13.6px">
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:12px;color:#5d5d60">{{ t_loanCounterparty }}</label>
+          <input value="{{ loanCounterparty }}" onChange="{{ onLoanCounterparty }}" maxlength="120" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:10px;font:inherit;min-width:0">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:12px;color:#5d5d60">{{ t_loanPrincipal }}</label>
+          <input type="number" min="0" step="any" value="{{ loanPrincipal }}" onChange="{{ onLoanPrincipal }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:10px;font:inherit;min-width:0">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:12px;color:#5d5d60">{{ t_loanCurrency }}</label>
+          <select value="{{ loanCode }}" onChange="{{ onLoanCode }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:10px;font:inherit;min-width:0">
+            <sc-for list="{{ loanCurrencyOpts }}" as="c" hint-placeholder-count="3"><option value="{{ c.code }}">{{ c.label }}</option></sc-for>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:12px;color:#5d5d60">{{ t_loanStarted }}</label>
+          <input type="date" value="{{ loanStartedOn }}" onChange="{{ onLoanStartedOn }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:10px;font:inherit;min-width:0">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <label style="font-size:12px;color:#5d5d60">{{ t_loanNote }}</label>
+        <input value="{{ loanNote }}" onChange="{{ onLoanNote }}" maxlength="500" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:10px;font:inherit">
+      </div>
+      <div style="display:{{ loanMessageDisplay }};font-size:13px;color:{{ loanMessageFg }}">{{ loanMessage }}</div>
+      <button onClick="{{ createLoan }}" disabled="{{ loanBusy }}" style="align-self:flex-start;border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:10px 20px;font:inherit">{{ t_loanCreate }}</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:13.6px">
+      <div style="font-weight:600;font-size:22px">{{ t_loanList }}</div>
+      <div style="display:{{ loanEmptyDisplay }};padding:20px;border:1px dashed rgba(29,31,32,0.2);color:#5d5d60">{{ t_loanEmpty }}</div>
+      <sc-for list="{{ loanRows }}" as="loan" hint-placeholder-count="3">
+        <div style="position:relative;border:1px solid rgba(29,31,32,0.16);padding:17px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline">
+            <div style="font-weight:600;font-size:18px">{{ loan.counterparty }} · {{ loan.direction }}</div>
+            <div style="font-size:13px;color:#5d5d60">{{ loan.started }}</div>
+          </div>
+          <div class="hl-2col" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px">
+            <div>{{ t_loanPrincipal }}: <strong>{{ loan.principal }}</strong></div>
+            <div>{{ t_loanPrincipalPaid }}: {{ loan.principalPaid }}</div>
+            <div>{{ t_loanPrincipalLeft }}: <strong style="color:#416180">{{ loan.remaining }}</strong></div>
+            <div>{{ t_loanInterestPaid }}: {{ loan.interestPaid }}</div>
+            <div style="grid-column:span 2;color:#5d5d60">{{ loan.note }}</div>
+          </div>
+          <div style="display:{{ loan.paymentListDisplay }};border-top:1px solid rgba(29,31,32,0.1);padding-top:9px">
+            <div style="font-size:12px;color:#5d5d60;margin-bottom:6px">{{ t_loanPayments }}</div>
+            <sc-for list="{{ loan.payments }}" as="p" hint-placeholder-count="1">
+              <div style="display:flex;gap:10px;flex-wrap:wrap;padding:5px 0;font-size:13px">
+                <span>{{ p.paidOn }}</span><span>{{ t_loanPrincipalPay }}: {{ p.principal }}</span>
+                <span>{{ t_loanInterestPay }}: {{ p.interest }}</span><span style="color:#5d5d60">{{ p.note }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ loan.openPayment }}" disabled="{{ loanBusy }}" style="align-self:flex-start;border:1px solid #5980a6;background:transparent;color:#416180;padding:7px 13px;font:inherit;display:{{ loan.isOpenDisplay }}">{{ t_loanAddPayment }}</button>
+          <div style="display:{{ loan.paymentFormDisplay }};border-top:1px solid rgba(29,31,32,0.1);padding-top:12px;flex-direction:column;gap:10px">
+            <div class="hl-2col" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+              <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#5d5d60">{{ t_loanPrincipalPay }}<input type="number" min="0" step="any" value="{{ repayPrincipal }}" onChange="{{ onRepayPrincipal }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:9px;font:inherit"></label>
+              <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#5d5d60">{{ t_loanInterestPay }}<input type="number" min="0" step="any" value="{{ repayInterest }}" onChange="{{ onRepayInterest }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:9px;font:inherit"></label>
+              <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#5d5d60">{{ t_loanPaidOn }}<input type="date" value="{{ repayDate }}" onChange="{{ onRepayDate }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:9px;font:inherit"></label>
+              <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#5d5d60">{{ t_loanPaymentNote }}<input value="{{ repayNote }}" onChange="{{ onRepayNote }}" maxlength="500" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:9px;font:inherit"></label>
+            </div>
+            <button onClick="{{ loan.savePayment }}" disabled="{{ loanBusy }}" style="align-self:flex-start;border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:9px 16px;font:inherit">{{ t_loanSavePayment }}</button>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
   <sc-if value="{{ isAdd }}" hint-placeholder-val="{{ true }}">
   <div class="hl-2col hl-page" style="padding:27.2px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,0.9fr);gap:20.4px;max-width:1440px;margin:0 auto;align-items:start">
     <div style="display:flex;flex-direction:column;gap:20.4px;min-width:0">
@@ -1044,7 +1130,7 @@
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;เข้าสู่ระบบ&quot;,&quot;ภาพรวมรายเดือน&quot;,&quot;สรุปรายปี&quot;,&quot;รายการทั้งหมด&quot;,&quot;บันทึกข้อมูล&quot;,&quot;ตั้งค่า&quot;,&quot;มือถือ&quot;],&quot;default&quot;:&quot;เข้าสู่ระบบ&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;language&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ไทย&quot;,&quot;ລາວ&quot;],&quot;default&quot;:&quot;ไทย&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showBudget&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showRecurring&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;เข้าสู่ระบบ&quot;,&quot;ภาพรวมรายเดือน&quot;,&quot;สรุปรายปี&quot;,&quot;รายการทั้งหมด&quot;,&quot;เงินกู้&quot;,&quot;บันทึกข้อมูล&quot;,&quot;ตั้งค่า&quot;,&quot;มือถือ&quot;],&quot;default&quot;:&quot;เข้าสู่ระบบ&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;language&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ไทย&quot;,&quot;ລາວ&quot;],&quot;default&quot;:&quot;ไทย&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showBudget&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showRecurring&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 
 const T = {
   th: {
@@ -1178,9 +1264,25 @@ const T = {
     t_pMonth: "เดือนนี้", t_pYear: "ปีนี้", t_pAll: "ทั้งหมด",
     t_pMonthTitle: "กันยายน 2569", t_pYearTitle: "ปี 2569", t_pAllTitle: "ทุกช่วงเวลา",
     t_breakInc: "รายรับ · แยกตามหมวด", t_breakExp: "รายจ่าย · แยกตามหมวด", t_net: "คงเหลือสุทธิ",
-    t_list: "รายการทั้งหมด", t_listKicker: "รายการทั้งหมด / All transactions",
+    t_list: "รายการทั้งหมด", t_loans: "เงินกู้ / Loans", t_listKicker: "รายการทั้งหมด / All transactions",
     t_typeAll: "ทั้งหมด", t_found: "พบ", t_items: "รายการ",
     t_sumInc: "รวมรายรับ", t_sumExp: "รวมรายจ่าย", t_empty: "ไม่พบรายการตามเงื่อนไขที่เลือก",
+    t_loansTitle: "ติดตามเงินกู้และเงินให้ยืม", t_loanDirection: "ประเภทรายการ",
+    t_loansKicker: "Loans / Debts", t_loansNote: "บันทึกแยกจากรายรับ-รายจ่าย · ดอกเบี้ยกรอกตามที่ชำระจริง",
+    t_loanBorrowed: "ฉันกู้ยืม", t_loanLent: "ฉันให้ผู้อื่นยืม", t_loanCounterparty: "ชื่อคู่กรณี",
+    t_loanPrincipal: "เงินต้น", t_loanCurrency: "สกุลเงิน", t_loanStarted: "วันที่เริ่มกู้/ให้ยืม",
+    t_loanNote: "หมายเหตุ", t_loanCreate: "บันทึกรายการ", t_loanSaved: "บันทึกรายการเงินกู้แล้ว",
+    t_loanNeedPerson: "กรุณาระบุชื่อคู่กรณี", t_loanNeedAmount: "เงินต้นต้องมากกว่า 0",
+    t_loanUpgrade: "ต้องรัน upgrade_v12.sql ใน Supabase ก่อนใช้การติดตามเงินกู้",
+    t_loanList: "รายการเงินกู้และเงินให้ยืม", t_loanPrincipalLeft: "เงินต้นคงเหลือ", t_loanPrincipalPaid: "ชำระเงินต้นแล้ว",
+    t_loanInterestPaid: "ดอกเบี้ยที่ชำระแล้ว", t_loanPayments: "ประวัติการชำระ",
+    t_loanAddPayment: "บันทึกการชำระ", t_loanPrincipalPay: "เงินต้นที่ชำระ",
+    t_loanInterestPay: "ดอกเบี้ยที่ชำระ", t_loanPaidOn: "วันที่ชำระ",
+    t_loanPaymentNote: "หมายเหตุการชำระ", t_loanSavePayment: "บันทึกการชำระ",
+    t_loanPaymentInvalid: "กรอกยอดเงินต้นหรือดอกเบี้ยที่ชำระอย่างน้อยหนึ่งรายการ",
+    t_loanOverpay: "ยอดเงินต้นที่ชำระเกินเงินต้นคงเหลือ",
+    t_loanPaymentSaved: "บันทึกการชำระแล้ว", t_loanEmpty: "ยังไม่มีรายการเงินกู้หรือเงินให้ยืม",
+    t_loanOfflineErr: "โหลดข้อมูลเงินกู้ไม่สำเร็จ",
     t_entered: "ใส่แล้ว", t_of6: "/ 6 หลัก",
     t_peakWhy: "สงกรานต์ + ค่าเทอม",
     curNames: { THB: "บาท", USD: "ดอลลาร์สหรัฐ", KIP: "กีบลาว" },
@@ -1318,9 +1420,25 @@ const T = {
     t_pMonth: "ເດືອນນີ້", t_pYear: "ປີນີ້", t_pAll: "ທັງໝົດ",
     t_pMonthTitle: "ກັນຍາ 2569", t_pYearTitle: "ປີ 2569", t_pAllTitle: "ທຸກຊ່ວງເວລາ",
     t_breakInc: "ລາຍຮັບ · ແຍກຕາມໝວດ", t_breakExp: "ລາຍຈ່າຍ · ແຍກຕາມໝວດ", t_net: "ຍອດເຫຼືອສຸດທິ",
-    t_list: "ລາຍການທັງໝົດ", t_listKicker: "ລາຍການທັງໝົດ / All transactions",
+    t_list: "ລາຍການທັງໝົດ", t_loans: "ເງິນກູ້ / Loans", t_listKicker: "ລາຍການທັງໝົດ / All transactions",
     t_typeAll: "ທັງໝົດ", t_found: "ພົບ", t_items: "ລາຍການ",
     t_sumInc: "ລວມລາຍຮັບ", t_sumExp: "ລວມລາຍຈ່າຍ", t_empty: "ບໍ່ພົບລາຍການຕາມເງື່ອນໄຂທີ່ເລືອກ",
+    t_loansTitle: "ຕິດຕາມເງິນກູ້ ແລະ ເງິນໃຫ້ຢືມ", t_loanDirection: "ປະເພດລາຍການ",
+    t_loansKicker: "Loans / Debts", t_loansNote: "ບັນທຶກແຍກຈາກລາຍຮັບ-ລາຍຈ່າຍ · ໃສ່ດອກເບ້ຍຕາມທີ່ຊຳລະຈິງ",
+    t_loanBorrowed: "ຂ້ອຍກູ້ຢືມ", t_loanLent: "ຂ້ອຍໃຫ້ຄົນອື່ນຢືມ", t_loanCounterparty: "ຊື່ຄູ່ກໍລະນີ",
+    t_loanPrincipal: "ເງິນຕົ້ນ", t_loanCurrency: "ສະກຸນເງິນ", t_loanStarted: "ວັນທີເລີ່ມກູ້/ໃຫ້ຢືມ",
+    t_loanNote: "ໝາຍເຫດ", t_loanCreate: "ບັນທຶກລາຍການ", t_loanSaved: "ບັນທຶກລາຍການເງິນກູ້ແລ້ວ",
+    t_loanNeedPerson: "ກະລຸນາໃສ່ຊື່ຄູ່ກໍລະນີ", t_loanNeedAmount: "ເງິນຕົ້ນຕ້ອງຫຼາຍກວ່າ 0",
+    t_loanUpgrade: "ຕ້ອງລັນ upgrade_v12.sql ໃນ Supabase ກ່ອນຈຶ່ງໃຊ້ການຕິດຕາມເງິນກູ້ໄດ້",
+    t_loanList: "ລາຍການເງິນກູ້ ແລະ ເງິນໃຫ້ຢືມ", t_loanPrincipalLeft: "ເງິນຕົ້ນຄົງເຫຼືອ", t_loanPrincipalPaid: "ຊຳລະເງິນຕົ້ນແລ້ວ",
+    t_loanInterestPaid: "ດອກເບ້ຍທີ່ຊຳລະແລ້ວ", t_loanPayments: "ປະຫວັດການຊຳລະ",
+    t_loanAddPayment: "ບັນທຶກການຊຳລະ", t_loanPrincipalPay: "ເງິນຕົ້ນທີ່ຊຳລະ",
+    t_loanInterestPay: "ດອກເບ້ຍທີ່ຊຳລະ", t_loanPaidOn: "ວັນທີຊຳລະ",
+    t_loanPaymentNote: "ໝາຍເຫດການຊຳລະ", t_loanSavePayment: "ບັນທຶກການຊຳລະ",
+    t_loanPaymentInvalid: "ໃສ່ຍອດເງິນຕົ້ນ ຫຼື ດອກເບ້ຍທີ່ຊຳລະຢ່າງໜ້ອຍໜຶ່ງລາຍການ",
+    t_loanOverpay: "ຍອດເງິນຕົ້ນທີ່ຊຳລະເກີນເງິນຕົ້ນຄົງເຫຼືອ",
+    t_loanPaymentSaved: "ບັນທຶກການຊຳລະແລ້ວ", t_loanEmpty: "ຍັງບໍ່ມີລາຍການເງິນກູ້ ຫຼື ເງິນໃຫ້ຢືມ",
+    t_loanOfflineErr: "ໂຫຼດຂໍ້ມູນເງິນກູ້ບໍ່ສຳເລັດ",
     t_entered: "ໃສ່ແລ້ວ", t_of6: "/ 6 ຫຼັກ",
     t_peakWhy: "ບຸນປີໃໝ່ + ຄ່າຮຽນ",
     curNames: { THB: "ບາດ", USD: "ໂດລາສະຫະລັດ", KIP: "ກີບລາວ" },
@@ -1675,6 +1793,35 @@ const DB = {
     await call(REST("budgets") + "?id=eq." + encodeURIComponent(id), { method: "DELETE" }, "ลบเป้างบประมาณไม่สำเร็จ");
   },
 
+  async loanReady() {
+    try {
+      await call(REST("loans") + "?select=id&limit=1", {}, "ตรวจตารางเงินกู้ไม่สำเร็จ");
+      await call(REST("loan_payments") + "?select=id&limit=1", {}, "ตรวจตารางชำระคืนไม่สำเร็จ");
+      return true;
+    } catch (e) {
+      if (/(loans|loan_payments).*(does not exist|relation|schema cache)|relation.*(loans|loan_payments)/i.test(e.message || ""))
+        return false;
+      throw e;
+    }
+  },
+  async loans() {
+    return listAll(REST("loans") + "?select=*&order=started_on.desc,id.desc", "โหลดรายการเงินกู้ไม่สำเร็จ");
+  },
+  async loanPayments() {
+    return listAll(REST("loan_payments") + "?select=*&order=paid_on.desc,id.desc", "โหลดประวัติชำระคืนไม่สำเร็จ");
+  },
+  async loanAdd(row) {
+    const r = await call(REST("loans"), {
+      method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(row),
+    }, "บันทึกรายการเงินกู้ไม่สำเร็จ");
+    const rows = await r.json();
+    if (!Array.isArray(rows) || !rows[0]) throw new Error("บันทึกรายการเงินกู้แล้ว แต่ไม่ได้รับรหัสรายการกลับมา");
+    return rows[0];
+  },
+  async loanPaymentAdd(row) {
+    await call(REST("loan_payments"), { method: "POST", body: JSON.stringify(row) }, "บันทึกการชำระคืนไม่สำเร็จ");
+  },
+
   // ───── เป้าเงินเก็บทั้งปี — แถวเดียวตายตัว (id = 1) ─────
   async yearGoal() {
     const r = await call(REST("year_goal") + "?select=*&id=eq.1", {}, "โหลดเป้าเงินเก็บทั้งปีไม่สำเร็จ");
@@ -1861,6 +2008,23 @@ class Component extends DCLogic {
     exchangeRate: "",
     exchangeSide: "buy",
     serviceFee: "",
+    loans: [],
+    loanPayments: [],
+    loansLive: false,
+    loansErr: "",
+    loanDirection: "borrowed",
+    loanCounterparty: "",
+    loanPrincipal: "",
+    loanCode: CODES[0],
+    loanStartedOn: TODAY_ISO,
+    loanNote: "",
+    loanBusy: false,
+    loanMsg: "",
+    repayLoanId: null,
+    repayPrincipal: "",
+    repayInterest: "",
+    repayDate: TODAY_ISO,
+    repayNote: "",
   };
 
   componentDidMount() {
@@ -1904,7 +2068,7 @@ class Component extends DCLogic {
       // ประวัติการแก้ไขกับหมวดหมู่เป็นของเสริม — ถ้าตารางยังไม่มี (ยังไม่ได้รัน SQL)
       // รายการหลักต้องยังขึ้นได้ตามปกติ ไม่ใช่พังทั้งหน้า
       const soft = (what) => (e) => { console.warn(what + ":", e.message || e); return null; };
-      const [rows, edits, cats, budgets, yearGoal, slipOk, giveMethodStatus, exchangeStatus] = await Promise.all([
+      const [rows, edits, cats, budgets, yearGoal, slipOk, giveMethodStatus, exchangeStatus, loanStatus] = await Promise.all([
         DB.list(),
         DB.edits().catch(soft("ประวัติการแก้ไขใช้ไม่ได้")),
         DB.cats().catch(soft("หมวดหมู่ใช้ไม่ได้ ใช้ชุดเริ่มต้นไปก่อน")),
@@ -1918,6 +2082,14 @@ class Component extends DCLogic {
         DB.exchangeReady().then((ready) => ({ ready })).catch((e) => {
           console.warn("ตรวจคอลัมน์แลกเปลี่ยนเงินไม่สำเร็จ:", e.message || e);
           return { ready: false, error: e.message || String(e) };
+        }),
+        DB.loanReady().then(async (ready) => {
+          if (!ready) return { ready: false, loans: [], payments: [] };
+          const [loans, payments] = await Promise.all([DB.loans(), DB.loanPayments()]);
+          return { ready: true, loans, payments };
+        }).catch((e) => {
+          console.warn("โหลดข้อมูลเงินกู้ไม่สำเร็จ:", e.message || e);
+          return { ready: false, loans: [], payments: [], error: e.message || String(e) };
         }),
       ]);
       // cats/budgets เป็น [] ตามจริงได้ (ลบจนหมด) ต่างจากโหลดไม่สำเร็จซึ่งได้ null — แยกสองกรณีนี้เสมอ
@@ -1934,6 +2106,10 @@ class Component extends DCLogic {
         giveMethodErr: giveMethodStatus.error || "",
         exchangeLive: !!exchangeStatus.ready,
         exchangeErr: exchangeStatus.error || "",
+        loans: loanStatus.loans || [],
+        loanPayments: loanStatus.payments || [],
+        loansLive: !!loanStatus.ready,
+        loansErr: loanStatus.error || "",
         // ถ้าตาราง cats ยังไม่มี (โหลดไม่สำเร็จ) ก็ยังใช้งานต่อได้ด้วยชุดเริ่มต้น (แต่แก้แล้วไม่ถูกบันทึก)
         // แต่ถ้าตารางมีจริงแค่ว่างเปล่า (ลบจนหมด) ต้องโชว์ว่าง ไม่ใช่ CAT_SEED — ไม่งั้นกดแก้/ลบแถวที่โชว์
         // จะพังเพราะแถวพวกนั้นไม่มี id จริงในฐานข้อมูล
@@ -1952,8 +2128,85 @@ class Component extends DCLogic {
 
   reload = () => { if (AUTH.signedIn) this.load(); };
 
+  refreshLoans = async () => {
+    const [loans, loanPayments] = await Promise.all([DB.loans(), DB.loanPayments()]);
+    this.setState({ loans, loanPayments, loansLive: true, loansErr: "" });
+  };
+
+  createLoan = async () => {
+    const s = this.state;
+    const principal = parseAmount(s.loanPrincipal);
+    if (!s.loansLive) return this.setState({ loanMsg: s.loansErr || this.L.t_loanUpgrade });
+    if (!s.loanCounterparty.trim()) return this.setState({ loanMsg: this.L.t_loanNeedPerson });
+    if (!Number.isFinite(principal) || !(principal > 0))
+      return this.setState({ loanMsg: this.L.t_loanNeedAmount });
+    this.setState({ loanBusy: true, loanMsg: "" });
+    let saved = false;
+    try {
+      await DB.loanAdd({
+        owner: s.acct,
+        direction: s.loanDirection,
+        counterparty: s.loanCounterparty.trim(),
+        principal,
+        code: s.loanCode,
+        started_on: s.loanStartedOn || TODAY_ISO,
+        note: s.loanNote.trim(),
+      });
+      saved = true;
+      await this.refreshLoans();
+      this.setState({
+        loanBusy: false, loanCounterparty: "", loanPrincipal: "", loanNote: "",
+        loanMsg: this.L.t_loanSaved,
+      });
+    } catch (e) {
+      const error = e.message || String(e);
+      this.setState(saved
+        ? { loanBusy: false, loanCounterparty: "", loanPrincipal: "", loanNote: "",
+          loanMsg: this.L.t_loanSaved + " — " + error }
+        : { loanBusy: false, loanMsg: error });
+    }
+  };
+
+  addLoanPayment = async (loan) => {
+    const s = this.state;
+    const principalPaid = parseAmount(s.repayPrincipal);
+    const interestPaid = parseAmount(s.repayInterest);
+    const alreadyPaid = s.loanPayments.filter((p) => Number(p.loan_id) === Number(loan.id))
+      .reduce((sum, p) => sum + (Number(p.principal_paid) || 0), 0);
+    const remaining = Math.max(0, Number(loan.principal) - alreadyPaid);
+    if (!s.loansLive) return this.setState({ loanMsg: s.loansErr || this.L.t_loanUpgrade });
+    if (!Number.isFinite(principalPaid) || !Number.isFinite(interestPaid)
+        || principalPaid < 0 || interestPaid < 0 || principalPaid + interestPaid <= 0)
+      return this.setState({ loanMsg: this.L.t_loanPaymentInvalid });
+    if (principalPaid > remaining)
+      return this.setState({ loanMsg: this.L.t_loanOverpay });
+    this.setState({ loanBusy: true, loanMsg: "" });
+    let saved = false;
+    try {
+      await DB.loanPaymentAdd({
+        loan_id: loan.id,
+        paid_on: s.repayDate || TODAY_ISO,
+        principal_paid: principalPaid,
+        interest_paid: interestPaid,
+        note: s.repayNote.trim(),
+      });
+      saved = true;
+      await this.refreshLoans();
+      this.setState({
+        loanBusy: false, repayLoanId: null, repayPrincipal: "", repayInterest: "",
+        repayDate: TODAY_ISO, repayNote: "", loanMsg: this.L.t_loanPaymentSaved,
+      });
+    } catch (e) {
+      const error = e.message || String(e);
+      this.setState(saved
+        ? { loanBusy: false, repayLoanId: null, repayPrincipal: "", repayInterest: "",
+          repayDate: TODAY_ISO, repayNote: "", loanMsg: this.L.t_loanPaymentSaved + " — " + error }
+        : { loanBusy: false, loanMsg: error });
+    }
+  };
+
   get screen() {
-    return this.state.screen || (this.props.startScreen === "ตั้งค่า" ? "settings" : this.props.startScreen === "รายการทั้งหมด" ? "list" : this.props.startScreen === "เข้าสู่ระบบ" ? "login" : this.props.startScreen === "สรุปรายปี" ? "year" : this.props.startScreen === "บันทึกข้อมูล" ? "add" : this.props.startScreen === "มือถือ" ? "mobile" : "month");
+    return this.state.screen || (this.props.startScreen === "ตั้งค่า" ? "settings" : this.props.startScreen === "รายการทั้งหมด" ? "list" : this.props.startScreen === "เงินกู้" ? "loans" : this.props.startScreen === "เข้าสู่ระบบ" ? "login" : this.props.startScreen === "สรุปรายปี" ? "year" : this.props.startScreen === "บันทึกข้อมูล" ? "add" : this.props.startScreen === "มือถือ" ? "mobile" : "month");
   }
 
   go = (s) => () => this.setState({ screen: s, saved: "" });
@@ -2564,7 +2817,7 @@ class Component extends DCLogic {
     // ส่วนตัวของตัวเองได้แล้ว (ดู budgets_write RLS) จึงเปิดให้ทุกคนเข้าหน้านี้ได้เสมอ —
     // ปุ่ม/ช่องที่ยังจำกัดแค่บัญชีหลัก (เพิ่มหมวดหมู่, เป้ากลางของบ้าน, เป้าเงินเก็บทั้งปี)
     // ก็ยังกันไว้แยกเป็นจุด ๆ อยู่แล้วด้วย RLS ไม่ได้อาศัยการซ่อนทั้งแท็บอีกต่อไป
-    const tabDefs = [[L.t_month, "month"], [L.t_year, "year"], [L.t_list, "list"], [L.t_add, "add"],
+    const tabDefs = [[L.t_month, "month"], [L.t_year, "year"], [L.t_list, "list"], [L.t_loans, "loans"], [L.t_add, "add"],
                       [L.t_settings, "settings"], [L.t_mobile, "mobile"]];
 
     return {
@@ -2582,6 +2835,7 @@ class Component extends DCLogic {
       isMonth: screen === "month",
       isYear: screen === "year",
       isList: screen === "list",
+      isLoans: screen === "loans",
       isSet: screen === "settings",
       isAdd: screen === "add",
       isMobile: screen === "mobile",
@@ -2593,6 +2847,72 @@ class Component extends DCLogic {
         fg: screen === id ? INK : MUTED,
         bd: screen === id ? ACC : "transparent",
       })),
+      loanDirections: [
+        { label: L.t_loanBorrowed, id: "borrowed" },
+        { label: L.t_loanLent, id: "lent" },
+      ].map((o) => ({ ...o, pick: () => this.setState({ loanDirection: o.id }), ...sel(s.loanDirection === o.id) })),
+      loanCurrencyOpts: CURRENCIES.map((c) => ({ code: c.code, label: c.code + " · " + c.name })),
+      loanRows: s.loans.map((loan) => {
+        const payments = s.loanPayments.filter((p) => Number(p.loan_id) === Number(loan.id));
+        const principalPaid = payments.reduce((sum, p) => sum + (Number(p.principal_paid) || 0), 0);
+        const interestPaid = payments.reduce((sum, p) => sum + (Number(p.interest_paid) || 0), 0);
+        const remaining = Math.max(0, Number(loan.principal) - principalPaid);
+        return {
+          id: loan.id,
+          direction: loan.direction === "borrowed" ? L.t_loanBorrowed : L.t_loanLent,
+          counterparty: loan.counterparty,
+          started: loan.started_on,
+          note: loan.note || "",
+          principal: raw(Number(loan.principal), loan.code),
+          principalPaid: raw(principalPaid, loan.code),
+          interestPaid: raw(interestPaid, loan.code),
+          remaining: raw(remaining, loan.code),
+          isOpen: remaining > 0,
+          payments: payments.map((p) => ({
+            paidOn: p.paid_on,
+            principal: raw(Number(p.principal_paid), loan.code),
+            interest: raw(Number(p.interest_paid), loan.code),
+            note: p.note || "",
+          })),
+          paymentOpen: Number(s.repayLoanId) === Number(loan.id),
+          paymentListDisplay: payments.length ? "block" : "none",
+          paymentFormDisplay: Number(s.repayLoanId) === Number(loan.id) ? "flex" : "none",
+          isOpenDisplay: "inline-flex",
+          openPayment: () => this.setState({
+            repayLoanId: Number(s.repayLoanId) === Number(loan.id) ? null : loan.id,
+            repayPrincipal: "", repayInterest: "", repayDate: TODAY_ISO, repayNote: "", loanMsg: "",
+          }),
+          savePayment: () => this.addLoanPayment(loan),
+        };
+      }),
+      loanFormDisplay: s.loansLive ? "flex" : "none",
+      loanUpgradeDisplay: s.loansLive ? "none" : "block",
+      loanStatus: s.loansErr || L.t_loanUpgrade,
+      loanEmptyDisplay: s.loansLive && !s.loans.length ? "block" : "none",
+      loanMessage: s.loanMsg,
+      loanMessageDisplay: s.loanMsg ? "block" : "none",
+      loanMessageFg: s.loanMsg === L.t_loanSaved || s.loanMsg === L.t_loanPaymentSaved ? "#416180" : "#8a2020",
+      loanBusy: s.loanBusy,
+      loanDirection: s.loanDirection,
+      loanCounterparty: s.loanCounterparty,
+      loanPrincipal: s.loanPrincipal,
+      loanCode: s.loanCode,
+      loanStartedOn: s.loanStartedOn,
+      loanNote: s.loanNote,
+      onLoanCounterparty: (e) => this.setState({ loanCounterparty: e.target.value, loanMsg: "" }),
+      onLoanPrincipal: (e) => this.setState({ loanPrincipal: e.target.value, loanMsg: "" }),
+      onLoanCode: (e) => this.setState({ loanCode: e.target.value }),
+      onLoanStartedOn: (e) => this.setState({ loanStartedOn: e.target.value }),
+      onLoanNote: (e) => this.setState({ loanNote: e.target.value }),
+      createLoan: this.createLoan,
+      repayPrincipal: s.repayPrincipal,
+      repayInterest: s.repayInterest,
+      repayDate: s.repayDate,
+      repayNote: s.repayNote,
+      onRepayPrincipal: (e) => this.setState({ repayPrincipal: e.target.value, loanMsg: "" }),
+      onRepayInterest: (e) => this.setState({ repayInterest: e.target.value, loanMsg: "" }),
+      onRepayDate: (e) => this.setState({ repayDate: e.target.value }),
+      onRepayNote: (e) => this.setState({ repayNote: e.target.value }),
       goAdd: this.go("add"),
       goLogin: this.go("login"),
       goMonth: this.go("month"),
