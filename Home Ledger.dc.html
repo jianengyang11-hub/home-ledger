@@ -145,7 +145,6 @@
         <div><div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:24px;white-space:nowrap">{{ loginNet }}</div><div style="font-size:12px;color:#94bce3;letter-spacing:.08em">{{ t_balance }}</div></div>
       </div>
     </div>
-
     <div class="hl-pad" style="display:flex;align-items:center;justify-content:center;padding:54px">
       <div style="width:100%;max-width:378px;display:flex;flex-direction:column;gap:27.2px">
         <div style="display:flex;flex-direction:column;gap:6.8px">
@@ -284,6 +283,7 @@
         </div>
       </div>
       <div style="display:{{ balLaterDisp }};font-size:12px;color:#416180">{{ balLater }}</div>
+      <div style="display:{{ balLoanNoteDisp }};font-size:12px;color:#416180">{{ balLoanNote }}</div>
     </div>
 
     <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20.4px">
@@ -655,7 +655,7 @@
     </div>
 
     <div style="display:{{ loanUpgradeDisplay }};border:1px solid #d6a45c;background:#fffaf1;padding:13.6px;color:#6f4d20;font-size:14px">{{ loanStatus }}</div>
-    <div style="display:{{ loanFormDisplay }};position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;flex-direction:column;gap:14px">
+    <div style="display:flex;position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;flex-direction:column;gap:14px">
       <div style="font-weight:600;font-size:22px">{{ t_loanCreate }}</div>
       <label style="font-size:12px;letter-spacing:.08em;color:#5d5d60">{{ t_loanDirection }}</label>
       <div style="display:flex;border:1px solid rgba(29,31,32,0.16);width:fit-content">
@@ -684,11 +684,17 @@
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:5px">
+        <label style="font-size:12px;color:#5d5d60">{{ t_loanMethod }}</label>
+        <select value="{{ loanMethod }}" onChange="{{ onLoanMethod }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:10px;font:inherit">
+          <sc-for list="{{ loanMethodOpts }}" as="m" hint-placeholder-count="2"><option value="{{ m.id }}">{{ m.label }}</option></sc-for>
+        </select>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
         <label style="font-size:12px;color:#5d5d60">{{ t_loanNote }}</label>
         <input value="{{ loanNote }}" onChange="{{ onLoanNote }}" maxlength="500" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:10px;font:inherit">
       </div>
       <div style="display:{{ loanMessageDisplay }};font-size:13px;color:{{ loanMessageFg }}">{{ loanMessage }}</div>
-      <button onClick="{{ createLoan }}" disabled="{{ loanBusy }}" style="align-self:flex-start;border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:10px 20px;font:inherit">{{ t_loanCreate }}</button>
+      <button onClick="{{ createLoan }}" disabled="{{ loanSaveDisabled }}" style="align-self:flex-start;border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:10px 20px;font:inherit">{{ t_loanCreate }}</button>
     </div>
 
     <div style="display:flex;flex-direction:column;gap:13.6px">
@@ -705,6 +711,7 @@
             <div>{{ t_loanPrincipalPaid }}: {{ loan.principalPaid }}</div>
             <div>{{ t_loanPrincipalLeft }}: <strong style="color:#416180">{{ loan.remaining }}</strong></div>
             <div>{{ t_loanInterestPaid }}: {{ loan.interestPaid }}</div>
+            <div>{{ t_loanMethod }}: {{ loan.method }}</div>
             <div style="grid-column:span 2;color:#5d5d60">{{ loan.note }}</div>
           </div>
           <div style="display:{{ loan.paymentListDisplay }};border-top:1px solid rgba(29,31,32,0.1);padding-top:9px">
@@ -712,7 +719,7 @@
             <sc-for list="{{ loan.payments }}" as="p" hint-placeholder-count="1">
               <div style="display:flex;gap:10px;flex-wrap:wrap;padding:5px 0;font-size:13px">
                 <span>{{ p.paidOn }}</span><span>{{ t_loanPrincipalPay }}: {{ p.principal }}</span>
-                <span>{{ t_loanInterestPay }}: {{ p.interest }}</span><span style="color:#5d5d60">{{ p.note }}</span>
+                <span>{{ t_loanInterestPay }}: {{ p.interest }}</span><span>{{ t_loanMethod }}: {{ p.method }}</span><span style="color:#5d5d60">{{ p.note }}</span>
               </div>
             </sc-for>
           </div>
@@ -722,6 +729,7 @@
               <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#5d5d60">{{ t_loanPrincipalPay }}<input type="number" min="0" step="any" value="{{ repayPrincipal }}" onChange="{{ onRepayPrincipal }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:9px;font:inherit"></label>
               <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#5d5d60">{{ t_loanInterestPay }}<input type="number" min="0" step="any" value="{{ repayInterest }}" onChange="{{ onRepayInterest }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:9px;font:inherit"></label>
               <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#5d5d60">{{ t_loanPaidOn }}<input type="date" value="{{ repayDate }}" onChange="{{ onRepayDate }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:9px;font:inherit"></label>
+              <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#5d5d60">{{ t_loanMethod }}<select value="{{ repayMethod }}" onChange="{{ onRepayMethod }}" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:9px;font:inherit"><sc-for list="{{ loanMethodOpts }}" as="m" hint-placeholder-count="2"><option value="{{ m.id }}">{{ m.label }}</option></sc-for></select></label>
               <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#5d5d60">{{ t_loanPaymentNote }}<input value="{{ repayNote }}" onChange="{{ onRepayNote }}" maxlength="500" style="border:1px solid rgba(29,31,32,0.16);background:#f5f5f8;padding:9px;font:inherit"></label>
             </div>
             <button onClick="{{ loan.savePayment }}" disabled="{{ loanBusy }}" style="align-self:flex-start;border:1px solid #5980a6;background:#5980a6;color:#f2f2f3;padding:9px 16px;font:inherit">{{ t_loanSavePayment }}</button>
@@ -1223,6 +1231,7 @@ const T = {
     t_balReal: "สะสมจากยอดยกมาถึงวันนี้",
     t_balNoOpening: "ยังไม่ได้ใส่ยอดยกมา — นี่คือยอดตั้งแต่วันแรกที่บันทึก ไม่ใช่เงินจริงในกระเป๋า",
     t_balLater: "อีก {n} รายการลงวันไว้ล่วงหน้า ยังไม่นับในยอดนี้ — เงินยังไม่เข้าออกจริง",
+    t_balLoanNote: "ยอดเงินสด/บัญชีรวมเงินกู้และการชำระตามช่องทางกับสกุลที่เลือกแล้ว",
     t_void: "ยกเลิก", t_confirmVoid: "ยืนยันยกเลิก", t_restore: "กู้คืน",
     t_notVoid: "ไม่ยกเลิก", t_voidedBy: "ยกเลิกโดย",
     t_voidTitle: "ยกเลิกรายการ", t_reasonPh: "เหตุผลที่ยกเลิก เช่น บันทึกซ้ำ / กรอกผิด / ยกเลิกการซื้อ",
@@ -1268,12 +1277,13 @@ const T = {
     t_typeAll: "ทั้งหมด", t_found: "พบ", t_items: "รายการ",
     t_sumInc: "รวมรายรับ", t_sumExp: "รวมรายจ่าย", t_empty: "ไม่พบรายการตามเงื่อนไขที่เลือก",
     t_loansTitle: "ติดตามเงินกู้และเงินให้ยืม", t_loanDirection: "ประเภทรายการ",
-    t_loansKicker: "Loans / Debts", t_loansNote: "บันทึกแยกจากรายรับ-รายจ่าย · ดอกเบี้ยกรอกตามที่ชำระจริง",
+    t_loansKicker: "Loans / Debts", t_loansNote: "ยอดกู้/ให้ยืมและการชำระปรับเงินสด/บัญชี แต่ไม่ปนรายรับ-รายจ่าย · ดอกเบี้ยกรอกตามจริง",
+    t_loanMethod: "ช่องทางรับ/จ่าย", t_loanCash: "เงินสด", t_loanBank: "โอน/บัญชี",
     t_loanBorrowed: "ฉันกู้ยืม", t_loanLent: "ฉันให้ผู้อื่นยืม", t_loanCounterparty: "ชื่อคู่กรณี",
     t_loanPrincipal: "เงินต้น", t_loanCurrency: "สกุลเงิน", t_loanStarted: "วันที่เริ่มกู้/ให้ยืม",
     t_loanNote: "หมายเหตุ", t_loanCreate: "บันทึกรายการ", t_loanSaved: "บันทึกรายการเงินกู้แล้ว",
     t_loanNeedPerson: "กรุณาระบุชื่อคู่กรณี", t_loanNeedAmount: "เงินต้นต้องมากกว่า 0",
-    t_loanUpgrade: "ต้องรัน upgrade_v12.sql ใน Supabase ก่อนใช้การติดตามเงินกู้",
+    t_loanUpgrade: "รัน upgrade_v12.sql ฉบับล่าสุดใน Supabase (ถ้าเคยรันแล้วให้รันซ้ำ) เพื่อเปิดใช้และบันทึกช่องทางรับ/จ่ายเงินกู้",
     t_loanList: "รายการเงินกู้และเงินให้ยืม", t_loanPrincipalLeft: "เงินต้นคงเหลือ", t_loanPrincipalPaid: "ชำระเงินต้นแล้ว",
     t_loanInterestPaid: "ดอกเบี้ยที่ชำระแล้ว", t_loanPayments: "ประวัติการชำระ",
     t_loanAddPayment: "บันทึกการชำระ", t_loanPrincipalPay: "เงินต้นที่ชำระ",
@@ -1379,6 +1389,7 @@ const T = {
     t_balReal: "ສະສົມຈາກຍອດຍົກມາເຖິງມື້ນີ້",
     t_balNoOpening: "ຍັງບໍ່ໄດ້ໃສ່ຍອດຍົກມາ — ນີ້ແມ່ນຍອດຕັ້ງແຕ່ມື້ທຳອິດທີ່ບັນທຶກ ບໍ່ແມ່ນເງິນຈິງໃນກະເປົາ",
     t_balLater: "ອີກ {n} ລາຍການລົງວັນໄວ້ລ່ວງໜ້າ ຍັງບໍ່ນັບໃນຍອດນີ້ — ເງິນຍັງບໍ່ເຂົ້າອອກຈິງ",
+    t_balLoanNote: "ຍອດເງິນສົດ/ບັນຊີລວມເງິນກູ້ ແລະ ການຊຳລະຕາມຊ່ອງທາງ ແລະ ສະກຸນທີ່ເລືອກແລ້ວ",
     t_void: "ຍົກເລີກ", t_confirmVoid: "ຢືນຢັນຍົກເລີກ", t_restore: "ກູ້ຄືນ",
     t_notVoid: "ບໍ່ຍົກເລີກ", t_voidedBy: "ຍົກເລີກໂດຍ",
     t_voidTitle: "ຍົກເລີກລາຍການ", t_reasonPh: "ເຫດຜົນທີ່ຍົກເລີກ ເຊັ່ນ ບັນທຶກຊ້ຳ / ພິມຜິດ / ຍົກເລີກການຊື້",
@@ -1424,12 +1435,13 @@ const T = {
     t_typeAll: "ທັງໝົດ", t_found: "ພົບ", t_items: "ລາຍການ",
     t_sumInc: "ລວມລາຍຮັບ", t_sumExp: "ລວມລາຍຈ່າຍ", t_empty: "ບໍ່ພົບລາຍການຕາມເງື່ອນໄຂທີ່ເລືອກ",
     t_loansTitle: "ຕິດຕາມເງິນກູ້ ແລະ ເງິນໃຫ້ຢືມ", t_loanDirection: "ປະເພດລາຍການ",
-    t_loansKicker: "Loans / Debts", t_loansNote: "ບັນທຶກແຍກຈາກລາຍຮັບ-ລາຍຈ່າຍ · ໃສ່ດອກເບ້ຍຕາມທີ່ຊຳລະຈິງ",
+    t_loansKicker: "Loans / Debts", t_loansNote: "ຍອດກູ້/ໃຫ້ຢືມ ແລະ ການຊຳລະປັບເງິນສົດ/ບັນຊີ ແຕ່ບໍ່ລວມໃນລາຍຮັບ-ລາຍຈ່າຍ · ໃສ່ດອກເບ້ຍຕາມຈິງ",
+    t_loanMethod: "ຊ່ອງທາງຮັບ/ຈ່າຍ", t_loanCash: "ເງິນສົດ", t_loanBank: "ໂອນ/ບັນຊີ",
     t_loanBorrowed: "ຂ້ອຍກູ້ຢືມ", t_loanLent: "ຂ້ອຍໃຫ້ຄົນອື່ນຢືມ", t_loanCounterparty: "ຊື່ຄູ່ກໍລະນີ",
     t_loanPrincipal: "ເງິນຕົ້ນ", t_loanCurrency: "ສະກຸນເງິນ", t_loanStarted: "ວັນທີເລີ່ມກູ້/ໃຫ້ຢືມ",
     t_loanNote: "ໝາຍເຫດ", t_loanCreate: "ບັນທຶກລາຍການ", t_loanSaved: "ບັນທຶກລາຍການເງິນກູ້ແລ້ວ",
     t_loanNeedPerson: "ກະລຸນາໃສ່ຊື່ຄູ່ກໍລະນີ", t_loanNeedAmount: "ເງິນຕົ້ນຕ້ອງຫຼາຍກວ່າ 0",
-    t_loanUpgrade: "ຕ້ອງລັນ upgrade_v12.sql ໃນ Supabase ກ່ອນຈຶ່ງໃຊ້ການຕິດຕາມເງິນກູ້ໄດ້",
+    t_loanUpgrade: "ລັນ upgrade_v12.sql ສະບັບຫຼ້າສຸດໃນ Supabase (ຖ້າເຄີຍລັນແລ້ວໃຫ້ລັນຊ້ຳ) ເພື່ອເປີດໃຊ້ ແລະ ບັນທຶກຊ່ອງທາງຮັບ/ຈ່າຍເງິນກູ້",
     t_loanList: "ລາຍການເງິນກູ້ ແລະ ເງິນໃຫ້ຢືມ", t_loanPrincipalLeft: "ເງິນຕົ້ນຄົງເຫຼືອ", t_loanPrincipalPaid: "ຊຳລະເງິນຕົ້ນແລ້ວ",
     t_loanInterestPaid: "ດອກເບ້ຍທີ່ຊຳລະແລ້ວ", t_loanPayments: "ປະຫວັດການຊຳລະ",
     t_loanAddPayment: "ບັນທຶກການຊຳລະ", t_loanPrincipalPay: "ເງິນຕົ້ນທີ່ຊຳລະ",
@@ -1796,10 +1808,11 @@ const DB = {
   async loanReady() {
     try {
       await call(REST("loans") + "?select=id&limit=1", {}, "ตรวจตารางเงินกู้ไม่สำเร็จ");
-      await call(REST("loan_payments") + "?select=id&limit=1", {}, "ตรวจตารางชำระคืนไม่สำเร็จ");
+      await call(REST("loans") + "?select=method&limit=1", {}, "ตรวจช่องทางรับเงินกู้ไม่สำเร็จ");
+      await call(REST("loan_payments") + "?select=id,method&limit=1", {}, "ตรวจตารางชำระคืนไม่สำเร็จ");
       return true;
     } catch (e) {
-      if (/(loans|loan_payments).*(does not exist|relation|schema cache)|relation.*(loans|loan_payments)/i.test(e.message || ""))
+      if (/(loans|loan_payments).*(does not exist|relation|schema cache)|relation.*(loans|loan_payments)|column.*method|method.*(does not exist|column|schema cache)/i.test(e.message || ""))
         return false;
       throw e;
     }
@@ -2016,6 +2029,7 @@ class Component extends DCLogic {
     loanCounterparty: "",
     loanPrincipal: "",
     loanCode: CODES[0],
+    loanMethod: METHODS[0],
     loanStartedOn: TODAY_ISO,
     loanNote: "",
     loanBusy: false,
@@ -2023,6 +2037,7 @@ class Component extends DCLogic {
     repayLoanId: null,
     repayPrincipal: "",
     repayInterest: "",
+    repayMethod: METHODS[0],
     repayDate: TODAY_ISO,
     repayNote: "",
   };
@@ -2149,6 +2164,7 @@ class Component extends DCLogic {
         counterparty: s.loanCounterparty.trim(),
         principal,
         code: s.loanCode,
+        method: s.loanMethod,
         started_on: s.loanStartedOn || TODAY_ISO,
         note: s.loanNote.trim(),
       });
@@ -2188,18 +2204,19 @@ class Component extends DCLogic {
         paid_on: s.repayDate || TODAY_ISO,
         principal_paid: principalPaid,
         interest_paid: interestPaid,
+        method: s.repayMethod,
         note: s.repayNote.trim(),
       });
       saved = true;
       await this.refreshLoans();
       this.setState({
-        loanBusy: false, repayLoanId: null, repayPrincipal: "", repayInterest: "",
+        loanBusy: false, repayLoanId: null, repayPrincipal: "", repayInterest: "", repayMethod: METHODS[0],
         repayDate: TODAY_ISO, repayNote: "", loanMsg: this.L.t_loanPaymentSaved,
       });
     } catch (e) {
       const error = e.message || String(e);
       this.setState(saved
-        ? { loanBusy: false, repayLoanId: null, repayPrincipal: "", repayInterest: "",
+        ? { loanBusy: false, repayLoanId: null, repayPrincipal: "", repayInterest: "", repayMethod: METHODS[0],
           repayDate: TODAY_ISO, repayNote: "", loanMsg: this.L.t_loanPaymentSaved + " — " + error }
         : { loanBusy: false, loanMsg: error });
     }
@@ -2767,20 +2784,45 @@ class Component extends DCLogic {
     const laterN = balScope.length - balTx.length;   // ไม่นับ แต่ต้องบอกว่ามีอยู่ ไม่ใช่เงียบไป
     const allAccounts = s.filter === "ทุกบัญชี" || s.filter === "ທຸກບັນຊີ";
     const inMethod = (t, m) => (isXfer(t) ? t.method === m || t.methodTo === m : t.method === m);
-    const balOf = (m) => balTx.flatMap((t) => {
-      if (isGive(t)) {
-        const flows = [];
-        if ((allAccounts || t.who === s.filter) && t.method === m) flows.push(-1);
-        if ((allAccounts || t.toWho === s.filter) && t.toMethod === m) flows.push(1);
-        return flows.map((sign) => ({ ...t, balanceVal: sign * valOf(t) }));
+    const balOf = (m) => {
+      const rows = balTx.flatMap((t) => {
+        if (isGive(t)) {
+          const flows = [];
+          if ((allAccounts || t.who === s.filter) && t.method === m) flows.push(-1);
+          if ((allAccounts || t.toWho === s.filter) && t.toMethod === m) flows.push(1);
+          return flows.map((sign) => ({ ...t, balanceVal: sign * valOf(t) }));
+        }
+        if (!inMethod(t, m)) return [];
+        const sign = isExchange(t) ? (t.exchangeToCode === V ? 1 : -1)
+          : isXfer(t) ? (t.methodTo === m ? 1 : -1)
+          : isInc(t) || isOpen(t) ? 1
+          : isExp(t) ? -1 : 0;
+        return [{ ...t, balanceVal: sign * valOf(t) }];
+      });
+      if (s.loansLive) {
+        s.loans.filter((loan) =>
+          (allAccounts || loan.owner === s.filter)
+          && loan.code === V
+          && loan.method === m
+          && loan.started_on <= TODAY_ISO
+        ).forEach((loan) => {
+          const sign = loan.direction === "borrowed" ? 1 : -1;
+          rows.push({ code: loan.code, balanceVal: sign * Number(loan.principal) });
+          s.loanPayments.filter((payment) =>
+            Number(payment.loan_id) === Number(loan.id)
+            && payment.method === m
+            && payment.paid_on <= TODAY_ISO
+          ).forEach((payment) => {
+            const paymentSign = loan.direction === "borrowed" ? -1 : 1;
+            rows.push({
+              code: loan.code,
+              balanceVal: paymentSign * ((Number(payment.principal_paid) || 0) + (Number(payment.interest_paid) || 0)),
+            });
+          });
+        });
       }
-      if (!inMethod(t, m)) return [];
-      const sign = isExchange(t) ? (t.exchangeToCode === V ? 1 : -1)
-        : isXfer(t) ? (t.methodTo === m ? 1 : -1)
-        : isInc(t) || isOpen(t) ? 1
-        : isExp(t) ? -1 : 0;
-      return [{ ...t, balanceVal: sign * valOf(t) }];
-    });
+      return rows;
+    };
     const cardDebt = balOf(METHODS[2]).map((t) => ({ ...t, balanceVal: -valOf(t) }));
     const hasOpening = balTx.some(isOpen);
 
@@ -2852,6 +2894,10 @@ class Component extends DCLogic {
         { label: L.t_loanLent, id: "lent" },
       ].map((o) => ({ ...o, pick: () => this.setState({ loanDirection: o.id }), ...sel(s.loanDirection === o.id) })),
       loanCurrencyOpts: CURRENCIES.map((c) => ({ code: c.code, label: c.code + " · " + c.name })),
+      loanMethodOpts: [
+        { id: METHODS[0], label: L.t_loanCash },
+        { id: METHODS[1], label: L.t_loanBank },
+      ],
       loanRows: s.loans.map((loan) => {
         const payments = s.loanPayments.filter((p) => Number(p.loan_id) === Number(loan.id));
         const principalPaid = payments.reduce((sum, p) => sum + (Number(p.principal_paid) || 0), 0);
@@ -2863,6 +2909,7 @@ class Component extends DCLogic {
           counterparty: loan.counterparty,
           started: loan.started_on,
           note: loan.note || "",
+          method: loan.method === METHODS[1] ? L.t_loanBank : L.t_loanCash,
           principal: raw(Number(loan.principal), loan.code),
           principalPaid: raw(principalPaid, loan.code),
           interestPaid: raw(interestPaid, loan.code),
@@ -2872,6 +2919,7 @@ class Component extends DCLogic {
             paidOn: p.paid_on,
             principal: raw(Number(p.principal_paid), loan.code),
             interest: raw(Number(p.interest_paid), loan.code),
+            method: p.method === METHODS[1] ? L.t_loanBank : L.t_loanCash,
             note: p.note || "",
           })),
           paymentOpen: Number(s.repayLoanId) === Number(loan.id),
@@ -2880,12 +2928,11 @@ class Component extends DCLogic {
           isOpenDisplay: "inline-flex",
           openPayment: () => this.setState({
             repayLoanId: Number(s.repayLoanId) === Number(loan.id) ? null : loan.id,
-            repayPrincipal: "", repayInterest: "", repayDate: TODAY_ISO, repayNote: "", loanMsg: "",
+            repayPrincipal: "", repayInterest: "", repayMethod: METHODS[0], repayDate: TODAY_ISO, repayNote: "", loanMsg: "",
           }),
           savePayment: () => this.addLoanPayment(loan),
         };
       }),
-      loanFormDisplay: s.loansLive ? "flex" : "none",
       loanUpgradeDisplay: s.loansLive ? "none" : "block",
       loanStatus: s.loansErr || L.t_loanUpgrade,
       loanEmptyDisplay: s.loansLive && !s.loans.length ? "block" : "none",
@@ -2893,24 +2940,29 @@ class Component extends DCLogic {
       loanMessageDisplay: s.loanMsg ? "block" : "none",
       loanMessageFg: s.loanMsg === L.t_loanSaved || s.loanMsg === L.t_loanPaymentSaved ? "#416180" : "#8a2020",
       loanBusy: s.loanBusy,
+      loanSaveDisabled: !s.loansLive || s.loanBusy,
       loanDirection: s.loanDirection,
       loanCounterparty: s.loanCounterparty,
       loanPrincipal: s.loanPrincipal,
       loanCode: s.loanCode,
+      loanMethod: s.loanMethod,
       loanStartedOn: s.loanStartedOn,
       loanNote: s.loanNote,
       onLoanCounterparty: (e) => this.setState({ loanCounterparty: e.target.value, loanMsg: "" }),
       onLoanPrincipal: (e) => this.setState({ loanPrincipal: e.target.value, loanMsg: "" }),
       onLoanCode: (e) => this.setState({ loanCode: e.target.value }),
+      onLoanMethod: (e) => this.setState({ loanMethod: e.target.value }),
       onLoanStartedOn: (e) => this.setState({ loanStartedOn: e.target.value }),
       onLoanNote: (e) => this.setState({ loanNote: e.target.value }),
       createLoan: this.createLoan,
       repayPrincipal: s.repayPrincipal,
       repayInterest: s.repayInterest,
+      repayMethod: s.repayMethod,
       repayDate: s.repayDate,
       repayNote: s.repayNote,
       onRepayPrincipal: (e) => this.setState({ repayPrincipal: e.target.value, loanMsg: "" }),
       onRepayInterest: (e) => this.setState({ repayInterest: e.target.value, loanMsg: "" }),
+      onRepayMethod: (e) => this.setState({ repayMethod: e.target.value }),
       onRepayDate: (e) => this.setState({ repayDate: e.target.value }),
       onRepayNote: (e) => this.setState({ repayNote: e.target.value }),
       goAdd: this.go("add"),
@@ -3415,6 +3467,8 @@ class Component extends DCLogic {
       balNoteFg: hasOpening ? "#5d5d60" : "#416180",
       balLater: laterN ? L.t_balLater.replace("{n}", laterN) : "",
       balLaterDisp: laterN ? "block" : "none",
+      balLoanNote: L.t_balLoanNote,
+      balLoanNoteDisp: s.loansLive && s.loans.length ? "block" : "none",
 
       kpiIncome: fmt(incV),
       kpiExpense: fmt(expV),
