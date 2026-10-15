@@ -655,6 +655,31 @@
     </div>
 
     <div style="display:{{ loanUpgradeDisplay }};border:1px solid #d6a45c;background:#fffaf1;padding:13.6px;color:#6f4d20;font-size:14px">{{ loanStatus }}</div>
+    <div style="display:{{ loanBalanceSheetDisplay }};position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;flex-direction:column;gap:12px">
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">
+        <div style="font-weight:600;font-size:22px">{{ t_loanBalanceSheet }}</div>
+        <div style="font-size:12px;color:#5d5d60">{{ t_loanBalanceScope }}</div>
+      </div>
+      <sc-for list="{{ loanBalanceSheetRows }}" as="bs" hint-placeholder-count="3">
+        <div style="border-top:1px solid rgba(29,31,32,0.12);padding-top:10px;display:flex;flex-direction:column;gap:9px">
+          <div style="font-weight:600;color:#416180">{{ bs.code }}</div>
+          <div class="hl-2col" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font-weight:600">{{ t_loanAssets }}</div>
+              <div style="display:flex;justify-content:space-between;gap:8px"><span>{{ t_loanCashAsset }}</span><span>{{ bs.cash }}</span></div>
+              <div style="display:flex;justify-content:space-between;gap:8px"><span>{{ t_loanReceivable }}</span><span>{{ bs.receivable }}</span></div>
+              <div style="display:flex;justify-content:space-between;gap:8px;border-top:1px solid rgba(29,31,32,0.12);padding-top:5px;font-weight:600"><span>{{ t_loanAssetsTotal }}</span><span>{{ bs.assets }}</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font-weight:600">{{ t_loanLiabilities }}</div>
+              <div style="display:flex;justify-content:space-between;gap:8px"><span>{{ t_loanPayable }}</span><span>{{ bs.liabilities }}</span></div>
+              <div style="display:flex;justify-content:space-between;gap:8px;border-top:1px solid rgba(29,31,32,0.12);padding-top:5px;font-weight:600"><span>{{ t_loanEquity }}</span><span style="color:#416180">{{ bs.equity }}</span></div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+      <div style="font-size:12px;color:#5d5d60">{{ t_loanBalanceFormula }}</div>
+    </div>
     <div style="display:flex;position:relative;border:1px solid rgba(29,31,32,0.16);padding:20.4px;background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;flex-direction:column;gap:14px">
       <div style="font-weight:600;font-size:22px">{{ t_loanCreate }}</div>
       <label style="font-size:12px;letter-spacing:.08em;color:#5d5d60">{{ t_loanDirection }}</label>
@@ -1285,6 +1310,11 @@ const T = {
     t_loanNeedPerson: "กรุณาระบุชื่อคู่กรณี", t_loanNeedAmount: "เงินต้นต้องมากกว่า 0",
     t_loanUpgrade: "รัน upgrade_v12.sql ฉบับล่าสุดใน Supabase (ถ้าเคยรันแล้วให้รันซ้ำ) เพื่อเปิดใช้และบันทึกช่องทางรับ/จ่ายเงินกู้",
     t_loanList: "รายการเงินกู้และเงินให้ยืม", t_loanPrincipalLeft: "เงินต้นคงเหลือ", t_loanPrincipalPaid: "ชำระเงินต้นแล้ว",
+    t_loanBalanceSheet: "งบดุล · ฐานะการเงินปัจจุบัน", t_loanAssets: "ทรัพย์สิน", t_loanCashAsset: "เงินสดและเงินในบัญชี",
+    t_loanReceivable: "ลูกหนี้ · เงินให้ผู้อื่นกู้", t_loanAssetsTotal: "รวมทรัพย์สิน",
+    t_loanLiabilities: "หนี้สิน", t_loanPayable: "เจ้าหนี้ · เงินที่กู้มา",
+    t_loanEquity: "ทุนสุทธิ / มูลค่าสุทธิ", t_loanBalanceFormula: "ทุนสุทธิ = รวมทรัพย์สิน − รวมหนี้สิน",
+    t_loanBalanceScope: "แยกตามสกุลเงิน · ไม่บวกข้ามสกุล",
     t_loanInterestPaid: "ดอกเบี้ยที่ชำระแล้ว", t_loanPayments: "ประวัติการชำระ",
     t_loanAddPayment: "บันทึกการชำระ", t_loanPrincipalPay: "เงินต้นที่ชำระ",
     t_loanInterestPay: "ดอกเบี้ยที่ชำระ", t_loanPaidOn: "วันที่ชำระ",
@@ -1443,6 +1473,11 @@ const T = {
     t_loanNeedPerson: "ກະລຸນາໃສ່ຊື່ຄູ່ກໍລະນີ", t_loanNeedAmount: "ເງິນຕົ້ນຕ້ອງຫຼາຍກວ່າ 0",
     t_loanUpgrade: "ລັນ upgrade_v12.sql ສະບັບຫຼ້າສຸດໃນ Supabase (ຖ້າເຄີຍລັນແລ້ວໃຫ້ລັນຊ້ຳ) ເພື່ອເປີດໃຊ້ ແລະ ບັນທຶກຊ່ອງທາງຮັບ/ຈ່າຍເງິນກູ້",
     t_loanList: "ລາຍການເງິນກູ້ ແລະ ເງິນໃຫ້ຢືມ", t_loanPrincipalLeft: "ເງິນຕົ້ນຄົງເຫຼືອ", t_loanPrincipalPaid: "ຊຳລະເງິນຕົ້ນແລ້ວ",
+    t_loanBalanceSheet: "ງົບດຸນ · ຖານະການເງິນປັດຈຸບັນ", t_loanAssets: "ຊັບສິນ", t_loanCashAsset: "ເງິນສົດ ແລະ ເງິນໃນບັນຊີ",
+    t_loanReceivable: "ລູກໜີ້ · ເງິນທີ່ໃຫ້ຜູ້ອື່ນກູ້", t_loanAssetsTotal: "ລວມຊັບສິນ",
+    t_loanLiabilities: "ໜີ້ສິນ", t_loanPayable: "ເຈົ້າໜີ້ · ເງິນທີ່ກູ້ມາ",
+    t_loanEquity: "ທຶນສຸດທິ / ມູນຄ່າສຸດທິ", t_loanBalanceFormula: "ທຶນສຸດທິ = ລວມຊັບສິນ − ລວມໜີ້ສິນ",
+    t_loanBalanceScope: "ແຍກຕາມສະກຸນເງິນ · ບໍ່ບວກຂ້າມສະກຸນ",
     t_loanInterestPaid: "ດອກເບ້ຍທີ່ຊຳລະແລ້ວ", t_loanPayments: "ປະຫວັດການຊຳລະ",
     t_loanAddPayment: "ບັນທຶກການຊຳລະ", t_loanPrincipalPay: "ເງິນຕົ້ນທີ່ຊຳລະ",
     t_loanInterestPay: "ດອກເບ້ຍທີ່ຊຳລະ", t_loanPaidOn: "ວັນທີຊຳລະ",
@@ -2825,6 +2860,74 @@ class Component extends DCLogic {
     };
     const cardDebt = balOf(METHODS[2]).map((t) => ({ ...t, balanceVal: -valOf(t) }));
     const hasOpening = balTx.some(isOpen);
+    const loanBalanceSheetRows = (() => {
+      const cash = Object.fromEntries(CODES.map((code) => [code, 0]));
+      const transactions = live(s.txns.filter((t) => inScope(t) && t.ts <= TODAY_ISO));
+      const addCash = (code, amount) => {
+        if (Object.prototype.hasOwnProperty.call(cash, code)) cash[code] += amount;
+      };
+      transactions.forEach((t) => {
+        if (isExchange(t)) {
+          addCash(t.code, -(Number(t.val) + (Number(t.serviceFee) || 0)));
+          addCash(t.exchangeToCode, Number(t.exchangeToAmt) || 0);
+          return;
+        }
+        if (isGive(t)) {
+          const value = valOf(t);
+          if (t.method === METHODS[0] || t.method === METHODS[1]) {
+            if (allAccounts || t.who === s.filter) addCash(t.code, -value);
+            if ((allAccounts || t.toWho === s.filter) && (t.toMethod === METHODS[0] || t.toMethod === METHODS[1]))
+              addCash(t.code, value);
+          }
+          return;
+        }
+        if (isXfer(t)) {
+          if ((allAccounts || t.who === s.filter) && (t.method === METHODS[0] || t.method === METHODS[1]))
+            addCash(t.code, -valOf(t));
+          if ((allAccounts || t.toWho === s.filter) && (t.methodTo === METHODS[0] || t.methodTo === METHODS[1]))
+            addCash(t.code, valOf(t));
+          return;
+        }
+        if (t.method !== METHODS[0] && t.method !== METHODS[1]) return;
+        const sign = isInc(t) || isOpen(t) ? 1 : isExp(t) ? -1 : 0;
+        addCash(t.code || codeOf(t.who), sign * valOf(t));
+      });
+
+      const receivables = Object.fromEntries(CODES.map((code) => [code, 0]));
+      const liabilities = Object.fromEntries(CODES.map((code) => [code, 0]));
+      const scopedLoans = s.loans.filter((loan) =>
+        (allAccounts || loan.owner === s.filter) && loan.started_on <= TODAY_ISO);
+      scopedLoans.forEach((loan) => {
+        const paidPrincipal = s.loanPayments
+          .filter((payment) => Number(payment.loan_id) === Number(loan.id) && payment.paid_on <= TODAY_ISO)
+          .reduce((sum, payment) => sum + (Number(payment.principal_paid) || 0), 0);
+        const remaining = Math.max(0, Number(loan.principal) - paidPrincipal);
+        if (loan.direction === "lent") receivables[loan.code] += remaining;
+        else if (loan.direction === "borrowed") liabilities[loan.code] += remaining;
+
+        if (loan.method === METHODS[0] || loan.method === METHODS[1]) {
+          addCash(loan.code, (loan.direction === "borrowed" ? 1 : -1) * Number(loan.principal));
+        }
+        s.loanPayments
+          .filter((payment) => Number(payment.loan_id) === Number(loan.id) && payment.paid_on <= TODAY_ISO)
+          .forEach((payment) => {
+            if (payment.method !== METHODS[0] && payment.method !== METHODS[1]) return;
+            const amount = (Number(payment.principal_paid) || 0) + (Number(payment.interest_paid) || 0);
+            addCash(loan.code, (loan.direction === "borrowed" ? -1 : 1) * amount);
+          });
+      });
+      return CODES.map((code) => {
+        const cashTotal = cash[code] || 0;
+        const receivable = receivables[code] || 0;
+        const liability = liabilities[code] || 0;
+        const assets = cashTotal + receivable;
+        const equity = assets - liability;
+        return {
+          code, cash: raw(cashTotal, code), receivable: raw(receivable, code),
+          assets: raw(assets, code), liabilities: raw(liability, code), equity: raw(equity, code),
+        };
+      });
+    })();
 
     const admin = this.isAdmin;
     const E = cur(s.entryCode || acctCode(this.targetWho));
@@ -2898,10 +3001,11 @@ class Component extends DCLogic {
         { id: METHODS[0], label: L.t_loanCash },
         { id: METHODS[1], label: L.t_loanBank },
       ],
-      loanRows: s.loans.map((loan) => {
+      loanRows: s.loans.filter((loan) => allAccounts || loan.owner === s.filter).map((loan) => {
         const payments = s.loanPayments.filter((p) => Number(p.loan_id) === Number(loan.id));
-        const principalPaid = payments.reduce((sum, p) => sum + (Number(p.principal_paid) || 0), 0);
-        const interestPaid = payments.reduce((sum, p) => sum + (Number(p.interest_paid) || 0), 0);
+        const paymentsToDate = payments.filter((p) => p.paid_on <= TODAY_ISO);
+        const principalPaid = paymentsToDate.reduce((sum, p) => sum + (Number(p.principal_paid) || 0), 0);
+        const interestPaid = paymentsToDate.reduce((sum, p) => sum + (Number(p.interest_paid) || 0), 0);
         const remaining = Math.max(0, Number(loan.principal) - principalPaid);
         return {
           id: loan.id,
@@ -2934,6 +3038,8 @@ class Component extends DCLogic {
         };
       }),
       loanUpgradeDisplay: s.loansLive ? "none" : "block",
+      loanBalanceSheetDisplay: s.loansLive ? "flex" : "none",
+      loanBalanceSheetRows,
       loanStatus: s.loansErr || L.t_loanUpgrade,
       loanEmptyDisplay: s.loansLive && !s.loans.length ? "block" : "none",
       loanMessage: s.loanMsg,
