@@ -559,19 +559,25 @@
     </div>
 
     <div style="position:relative;border:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));padding:var(--space-6,20.4px);background-image:var(--c1),var(--c2),var(--c3),var(--c4);background-repeat:no-repeat;background-position:0 0,100% 0,0 100%,100% 100%;display:flex;flex-direction:column;gap:0">
-      <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
+      <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) minmax(250px,1.5fr) max-content;gap:var(--space-3,10.2px);padding-bottom:8px;border-bottom:1px solid var(--color-neutral-300,rgba(29,31,32,0.16));font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600,#5d5d60)">
         <span></span><span>{{ t_hDate }}</span><span>{{ t_hItem }}</span><span>{{ t_hCat }}</span><span>{{ t_hMethod }}</span><span>{{ t_hAcct }}</span><span style="text-align:right">{{ t_hAmount }}</span><span></span>
       </div>
       <sc-for list="{{ listRows }}" as="r" hint-placeholder-count="6">
         <div style="display:flex;flex-direction:column;border-bottom:1px solid var(--color-neutral-200,rgba(29,31,32,0.08))">
-        <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) max-content max-content;gap:var(--space-3,10.2px);padding:11px 0;align-items:center" style-hover="background:var(--color-accent-100,#eef6ff)">
+        <div class="hl-tr" style="display:grid;grid-template-columns:4px minmax(0,0.62fr) minmax(0,1.7fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,0.85fr) minmax(250px,1.5fr) max-content;gap:var(--space-3,10.2px);padding:11px 0;align-items:center" style-hover="background:var(--color-accent-100,#eef6ff)">
           <span style="width:4px;height:20px;background:{{ r.mark }}"></span>
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60)">{{ r.date }}</span>
           <span style="display:flex;align-items:center;gap:8px;min-width:0;opacity:{{ r.fade }}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:{{ r.strike }}">{{ r.name }}</span><span style="font-size:11px;letter-spacing:.1em;color:var(--color-accent-700,#416180);flex:none">{{ r.flag }}</span><span style="display:{{ r.voidDisp }};font-size:11px;letter-spacing:.04em;color:#98989b;flex:none;white-space:nowrap">{{ r.voidLabel }}</span></span>
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.cat }}</span>
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.method }}</span>
           <span style="font-size:13px;color:var(--color-neutral-600,#5d5d60);opacity:{{ r.fade }}">{{ r.who }}</span>
-          <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ r.color }};white-space:nowrap;text-decoration:{{ r.strike }}">{{ r.amount }}</span>
+          <span style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:0;text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;color:{{ r.color }};text-decoration:{{ r.strike }}">
+            <span style="display:{{ r.exchangeDisp }};font-size:16px;font-weight:600;white-space:nowrap">{{ r.exchangeDebit }}</span>
+            <span style="display:{{ r.exchangeDisp }};font-size:12px;color:#5d5d60;white-space:nowrap">{{ r.exchangePrincipal }}</span>
+            <span style="display:{{ r.exchangeDisp }};font-size:16px;font-weight:600;white-space:nowrap">{{ r.exchangeCredit }}</span>
+            <span style="display:{{ r.exchangeDisp }};font-size:12px;color:#416180;white-space:nowrap">{{ r.exchangeRateLabel }}</span>
+            <span style="display:{{ r.normalAmountDisp }};font-size:18px;white-space:nowrap">{{ r.amount }}</span>
+          </span>
           <span style="display:flex;gap:6px;align-items:center;padding-left:10px">
             <button onClick="{{ r.openSlip }}" style="display:{{ r.slipDisp }};border:1px solid #94bce3;background:{{ r.slipBg }};color:{{ r.slipFg }};padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ t_slipOpen }}</button>
             <button onClick="{{ r.openHistory }}" style="display:{{ r.editedDisp }};border:1px solid #94bce3;background:{{ r.editedBg }};color:{{ r.editedFg }};padding:4px 9px;font-size:11px;letter-spacing:.04em">{{ r.editedLabel }}</button>
@@ -2857,6 +2863,19 @@ class Component extends DCLogic {
             amount: isExchange(t)
               ? exchangeText(t)
               : (received ? "+" : SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+            exchangeDisp: isExchange(t) ? "block" : "none",
+            normalAmountDisp: isExchange(t) ? "none" : "inline",
+            exchangeDebit: isExchange(t) ? "−" + precise(t.val + (t.serviceFee || 0), t.code) : "",
+            exchangePrincipal: isExchange(t)
+              ? precise(t.val, t.code) + ((t.serviceFee || 0) > 0
+                ? " + " + L.t_feeSummary + " " + precise(t.serviceFee, t.code) : "")
+              : "",
+            exchangeCredit: isExchange(t) ? "+ " + precise(t.exchangeToAmt, t.exchangeToCode) : "",
+            exchangeRateLabel: isExchange(t)
+              ? (t.exchangeSide === "buy"
+                ? "1 " + t.exchangeToCode + " = " + exchangeRateText(t) + " " + t.code
+                : "1 " + t.code + " = " + exchangeRateText(t) + " " + t.exchangeToCode)
+              : "",
             color: dead ? "#98989b" : ((received || inc || isOpen(t)) ? DARK : INK),
             mark: dead ? "#d4d4d7" : isXfer(t) || isOpen(t) ? "#94bce3" : isGive(t) ? "#c98a5e" : inc ? DARK : ACC,
 
