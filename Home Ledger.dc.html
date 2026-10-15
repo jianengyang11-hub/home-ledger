@@ -829,7 +829,8 @@
             <span>{{ t.name }}</span>
             <span style="font-size:12px;color:#5d5d60">{{ t.cat }} · {{ t.method }} · {{ t.who }}</span>
           </span>
-          <span style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:19px;color:{{ t.color }};white-space:nowrap;flex:none">{{ t.amount }}</span>
+          <span style="display:{{ t.normalAmountDisp }};font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:19px;color:{{ t.color }};white-space:nowrap;flex:none">{{ t.amount }}</span>
+          <span style="display:{{ t.exchangeAmountDisp }};font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:19px;color:{{ t.color }};white-space:nowrap;flex:none">{{ t.exchangeAmount }}</span>
           </div>
           <div style="display:{{ t.exchangeDisp }};padding:8px 10px;background:#f3f7fb;border-left:3px solid #94bce3;line-height:1.6;overflow-wrap:anywhere">
             <span style="display:block;font-weight:600;color:#1d2d3d">{{ t.exchangeDebit }}</span>
@@ -2862,6 +2863,9 @@ class Component extends DCLogic {
           amount: exchangeRow
             ? "−" + raw(t.val + (t.serviceFee || 0), t.code)
             : (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+          normalAmountDisp: exchangeRow ? "none" : "inline",
+          exchangeAmountDisp: exchangeRow ? "inline" : "none",
+          exchangeAmount: exchangeRow ? "−" + raw(t.val + (t.serviceFee || 0), t.code) : "",
           cursor: exchangeRow ? "pointer" : "default",
           toggleExchange: exchangeRow
             ? () => this.setState({ todayExchangeId: expanded ? null : t.id })
