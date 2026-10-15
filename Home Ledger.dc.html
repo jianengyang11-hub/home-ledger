@@ -325,17 +325,23 @@
           <div style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-weight:600;font-size:22px">{{ t_recent }}</div>
           <a href="#" style="font-size:13px">{{ t_seeAll }}</a>
         </div>
-        <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) max-content;gap:10.2px;padding-bottom:8px;border-bottom:1px solid rgba(29,31,32,0.16);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">
+        <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) minmax(120px,1fr);gap:10.2px;padding-bottom:8px;border-bottom:1px solid rgba(29,31,32,0.16);font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">
           <span>{{ t_hDate }}</span><span>{{ t_hItem }}</span><span>{{ t_hCat }}</span><span>{{ t_hMethod }}</span><span>{{ t_hAcct }}</span><span style="text-align:right">{{ t_hAmount }}</span>
         </div>
         <sc-for list="{{ txns }}" as="t" hint-placeholder-count="6">
-          <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) max-content;gap:10.2px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08);align-items:center">
+          <div class="hl-tr" style="display:grid;grid-template-columns:minmax(0,0.62fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,0.75fr) minmax(0,0.8fr) minmax(120px,1fr);gap:10.2px;padding:9px 0;border-bottom:1px solid rgba(29,31,32,0.08);align-items:center">
             <span style="font-size:13px;color:#5d5d60">{{ t.date }}</span>
-            <span style="display:flex;align-items:center;gap:8px">{{ t.name }}<span style="font-size:11px;letter-spacing:.1em;color:#416180">{{ t.flag }}</span></span>
-            <span style="font-size:13px;color:#5d5d60">{{ t.cat }}</span>
-            <span style="font-size:13px;color:#5d5d60">{{ t.method }}</span>
-            <span style="font-size:13px;color:#5d5d60">{{ t.who }}</span>
-            <span style="text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ t.color }};white-space:nowrap">{{ t.amount }}</span>
+            <span style="display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.name }}</span><span style="font-size:11px;letter-spacing:.1em;color:#416180;flex:none">{{ t.flag }}</span></span>
+            <span style="font-size:13px;color:#5d5d60;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.cat }}</span>
+            <span style="font-size:13px;color:#5d5d60;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.method }}</span>
+            <span style="font-size:13px;color:#5d5d60;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.who }}</span>
+            <span style="min-width:0;text-align:right;font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:18px;color:{{ t.color }};white-space:nowrap">{{ t.amount }}</span>
+            <span style="display:{{ t.exchangeDisp }};grid-column:1 / -1;padding:8px 10px;background:#f3f7fb;border-left:3px solid #94bce3;line-height:1.6;overflow-wrap:anywhere">
+              <span style="font-weight:600;color:#1d2d3d">{{ t.exchangeDebit }}</span>
+              <span style="display:block;font-size:13px;color:#5d5d60">{{ t.exchangePrincipal }}</span>
+              <span style="display:block;font-weight:600;color:#1d2d3d">{{ t.exchangeCredit }}</span>
+              <span style="display:block;font-size:12px;color:#416180">{{ t.exchangeRateLabel }}</span>
+            </span>
           </div>
         </sc-for>
       </div>
@@ -2706,10 +2712,19 @@ class Component extends DCLogic {
           ...t, cat: isExchange(t) ? KIND_LABEL(L)[t.kind] : catLabel(t.cat),
           method: mi >= 0 ? L.methods[mi] : t.method,
           flag: t.flag ? L.t_recurFlag : "",
-          // เครื่องหมายเดียวกับที่อื่นทั้งไฟล์ — โอนกับยอดยกมาไม่ใช่รายจ่าย
-          amount: isExchange(t)
-            ? exchangeText(t)
-            : (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+          amount: isExchange(t) ? "" : (SIGN_OF[t.kind] || "−") + raw(valOf(t), codeOfTx(t)),
+          exchangeDisp: isExchange(t) ? "block" : "none",
+          exchangeDebit: isExchange(t) ? "−" + precise(t.val + (t.serviceFee || 0), t.code) : "",
+          exchangePrincipal: isExchange(t)
+            ? precise(t.val, t.code) + ((t.serviceFee || 0) > 0
+              ? " + " + L.t_feeSummary + " " + precise(t.serviceFee, t.code) : "")
+            : "",
+          exchangeCredit: isExchange(t) ? "+ " + precise(t.exchangeToAmt, t.exchangeToCode) : "",
+          exchangeRateLabel: isExchange(t)
+            ? (t.exchangeSide === "buy"
+              ? "1 " + t.exchangeToCode + " = " + exchangeRateText(t) + " " + t.code
+              : "1 " + t.code + " = " + exchangeRateText(t) + " " + t.exchangeToCode)
+            : "",
           color: inc || isOpen(t) ? DARK : INK,
         };
       }),
