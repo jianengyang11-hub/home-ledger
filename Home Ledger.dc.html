@@ -705,9 +705,14 @@
               <button onClick="{{ c.pick }}" style="border:0;border-left:1px solid rgba(29,31,32,0.16);background:{{ c.bg }};color:{{ c.fg }};padding:7px 13px;font-size:13px">{{ c.label }}</button>
             </sc-for>
           </div>
-          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_serviceFee }}</label>
-          <input type="text" inputmode="decimal" value="{{ serviceFee }}" onChange="{{ onServiceFee }}" placeholder="0" style="border:1px solid rgba(29,31,32,0.16);background:#fff;padding:10px 13.6px;font-size:18px;outline:none">
-          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_exchangeRate }}</label>
+          <div style="display:flex;flex-direction:column;gap:6.8px;padding:10px 12px;border:1px solid #d6a45c;background:#fffaf1">
+            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;display:flex;justify-content:space-between;gap:8px">
+              <span>{{ t_serviceFee }}</span><span style="text-transform:none;letter-spacing:0;color:#416180">{{ serviceFeeUnit }}</span>
+            </label>
+            <input type="text" inputmode="decimal" value="{{ serviceFee }}" onChange="{{ onServiceFee }}" placeholder="0" style="border:1px solid rgba(29,31,32,0.16);background:#fff;padding:10px 13.6px;font-size:18px;outline:none">
+            <div style="font-size:12px;color:#5d5d60">{{ t_exchangeFeeHint }}</div>
+          </div>
+          <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ exchangeRateLabel }}</label>
           <input type="text" inputmode="decimal" value="{{ exchangeRate }}" onChange="{{ onExchangeRate }}" placeholder="{{ t_exchangeRatePh }}" style="border:1px solid rgba(29,31,32,0.16);background:#fff;padding:10px 13.6px;font-size:18px;outline:none">
           <div style="font-size:14px;color:#1d2d3d">{{ exchangePreview }}</div>
           <div style="font-size:12px;color:{{ exchangeNoteFg }}">{{ exchangeNote }}</div>
@@ -740,7 +745,7 @@
 
         <div class="hl-2col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20.4px">
           <div style="display:flex;flex-direction:column;gap:10.2px">
-            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ t_method }}</label>
+            <label style="font-family:'Times New Roman','Noto Serif Thai','Noto Serif Lao',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5d5d60">{{ methodLabel }}</label>
             <div style="display:flex;border:1px solid rgba(29,31,32,0.16)">
               <sc-for list="{{ methods }}" as="m" hint-placeholder-count="3">
                 <button onClick="{{ m.pick }}" style="flex:1;border:0;border-left:1px solid rgba(29,31,32,0.16);padding:9px 0;font-size:14px;background:{{ m.bg }};color:{{ m.fg }}">{{ m.name }}</button>
@@ -1080,6 +1085,10 @@ const T = {
     t_buy: "ซื้อ", t_sell: "ขาย", t_serviceFee: "ค่าบริการ",
     t_amountFromPlusFee: "ยอดต้นทางรวมค่าบริการ", t_exchangeAmount: "ยอดเงินต้นทาง",
     t_feeSummary: "ค่าบริการ", t_totalDebit: "ยอดที่ชำระรวม",
+    t_exchangeFeeHint: "ระบุค่าบริการตามใบเสร็จ ระบบจะหักออกจากเงินต้นก่อนคำนวณยอดรับ",
+    t_exchangeRateUnit: "1 {from} = ? {to}",
+    t_exchangeSettlement: "ชำระด้วยเงินสดหรือโอน",
+    t_exchangeMethodInvalid: "รายการแลกเงินเลือกชำระได้เฉพาะเงินสดหรือโอน",
     t_feeHintExpense: "ค่าบริการจะรวมกับยอดรายจ่าย", t_feeHintIncome: "หักค่าบริการออกจากยอดรายรับสุทธิ",
     t_feeInvalid: "ค่าบริการต้องไม่เกินยอดรายรับหรือยอดต้นทาง",
     t_feeUpgrade: "ต้องรัน upgrade_v11.sql ใน Supabase ก่อนจึงจะบันทึกค่าบริการได้",
@@ -1216,6 +1225,10 @@ const T = {
     t_buy: "ຊື້", t_sell: "ຂາຍ", t_serviceFee: "ຄ່າບໍລິການ",
     t_amountFromPlusFee: "ຍອດຕົ້ນທາງລວມຄ່າບໍລິການ", t_exchangeAmount: "ຍອດເງິນຕົ້ນທາງ",
     t_feeSummary: "ຄ່າບໍລິການ", t_totalDebit: "ຍອດຊຳລະລວມ",
+    t_exchangeFeeHint: "ໃສ່ຄ່າບໍລິການຕາມໃບບິນ ລະບົບຈະຫັກຈາກເງິນຕົ້ນກ່ອນຄຳນວນຍອດຮັບ",
+    t_exchangeRateUnit: "1 {from} = ? {to}",
+    t_exchangeSettlement: "ຊຳລະດ້ວຍເງິນສົດ ຫຼື ໂອນ",
+    t_exchangeMethodInvalid: "ລາຍການແລກເງິນເລືອກຊຳລະໄດ້ສະເພາະເງິນສົດ ຫຼື ໂອນ",
     t_feeHintExpense: "ຄ່າບໍລິການຈະລວມກັບຍອດລາຍຈ່າຍ", t_feeHintIncome: "ຫັກຄ່າບໍລິການອອກຈາກຍອດລາຍຮັບສຸດທິ",
     t_feeInvalid: "ຄ່າບໍລິການຕ້ອງບໍ່ເກີນຍອດລາຍຮັບ ຫຼື ຍອດຕົ້ນທາງ",
     t_feeUpgrade: "ຕ້ອງລັນ upgrade_v11.sql ໃນ Supabase ກ່ອນ ຈຶ່ງຈະບັນທຶກຄ່າບໍລິການໄດ້",
@@ -1924,38 +1937,53 @@ class Component extends DCLogic {
 
   selectEntryCode = (code) => {
     const source = this.state.entryCode || acctCode(this.targetWho);
-    const nextToCode = this.state.exchangeToCode === code
+    const nextToCode = this.state.exchangeToCode === code || !this.state.exchangeToCode
       ? (CURRENCIES.find((c) => c.code !== code) || {}).code || ""
       : this.state.exchangeToCode;
+    const exchangeSide = code === "KIP" ? "buy" : nextToCode === "KIP" ? "sell" : "sell";
     this.setState({
       entryCode: code,
       exchangeToCode: nextToCode,
       exchangeRate: source === code ? this.state.exchangeRate : "",
-      exchangeSide: source === code ? this.state.exchangeSide : "buy",
+      exchangeSide: source === code ? this.state.exchangeSide : exchangeSide,
     });
   };
 
-  selectExchangeToCode = (code) => this.setState({
-    exchangeToCode: code,
-    exchangeRate: "",
-    exchangeSide: "buy",
-  });
+  selectExchangeToCode = (code) => {
+    const source = this.state.entryCode || acctCode(this.targetWho);
+    this.setState({
+      exchangeToCode: code,
+      exchangeRate: "",
+      exchangeSide: source === "KIP" ? "buy" : code === "KIP" ? "sell" : "sell",
+    });
+  };
 
   selectExchangeSide = (side) => {
     if (side === this.state.exchangeSide) return;
-    this.setState({ exchangeRate: "", exchangeSide: side });
+    const source = this.state.entryCode || acctCode(this.targetWho);
+    const target = this.state.exchangeToCode || (CURRENCIES.find((c) => c.code !== source) || {}).code || "";
+    this.setState({
+      entryCode: target,
+      exchangeToCode: source,
+      amount: "",
+      serviceFee: "",
+      exchangeRate: "",
+      exchangeSide: side,
+    });
   };
 
   selectKind = (kind) => () => {
     const source = this.state.entryCode || acctCode(this.targetWho);
     const currentTo = this.state.exchangeToCode;
+    const exchangeToCode = kind === "exchange" && (!currentTo || currentTo === source)
+      ? ((CURRENCIES.find((c) => c.code !== source) || {}).code || "")
+      : currentTo;
     this.setState({
       kind,
+      method: kind === "exchange" && this.state.method === METHODS[2] ? METHODS[0] : this.state.method,
       serviceFee: "",
-      exchangeSide: "buy",
-      exchangeToCode: kind === "exchange" && (!currentTo || currentTo === source)
-        ? ((CURRENCIES.find((c) => c.code !== source) || {}).code || "")
-        : currentTo,
+      exchangeSide: source === "KIP" ? "buy" : exchangeToCode === "KIP" ? "sell" : "sell",
+      exchangeToCode,
     });
   };
 
@@ -2123,6 +2151,8 @@ class Component extends DCLogic {
       return this.setState({ saved: this.L.t_exchangeRateMissing });
     if (exchange && (!Number.isFinite(exchangeToAmt) || exchangeToAmt <= 0))
       return this.setState({ saved: this.L.t_exchangeInvalid });
+    if (exchange && s.method !== METHODS[0] && s.method !== METHODS[1])
+      return this.setState({ saved: this.L.t_exchangeMethodInvalid });
 
     // โอนระหว่างช่องทางต้องมีปลายทาง และต้องไม่ใช่ช่องทางเดิม (ฐานข้อมูลก็บังคับซ้ำอีกชั้น)
     const xfer = s.kind === "transfer";
@@ -2212,7 +2242,8 @@ class Component extends DCLogic {
       screen: "add", editId: t.id, pendingDel: null, saved: "", historyId: null,
       slipViewId: null, slipViewUrl: "", slipViewErr: "", slipViewBusy: false,
       kind: t.kind, cat: t.cat || this.state.cat,
-      method: t.method, methodTo: t.methodTo || "", toWho: t.toWho || "", toMethod: t.toMethod || "", who: t.who,
+      method: t.kind === "exchange" && t.method !== METHODS[0] && t.method !== METHODS[1] ? METHODS[0] : t.method,
+      methodTo: t.methodTo || "", toWho: t.toWho || "", toMethod: t.toMethod || "", who: t.who,
       amount: formatAmountInput(String(t.kind === "exchange" ? t.val + t.serviceFee : t.val)),
       note: t.name, date: t.ts, entryCode: t.code, repeat: t.flag === "ประจำ",
       exchangeToCode: t.exchangeToCode || "", exchangeRate: t.exchangeRate ? String(t.exchangeRate) : "",
@@ -2708,6 +2739,7 @@ class Component extends DCLogic {
       })),
       entryNote: L.t_keepNative + " " + E.code,
       amountLabel: s.kind === "exchange" ? L.t_amountFromPlusFee : L.t_amount,
+      methodLabel: s.kind === "exchange" ? L.t_exchangeSettlement : L.t_method,
       rateNote: L.t_mainCur + " " + C.code,
       exchangeDisp: s.kind === "exchange" ? "flex" : "none",
       exchangeSides: [
@@ -2724,7 +2756,12 @@ class Component extends DCLogic {
         ...sel((s.exchangeToCode || (CURRENCIES.find((x) => x.code !== E.code) || {}).code) === c.code),
       })),
       exchangeRate: s.exchangeRate,
+      serviceFeeUnit: E.sym + " " + E.code,
+      exchangeRateLabel: L.t_exchangeRate + " · " + L.t_exchangeRateUnit
+        .replace("{from}", s.exchangeSide === "buy" ? (s.exchangeToCode || "") : E.code)
+        .replace("{to}", s.exchangeSide === "buy" ? E.code : (s.exchangeToCode || "")),
       serviceFee: s.serviceFee,
+      t_exchangeFeeHint: L.t_exchangeFeeHint,
       onServiceFee: (e) => this.setState({ serviceFee: formatAmountInput(e.target.value) }),
       serviceFeeDisp: s.kind !== "exchange" && (s.kind === "income" || s.kind === "expense")
         && (s.method === METHODS[1] || s.method === METHODS[2]) ? "flex" : "none",
@@ -3094,13 +3131,14 @@ class Component extends DCLogic {
       // เก็บค่าเป็น METHODS (ไทย) เสมอ ส่วน L.methods เป็นแค่ป้ายที่แสดง — เหมือน toMethods ข้างบน
       // ถ้าเก็บป้ายที่แสดงลงฐานข้อมูล พอบันทึกด้วยภาษาลาวจะได้ "ເງິນສົດ" ซึ่งไม่ตรงกับ METHODS[0]
       // แถวนั้นจะหลุดจากการ์ดยอดคงเหลือทุกใบเงียบ ๆ และนับเป็นคนละช่องทางกับที่บันทึกเป็นไทย
-      methods: L.methods.map((name, i) => {
-        const id = METHODS[i];
+      methods: L.methods.map((name, i) => ({ name, id: METHODS[i] }))
+        .filter((m) => s.kind !== "exchange" || m.id === METHODS[0] || m.id === METHODS[1])
+        .map(({ name, id }) => {
         return {
           name,
           pick: () => this.setState({
             method: id,
-            serviceFee: id === METHODS[1] || id === METHODS[2] ? s.serviceFee : "",
+            serviceFee: s.kind === "exchange" || id === METHODS[1] || id === METHODS[2] ? s.serviceFee : "",
           }),
           ...sel(s.method === id),
         };
